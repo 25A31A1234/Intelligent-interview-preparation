@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Setup · AI Interview Coach</title>
+
+  <!-- Bootstrap 5 & Font Awesome 6 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8faff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ----- gradient helpers ----- */
+    .gradient-text {
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-gradient {
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.7rem 2rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px -6px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -8px rgba(37, 99, 235, 0.45);
+      color: #fff;
+      background: linear-gradient(145deg, #1d4ed8, #6d28d9);
+    }
+
+    .btn-outline-secondary-custom {
+      background: transparent;
+      border: 2px solid #94a3b8;
+      color: #334155;
+      font-weight: 500;
+      padding: 0.7rem 2rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-secondary-custom:hover {
+      background: #f1f5f9;
+      border-color: #64748b;
+      transform: translateY(-2px);
+    }
+
+    /* ----- navbar ----- */
+    .navbar-custom {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px -6px rgba(0, 0, 0, 0.04);
+      padding: 0.8rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    .navbar-brand i {
+      color: #2563eb;
+      margin-right: 8px;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: #1e293b;
+      margin: 0 8px;
+      transition: 0.15s;
+    }
+
+    .nav-link:hover {
+      color: #2563eb;
+    }
+
+    .step-badge {
+      background: #eef2ff;
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid #c7d2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ----- cards ----- */
+    .setup-card {
+      background: #ffffff;
+      border: none;
+      border-radius: 40px;
+      padding: 2.5rem 2.2rem;
+      box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.08);
+      height: 100%;
+    }
+
+    .summary-card {
+      background: linear-gradient(145deg, #f8faff, #eef2ff);
+      border: none;
+      border-radius: 32px;
+      padding: 2rem 1.8rem;
+      height: 100%;
+      box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.06);
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 20px;
+      padding: 0.7rem 1.2rem;
+      border: 1.5px solid #e2e8f0;
+      background: #fafcff;
+      font-size: 0.95rem;
+      transition: 0.15s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.10);
+      background: #ffffff;
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1e293b;
+      margin-bottom: 0.4rem;
+    }
+
+    .input-icon {
+      color: #7c3aed;
+      width: 20px;
+      text-align: center;
+      margin-right: 6px;
+    }
+
+    /* ----- difficulty cards (radio) ----- */
+    .difficulty-option {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      background: #fafcff;
+      height: 100%;
+    }
+
+    .difficulty-option:hover {
+      border-color: #7c3aed;
+      background: #f5f3ff;
+    }
+
+    .difficulty-option input[type="radio"] {
+      display: none;
+    }
+
+    .difficulty-option.active {
+      border-color: #7c3aed;
+      background: #ede9fe;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+
+    .difficulty-option .diff-icon {
+      font-size: 2rem;
+      color: #7c3aed;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .difficulty-option h6 {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+      color: #0f172a;
+    }
+
+    .difficulty-option p {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 0;
+    }
+
+    /* ----- mode cards (radio) ----- */
+    .mode-option {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      background: #fafcff;
+      height: 100%;
+    }
+
+    .mode-option:hover {
+      border-color: #7c3aed;
+      background: #f5f3ff;
+    }
+
+    .mode-option input[type="radio"] {
+      display: none;
+    }
+
+    .mode-option.active {
+      border-color: #7c3aed;
+      background: #ede9fe;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+
+    .mode-option .mode-icon {
+      font-size: 2.2rem;
+      color: #7c3aed;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .mode-option h6 {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+      color: #0f172a;
+    }
+
+    .mode-option p {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 0;
+    }
+
+    .recommended-badge {
+      font-size: 0.65rem;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.15rem 0.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* summary items */
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-item .label {
+      font-weight: 500;
+      color: #475569;
+    }
+
+    .summary-item .value {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* info card */
+    .info-card {
+      background: #f1f5f9;
+      border-radius: 24px;
+      padding: 1.2rem 1.5rem;
+      border-left: 6px solid #7c3aed;
+    }
+
+    .info-card i {
+      color: #7c3aed;
+      margin-right: 10px;
+    }
+
+    /* responsive */
+    @media (max-width: 576px) {
+      .setup-card {
+        padding: 1.6rem 1rem;
+      }
+      .summary-card {
+        padding: 1.4rem 1rem;
+      }
+      .btn-gradient,
+      .btn-outline-secondary-custom {
+        width: 100%;
+        justify-content: center;
+      }
+      .navbar-brand {
+        font-size: 1.3rem;
+      }
+      .difficulty-option,
+      .mode-option {
+        padding: 0.8rem 0.5rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .summary-card {
+        margin-top: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================ -->
+  <!-- NAVBAR                                                       -->
+  <!-- ============================================================ -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fas fa-robot"></i> AI Interview Coach
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+              aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="resume.html">Resume</a></li>
+          <li class="nav-item ms-lg-2">
+            <span class="step-badge"><i class="fas fa-circle-check"></i> Step 3 of 4</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- MAIN CONTENT                                                 -->
+  <!-- ============================================================ -->
+  <main class="container py-4 py-lg-5 flex-grow-1">
+    <div class="row justify-content-center">
+      <div class="col-lg-11 col-xl-10">
+
+        <!-- PAGE HEADER -->
+        <div class="text-center mb-4">
+          <h1 class="display-5 fw-bold">Set Up Your <span class="gradient-text">Interview</span></h1>
+          <p class="text-secondary fs-5" style="font-weight: 400;">
+            Customize your interview according to your career goal and experience level.
+          </p>
+        </div>
+
+        <div class="row g-4">
+
+          <!-- ===== LEFT COLUMN: FORM ===== -->
+          <div class="col-lg-7">
+            <div class="setup-card">
+              <form id="setupForm" novalidate>
+
+                <!-- Job Role -->
+                <div class="mb-4">
+                  <label for="jobRole" class="form-label">
+                    <i class="fas fa-briefcase input-icon"></i> Job Role <span class="required-star text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="jobRole" required>
+                    <option value="" disabled selected>Select your target role</option>
+                    <option value="Python Developer">Python Developer</option>
+                    <option value="Java Developer">Java Developer</option>
+                    <option value="Web Developer">Web Developer</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="AI/ML Engineer">AI/ML Engineer</option>
+                    <option value="Software Developer">Software Developer</option>
+                  </select>
+                </div>
+
+                <!-- Interview Type -->
+                <div class="mb-4">
+                  <label for="interviewType" class="form-label">
+                    <i class="fas fa-list-check input-icon"></i> Interview Type <span class="required-star text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="interviewType" required>
+                    <option value="" disabled selected>Select interview type</option>
+                    <option value="Technical Interview">Technical Interview</option>
+                    <option value="HR Interview">HR Interview</option>
+                    <option value="Behavioral Interview">Behavioral Interview</option>
+                    <option value="Mixed Interview">Mixed Interview</option>
+                  </select>
+                </div>
+
+                <!-- Difficulty Level (cards) -->
+                <div class="mb-4">
+                  <label class="form-label">
+                    <i class="fas fa-signal input-icon"></i> Difficulty Level <span class="required-star text-danger">*</span>
+                  </label>
+                  <div class="row g-2" id="difficultyGroup">
+                    <div class="col-4">
+                      <label class="difficulty-option active" id="diffBeginner">
+                        <input type="radio" name="difficulty" value="Beginner" checked />
+                        <span class="diff-icon"><i class="fas fa-seedling"></i></span>
+                        <h6>Beginner</h6>
+                        <p>Fundamental concepts</p>
+                      </label>
+                    </div>
+                    <div class="col-4">
+                      <label class="difficulty-option" id="diffIntermediate">
+                        <input type="radio" name="difficulty" value="Intermediate" />
+                        <span class="diff-icon"><i class="fas fa-chart-line"></i></span>
+                        <h6>Intermediate</h6>
+                        <p>Moderate complexity</p>
+                      </label>
+                    </div>
+                    <div class="col-4">
+                      <label class="difficulty-option" id="diffAdvanced">
+                        <input type="radio" name="difficulty" value="Advanced" />
+                        <span class="diff-icon"><i class="fas fa-rocket"></i></span>
+                        <h6>Advanced</h6>
+                        <p>Expert level</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-3">
+                  <!-- Number of Questions -->
+                  <div class="col-md-6">
+                    <label for="numQuestions" class="form-label">
+                      <i class="fas fa-hashtag input-icon"></i> Number of Questions <span class="required-star text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="numQuestions" required>
+                      <option value="5">5 Questions</option>
+                      <option value="10" selected>10 Questions</option>
+                      <option value="15">15 Questions</option>
+                      <option value="20">20 Questions</option>
+                    </select>
+                  </div>
+
+                  <!-- Interview Duration -->
+                  <div class="col-md-6">
+                    <label for="duration" class="form-label">
+                      <i class="fas fa-clock input-icon"></i> Interview Duration <span class="required-star text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="duration" required>
+                      <option value="10">10 Minutes</option>
+                      <option value="15" selected>15 Minutes</option>
+                      <option value="20">20 Minutes</option>
+                      <option value="30">30 Minutes</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Interview Mode (cards) -->
+                <div class="mb-3 mt-3">
+                  <label class="form-label">
+                    <i class="fas fa-microphone input-icon"></i> Interview Mode <span class="required-star text-danger">*</span>
+                  </label>
+                  <div class="row g-2" id="modeGroup">
+                    <div class="col-6">
+                      <label class="mode-option active" id="modeVoice">
+                        <input type="radio" name="mode" value="Voice Answer" checked />
+                        <span class="mode-icon"><i class="fas fa-microphone"></i></span>
+                        <h6>Voice Answer <span class="recommended-badge">Recommended</span></h6>
+                        <p>Answer verbally using your microphone.</p>
+                      </label>
+                    </div>
+                    <div class="col-6">
+                      <label class="mode-option" id="modeText">
+                        <input type="radio" name="mode" value="Text Answer" />
+                        <span class="mode-icon"><i class="fas fa-keyboard"></i></span>
+                        <h6>Text Answer</h6>
+                        <p>Type your answer using the keyboard.</p>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+          <!-- ===== RIGHT COLUMN: SUMMARY + INFO ===== -->
+          <div class="col-lg-5">
+            <div class="summary-card">
+              <h5 class="fw-bold mb-3">
+                <i class="fas fa-receipt text-primary me-2"></i> Interview Summary
+              </h5>
+              <div id="summaryContent">
+                <div class="summary-item">
+                  <span class="label">Job Role</span>
+                  <span class="value" id="sumJobRole">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Interview Type</span>
+                  <span class="value" id="sumInterviewType">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Difficulty</span>
+                  <span class="value" id="sumDifficulty">Beginner</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Questions</span>
+                  <span class="value" id="sumQuestions">10</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Duration</span>
+                  <span class="value" id="sumDuration">15 min</span>
+                </div>
+                <div class="summary-item">
+                  <span class="label">Mode</span>
+                  <span class="value" id="sumMode">Voice Answer</span>
+                </div>
+              </div>
+
+              <!-- Important info card -->
+              <div class="info-card mt-4">
+                <i class="fas fa-circle-info"></i>
+                <span class="fw-semibold">During the interview</span>
+                <p class="small mb-0 mt-1">
+                  Questions will appear on the screen as text. You can answer verbally using the microphone.
+                  Your answers will later be analyzed by the AI system.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- /row -->
+
+        <!-- ===== BUTTONS ===== -->
+        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mt-5 pt-2">
+          <a href="resume.html" class="btn btn-outline-secondary-custom">
+            <i class="fas fa-arrow-left me-2"></i> Back to Resume
+          </a>
+          <a href="interview.html" class="btn-gradient px-5" id="startBtn">
+            Start Interview <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+        </div>
+
+      </div> <!-- /col -->
+    </div> <!-- /row -->
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER                                                       -->
+  <!-- ============================================================ -->
+  <footer class="bg-dark text-white-50 py-4 mt-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-start">
+          <span class="text-white fw-bold"><i class="fas fa-robot text-primary me-2"></i>AI Interview Coach</span>
+          <p class="small mb-0">Intelligent interview preparation &amp; performance analysis for college students.</p>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <span class="small">&copy; 2026 AI Interview Coach. All rights reserved.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ============================================================ -->
+  <!-- SIMPLE JAVASCRIPT – summary update & card toggles            -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      // ---- DOM refs ----
+      const jobRole = document.getElementById('jobRole');
+      const interviewType = document.getElementById('interviewType');
+      const numQuestions = document.getElementById('numQuestions');
+      const duration = document.getElementById('duration');
+
+      // summary elements
+      const sumJobRole = document.getElementById('sumJobRole');
+      const sumInterviewType = document.getElementById('sumInterviewType');
+      const sumDifficulty = document.getElementById('sumDifficulty');
+      const sumQuestions = document.getElementById('sumQuestions');
+      const sumDuration = document.getElementById('sumDuration');
+      const sumMode = document.getElementById('sumMode');
+
+      // difficulty radio labels
+      const diffOptions = document.querySelectorAll('.difficulty-option');
+      const diffRadios = document.querySelectorAll('input[name="difficulty"]');
+
+      // mode radio labels
+      const modeOptions = document.querySelectorAll('.mode-option');
+      const modeRadios = document.querySelectorAll('input[name="mode"]');
+
+      // ---- helper: update summary ----
+      function updateSummary() {
+        // Job Role
+        sumJobRole.textContent = jobRole.value || '—';
+        // Interview Type
+        sumInterviewType.textContent = interviewType.value || '—';
+        // Difficulty (find checked radio)
+        let diffVal = 'Beginner';
+        diffRadios.forEach(r => { if (r.checked) diffVal = r.value; });
+        sumDifficulty.textContent = diffVal;
+        // Questions
+        sumQuestions.textContent = numQuestions.value || '—';
+        // Duration
+        const durVal = duration.value;
+        sumDuration.textContent = durVal ? durVal + ' min' : '—';
+        // Mode
+        let modeVal = 'Voice Answer';
+        modeRadios.forEach(r => { if (r.checked) modeVal = r.value; });
+        sumMode.textContent = modeVal;
+      }
+
+      // ---- toggle active class on difficulty cards ----
+      diffOptions.forEach((label, index) => {
+        label.addEventListener('click', function(e) {
+          // remove active from all
+          diffOptions.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          // check the radio inside
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) radio.checked = true;
+          updateSummary();
+        });
+      });
+
+      // ---- toggle active class on mode cards ----
+      modeOptions.forEach((label) => {
+        label.addEventListener('click', function(e) {
+          modeOptions.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) radio.checked = true;
+          updateSummary();
+        });
+      });
+
+      // ---- sync active class with radio changes (for safety) ----
+      diffRadios.forEach((radio, idx) => {
+        radio.addEventListener('change', function() {
+          diffOptions.forEach(l => l.classList.remove('active'));
+          if (this.checked) {
+            const parent = this.closest('.difficulty-option');
+            if (parent) parent.classList.add('active');
+          }
+          updateSummary();
+        });
+      });
+
+      modeRadios.forEach((radio) => {
+        radio.addEventListener('change', function() {
+          modeOptions.forEach(l => l.classList.remove('active'));
+          if (this.checked) {
+            const parent = this.closest('.mode-option');
+            if (parent) parent.classList.add('active');
+          }
+          updateSummary();
+        });
+      });
+
+      // ---- form select changes ----
+      jobRole.addEventListener('change', updateSummary);
+      interviewType.addEventListener('change', updateSummary);
+      numQuestions.addEventListener('change', updateSummary);
+      duration.addEventListener('change', updateSummary);
+
+      // ---- initial summary update ----
+      updateSummary();
+
+      // ---- "Start Interview" validation ----
+      document.getElementById('startBtn').addEventListener('click', function(e) {
+        // check required selects
+        if (!jobRole.value || !interviewType.value) {
+          e.preventDefault();
+          alert('Please select both Job Role and Interview Type before starting.');
+          return;
+        }
+        // all good, navigate to interview.html
+      });
+
+    })();
+  </script>
+<script src="js/script.js"></script>
+</body>
+</html>

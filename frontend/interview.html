@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Interview · AI Interview Coach</title>
+
+  <!-- Bootstrap 5 & Font Awesome 6 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ----- gradient helpers ----- */
+    .gradient-text {
+      background: linear-gradient(145deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-gradient {
+      background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px -6px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(59, 130, 246, 0.5);
+      color: #fff;
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+    }
+
+    .btn-outline-secondary-custom {
+      background: transparent;
+      border: 2px solid #475569;
+      color: #94a3b8;
+      font-weight: 500;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-secondary-custom:hover {
+      background: #1e293b;
+      border-color: #64748b;
+      color: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger-custom {
+      background: transparent;
+      border: 2px solid #f87171;
+      color: #fca5a5;
+      font-weight: 500;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-danger-custom:hover {
+      background: #7f1d1d;
+      border-color: #ef4444;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ----- navbar / header ----- */
+    .interview-header {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1e293b;
+      padding: 0.8rem 0;
+    }
+
+    .header-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #f1f5f9;
+      text-decoration: none;
+    }
+
+    .header-brand i {
+      color: #60a5fa;
+      margin-right: 8px;
+    }
+
+    .status-badge {
+      background: #064e3b;
+      color: #34d399;
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      border: 1px solid #059669;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-badge .pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ----- main cards ----- */
+    .question-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 32px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .answer-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 32px;
+      padding: 1.8rem 2rem;
+    }
+
+    .tips-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 24px;
+      padding: 1.5rem 1.5rem;
+    }
+
+    .tips-card ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .tips-card ul li {
+      padding: 0.3rem 0;
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+
+    .tips-card ul li i {
+      color: #60a5fa;
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    .topic-badge {
+      background: #1e3a5f;
+      color: #93c5fd;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .difficulty-badge {
+      background: #451a1a;
+      color: #fca5a5;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ----- microphone button ----- */
+    .mic-btn {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      font-size: 3rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin: 0 auto;
+      cursor: pointer;
+    }
+
+    .mic-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+
+    .mic-btn.recording {
+      background: linear-gradient(145deg, #dc2626, #b91c1c);
+      box-shadow: 0 0 40px rgba(220, 38, 38, 0.4);
+      animation: pulse-ring 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+      70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+
+    .mic-btn .mic-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .mic-btn .mic-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .recording-indicator {
+      display: none;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .recording-indicator.show {
+      display: block;
+    }
+
+    /* ----- progress bar ----- */
+    .progress-custom {
+      background: #334155;
+      border-radius: 40px;
+      height: 8px;
+    }
+
+    .progress-custom .progress-bar {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      border-radius: 40px;
+      transition: width 0.4s ease;
+    }
+
+    /* ----- timer ----- */
+    .timer-display {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #f1f5f9;
+      letter-spacing: 1px;
+    }
+
+    .timer-display.warning {
+      color: #f87171;
+    }
+
+    /* ----- textarea ----- */
+    .form-control-dark {
+      background: #0f172a;
+      border: 1.5px solid #334155;
+      border-radius: 20px;
+      color: #e2e8f0;
+      padding: 1rem 1.2rem;
+      font-size: 0.95rem;
+      transition: 0.15s;
+      resize: vertical;
+    }
+
+    .form-control-dark:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+      background: #0f172a;
+      color: #f1f5f9;
+    }
+
+    .form-control-dark::placeholder {
+      color: #64748b;
+    }
+
+    /* ----- demo note ----- */
+    .demo-note {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid #334155;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .demo-note i {
+      color: #fbbf24;
+      margin-right: 6px;
+    }
+
+    /* responsive */
+    @media (max-width: 576px) {
+      .question-card {
+        padding: 1.5rem 1rem;
+      }
+      .answer-card {
+        padding: 1.2rem 1rem;
+      }
+      .mic-btn {
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
+      }
+      .mic-btn .mic-icon {
+        font-size: 1.6rem;
+      }
+      .timer-display {
+        font-size: 1.6rem;
+      }
+      .header-brand {
+        font-size: 1.1rem;
+      }
+      .btn-gradient,
+      .btn-outline-secondary-custom,
+      .btn-danger-custom {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .tips-card {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================ -->
+  <!-- INTERVIEW HEADER (navbar-like)                               -->
+  <!-- ============================================================ -->
+  <header class="interview-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-6 col-md-4">
+          <a href="#" class="header-brand">
+            <i class="fas fa-robot"></i> AI Interview Coach
+          </a>
+        </div>
+        <div class="col-6 col-md-8 text-end d-flex align-items-center justify-content-end gap-3">
+          <span class="status-badge d-none d-sm-inline-flex">
+            <span class="pulse"></span> Live Interview
+          </span>
+          <span class="text-light fw-semibold" id="questionCounterDisplay">Q1 / 5</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- MAIN CONTENT                                                 -->
+  <!-- ============================================================ -->
+  <main class="container py-4 flex-grow-1">
+    <div class="row g-4">
+
+      <!-- ===== LEFT COLUMN: question + answer + mic ===== -->
+      <div class="col-lg-8">
+
+        <!-- progress bar -->
+        <div class="mb-3 d-flex align-items-center gap-3">
+          <span class="text-light fw-semibold" id="progressLabel">Question 1 of 5</span>
+          <div class="progress-custom flex-grow-1">
+            <div class="progress-bar" id="progressBar" style="width: 20%;" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+
+        <!-- ===== QUESTION CARD ===== -->
+        <div class="question-card mb-4">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="topic-badge" id="topicBadge">Python</span>
+            <span class="difficulty-badge" id="difficultyBadge">Intermediate</span>
+            <span class="ms-auto text-muted small" id="qNumberDisplay">Question 1</span>
+          </div>
+          <h4 class="fw-bold text-light" id="questionText">
+            Explain the difference between a list and a tuple in Python.
+          </h4>
+        </div>
+
+        <!-- ===== ANSWER SECTION ===== -->
+        <div class="answer-card mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <label class="fw-semibold text-light">
+              <i class="fas fa-pen-to-square text-primary me-2"></i>Your Answer
+            </label>
+            <span class="text-muted small">Voice-to-text will be connected in Part 2.</span>
+          </div>
+          <textarea class="form-control-dark w-100" id="answerTextarea" rows="4" placeholder="Your answer will appear here after voice recognition... (you can also type manually for this demo)"></textarea>
+        </div>
+
+        <!-- ===== MICROPHONE SECTION ===== -->
+        <div class="text-center mb-4">
+          <button class="mic-btn" id="micButton">
+            <span class="mic-icon"><i class="fas fa-microphone"></i></span>
+            <span class="mic-label" id="micLabel">Start Answer</span>
+          </button>
+          <div class="recording-indicator mt-2" id="recordingIndicator">
+            <i class="fas fa-circle text-danger me-1" style="font-size: 0.7rem;"></i> Recording...
+          </div>
+          <p class="text-muted small mt-2 mb-0">
+            <i class="fas fa-info-circle me-1"></i> Click the mic to simulate recording (frontend demo)
+          </p>
+        </div>
+
+        <!-- ===== CONTROLS ===== -->
+        <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+          <div>
+            <button class="btn btn-outline-secondary-custom" id="prevBtn" disabled>
+              <i class="fas fa-chevron-left me-1"></i> Previous
+            </button>
+            <button class="btn btn-gradient" id="nextBtn">
+              Next Question <i class="fas fa-chevron-right ms-1"></i>
+            </button>
+          </div>
+          <button class="btn btn-danger-custom" id="finishBtn">
+            <i class="fas fa-flag-checkered me-1"></i> Finish Interview
+          </button>
+        </div>
+
+        <!-- demo status note (inside main column) -->
+        <div class="demo-note mt-4">
+          <i class="fas fa-laptop-code"></i>
+          Frontend Demo Mode — AI evaluation and voice recognition will be connected in Part 2 and Part 3.
+        </div>
+      </div>
+
+      <!-- ===== RIGHT COLUMN: Timer + Tips ===== -->
+      <div class="col-lg-4">
+        <!-- Timer -->
+        <div class="question-card mb-4 text-center">
+          <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+            <i class="fas fa-hourglass-half text-primary fs-4"></i>
+            <span class="text-muted">Time Remaining</span>
+          </div>
+          <div class="timer-display" id="timerDisplay">02:00</div>
+          <div id="timeUpMessage" class="text-danger fw-semibold mt-1" style="display: none;">Time is up.</div>
+        </div>
+
+        <!-- Interview Tips -->
+        <div class="tips-card">
+          <h6 class="fw-bold text-light mb-2">
+            <i class="fas fa-lightbulb text-warning me-2"></i>Interview Tips
+          </h6>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Read the question carefully.</li>
+            <li><i class="fas fa-check-circle"></i> Explain your answer clearly.</li>
+            <li><i class="fas fa-check-circle"></i> Give examples when possible.</li>
+            <li><i class="fas fa-check-circle"></i> Stay calm and confident.</li>
+            <li><i class="fas fa-check-circle"></i> Keep your answer relevant.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div> <!-- /row -->
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER (simple)                                              -->
+  <!-- ============================================================ -->
+  <footer class="bg-dark py-3 mt-3 border-top border-secondary">
+    <div class="container text-center text-muted small">
+      <span>© 2026 AI Interview Coach · Live Interview</span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT – all frontend logic                              -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ---- SAMPLE QUESTIONS (5 Python-related) ----
+      const questions = [{
+        text: "Explain the difference between a list and a tuple in Python.",
+        topic: "Python",
+        difficulty: "Intermediate"
+      }, {
+        text: "What is a function in Python? How do you define and call a function?",
+        topic: "Python",
+        difficulty: "Beginner"
+      }, {
+        text: "Explain how exception handling works in Python with try, except, and finally.",
+        topic: "Python",
+        difficulty: "Intermediate"
+      }, {
+        text: "What is Object-Oriented Programming (OOP)? Explain the four pillars of OOP in Python.",
+        topic: "Python",
+        difficulty: "Advanced"
+      }, {
+        text: "How do dictionaries work in Python? Explain how to add, update, and retrieve items.",
+        topic: "Python",
+        difficulty: "Beginner"
+      }];
+
+      const totalQ = questions.length;
+
+      // ---- DOM refs ----
+      const questionText = document.getElementById('questionText');
+      const topicBadge = document.getElementById('topicBadge');
+      const difficultyBadge = document.getElementById('difficultyBadge');
+      const qNumberDisplay = document.getElementById('qNumberDisplay');
+      const questionCounterDisplay = document.getElementById('questionCounterDisplay');
+      const progressBar = document.getElementById('progressBar');
+      const progressLabel = document.getElementById('progressLabel');
+
+      const answerTextarea = document.getElementById('answerTextarea');
+      const micButton = document.getElementById('micButton');
+      const micLabel = document.getElementById('micLabel');
+      const recordingIndicator = document.getElementById('recordingIndicator');
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const finishBtn = document.getElementById('finishBtn');
+
+      const timerDisplay = document.getElementById('timerDisplay');
+      const timeUpMessage = document.getElementById('timeUpMessage');
+
+      // ---- state ----
+      let currentIndex = 0; // 0-based
+      let isRecording = false;
+      let timerSeconds = 120; // 2 minutes
+      let timerInterval = null;
+      let isTimerStopped = false;
+
+      // ---- render question ----
+      function renderQuestion(index) {
+        const q = questions[index];
+        questionText.textContent = q.text;
+        topicBadge.textContent = q.topic;
+        difficultyBadge.textContent = q.difficulty;
+
+        const qNum = index + 1;
+        qNumberDisplay.textContent = `Question ${qNum}`;
+        questionCounterDisplay.textContent = `Q${qNum} / ${totalQ}`;
+
+        // progress: (index+1)/total * 100
+        const pct = ((index + 1) / totalQ) * 100;
+        progressBar.style.width = pct + '%';
+        progressBar.setAttribute('aria-valuenow', pct);
+        progressLabel.textContent = `Question ${qNum} of ${totalQ}`;
+
+        // disable prev on first
+        prevBtn.disabled = (index === 0);
+      }
+
+      // ---- reset answer & mic state ----
+      function resetAnswerAndMic() {
+        answerTextarea.value = '';
+        // reset mic
+        if (isRecording) {
+          isRecording = false;
+          micButton.classList.remove('recording');
+          micLabel.textContent = 'Start Answer';
+          recordingIndicator.classList.remove('show');
+        }
+      }
+
+      // ---- navigate ----
+      function goToQuestion(index) {
+        if (index < 0 || index >= totalQ) return;
+        currentIndex = index;
+        renderQuestion(index);
+        resetAnswerAndMic();
+      }
+
+      function nextQuestion() {
+        if (currentIndex < totalQ - 1) {
+          goToQuestion(currentIndex + 1);
+        }
+      }
+
+      function prevQuestion() {
+        if (currentIndex > 0) {
+          goToQuestion(currentIndex - 1);
+        }
+      }
+
+      // ---- timer ----
+      function updateTimerDisplay() {
+        const mins = Math.floor(timerSeconds / 60);
+        const secs = timerSeconds % 60;
+        timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+        if (timerSeconds <= 10) {
+          timerDisplay.classList.add('warning');
+        } else {
+          timerDisplay.classList.remove('warning');
+        }
+
+        if (timerSeconds <= 0) {
+          timerDisplay.textContent = '00:00';
+          timeUpMessage.style.display = 'block';
+          if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isTimerStopped = true;
+          }
+        } else {
+          timeUpMessage.style.display = 'none';
+        }
+      }
+
+      function startTimer() {
+        if (timerInterval) return;
+        isTimerStopped = false;
+        timerInterval = setInterval(function() {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isTimerStopped = true;
+            updateTimerDisplay();
+          }
+        }, 1000);
+      }
+
+      // reset timer (called on page load)
+      function resetTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        timerSeconds = 120;
+        isTimerStopped = false;
+        updateTimerDisplay();
+        startTimer();
+      }
+
+      // ---- mic toggle (simulation) ----
+      function toggleMic() {
+        if (isTimerStopped) {
+          // if time is up, don't allow recording
+          alert('Time is up! Please finish the interview.');
+          return;
+        }
+        isRecording = !isRecording;
+        if (isRecording) {
+          micButton.classList.add('recording');
+          micLabel.textContent = 'Stop';
+          recordingIndicator.classList.add('show');
+          // simulate "recording" by adding some placeholder text after a short delay
+          // but don't overwrite if user typed manually
+        } else {
+          micButton.classList.remove('recording');
+          micLabel.textContent = 'Start Answer';
+          recordingIndicator.classList.remove('show');
+        }
+      }
+
+      // ---- finish interview ----
+      function finishInterview() {
+        if (confirm('Are you sure you want to finish the interview?')) {
+          // stop timer
+          if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+          }
+          window.location.href = 'result.html';
+        }
+      }
+
+      // ---- event listeners ----
+      nextBtn.addEventListener('click', nextQuestion);
+      prevBtn.addEventListener('click', prevQuestion);
+
+      micButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleMic();
+      });
+
+      finishBtn.addEventListener('click', finishInterview);
+
+      // keyboard shortcuts (optional): arrow keys for navigation
+      document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          nextQuestion();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevQuestion();
+        }
+      });
+
+      // ---- init ----
+      renderQuestion(0);
+      resetAnswerAndMic();
+      resetTimer();
+
+      // ---- if user clicks "Start Answer" but no text, we could optionally simulate voice-to-text
+      // but we keep it simple: just recording state.
+      // For extra prototype feel, when recording stops, we can append a sample text
+      // but we let the user type manually as per requirement.
+
+      // ---- additional: if recording stops, we could simulate a transcribed text
+      // but we'll keep it clean: no auto-fill to avoid confusion.
+
+      console.log('Interview screen loaded. Frontend demo mode.');
+    })();
+  </script>
+<script src="js/script.js"></script>
+</body>
+</html>

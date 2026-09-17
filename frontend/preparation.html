@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Preparation | AI Interview Coach</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+            color: #222;
+        }
+
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .nav-link {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #2563eb;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 45px 20px;
+            border-radius: 0 0 25px 25px;
+        }
+
+        .page-header h1 {
+            font-weight: 700;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.20);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 12px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        /* 7 DAY PLAN */
+
+        .day-item {
+            display: flex;
+            gap: 18px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .day-number {
+            min-width: 75px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            color: white;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .day-content h6 {
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .day-content ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .day-content li {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .day-content i {
+            color: #16a34a;
+            margin-right: 7px;
+        }
+
+        /* PROGRESS */
+
+        .progress {
+            height: 12px;
+            border-radius: 20px;
+        }
+
+        .progress-bar {
+            border-radius: 20px;
+        }
+
+        /* TASKS */
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border-bottom: 1px solid #eeeeee;
+            transition: 0.2s;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item.completed {
+            background: #f0fdf4;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* FOCUS */
+
+        .focus-card {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .focus-card h6 {
+            font-weight: 700;
+        }
+
+        /* QUESTIONS */
+
+        .question-box {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: #ffffff;
+        }
+
+        .practice-btn {
+            margin-top: 10px;
+        }
+
+        /* PERFORMANCE */
+
+        .score-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .score-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        /* AI RECOMMENDATION */
+
+        .recommendation {
+            background: #eff6ff;
+            border-left: 5px solid #2563eb;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 576px) {
+
+            .day-item {
+                gap: 10px;
+            }
+
+            .day-number {
+                min-width: 60px;
+                font-size: 13px;
+            }
+
+            .card-box {
+                padding: 18px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ========================================================= -->
+<!-- NAVBAR -->
+<!-- ========================================================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand" href="dashboard.html">
+            <i class="fas fa-robot"></i>
+            AI Interview Coach
+        </a>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarMenu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="dashboard.html">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link active"
+                        href="preparation.html">
+                        Preparation
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="setup.html">
+                        New Interview
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ========================================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================================= -->
+
+<section class="page-header">
+
+    <div class="container">
+
+        <h1>
+            <i class="fas fa-graduation-cap"></i>
+            Interview Preparation
+        </h1>
+
+        <p class="mb-0">
+            Follow your personalized preparation plan and improve your interview skills.
+        </p>
+
+        <div class="role-badge">
+
+            Selected Role:
+            <strong id="selectedRole">
+                Python Developer
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================= -->
+<!-- MAIN CONTENT -->
+<!-- ========================================================= -->
+
+<div class="container py-5">
+
+
+    <!-- ===================================================== -->
+    <!-- 7 DAY PREPARATION PLAN -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-calendar-week"></i>
+            7-Day Preparation Plan
+
+        </h3>
+
+        <p class="text-muted">
+            Your preparation plan changes according to your selected job role.
+        </p>
+
+        <div id="dynamicPreparationPlan"></div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- TODAY'S TASKS -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-tasks"></i>
+            Today's Tasks
+
+        </h3>
+
+
+        <div class="mb-3">
+
+            <div class="d-flex justify-content-between">
+
+                <span id="progressLabel">
+                    Completed: 0 / 5 tasks
+                </span>
+
+                <strong id="progressPercent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress mt-2">
+
+                <div
+                    id="taskProgressBar"
+                    class="progress-bar bg-success"
+                    style="width: 0%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="task-item">
+
+            <input
+                type="checkbox"
+                class="task-checkbox">
+
+            <span>
+                Review today's preparation topic
+            </span>
+
+        </div>
+
+
+        <div class="task-item">
+
+            <input
+                type="checkbox"
+                class="task-checkbox">
+
+            <span>
+                Practice 5 interview questions
+            </span>
+
+        </div>
+
+
+        <div class="task-item">
+
+            <input
+                type="checkbox"
+                class="task-checkbox">
+
+            <span>
+                Practice one coding problem
+            </span>
+
+        </div>
+
+
+        <div class="task-item">
+
+            <input
+                type="checkbox"
+                class="task-checkbox">
+
+            <span>
+                Improve communication skills
+            </span>
+
+        </div>
+
+
+        <div class="task-item">
+
+            <input
+                type="checkbox"
+                class="task-checkbox">
+
+            <span>
+                Complete one mock interview
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FOCUS AREAS -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-bullseye"></i>
+            Focus Areas
+
+        </h3>
+
+
+        <div class="row">
+
+
+            <div class="col-md-6">
+
+                <div class="focus-card">
+
+                    <h6>
+                        <i class="fas fa-code"></i>
+                        Technical Skills
+                    </h6>
+
+                    <p class="text-muted mb-2">
+                        Improve role-specific technical knowledge.
+                    </p>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-primary"
+                            style="width: 70%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="focus-card">
+
+                    <h6>
+                        <i class="fas fa-comments"></i>
+                        Communication
+                    </h6>
+
+                    <p class="text-muted mb-2">
+                        Practice clear and confident answers.
+                    </p>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-success"
+                            style="width: 60%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="focus-card">
+
+                    <h6>
+                        <i class="fas fa-lightbulb"></i>
+                        Problem Solving
+                    </h6>
+
+                    <p class="text-muted mb-2">
+                        Practice logical and coding problems.
+                    </p>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-warning"
+                            style="width: 65%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="focus-card">
+
+                    <h6>
+                        <i class="fas fa-user-tie"></i>
+                        Interview Confidence
+                    </h6>
+
+                    <p class="text-muted mb-2">
+                        Practice answering questions confidently.
+                    </p>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-info"
+                            style="width: 55%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PRACTICE QUESTIONS -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-question-circle"></i>
+            Recommended Practice Questions
+
+        </h3>
+
+        <div id="practiceQuestions"></div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PERFORMANCE SUMMARY -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-chart-line"></i>
+            Performance Summary
+
+        </h3>
+
+
+        <div class="row">
+
+
+            <div class="col-md-3 col-6">
+
+                <div class="score-box">
+
+                    <div class="score-number">
+                        78
+                    </div>
+
+                    <div>
+                        Average Score
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6">
+
+                <div class="score-box">
+
+                    <div class="score-number">
+                        91
+                    </div>
+
+                    <div>
+                        Best Score
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6 mt-3 mt-md-0">
+
+                <div class="score-box">
+
+                    <div class="score-number">
+                        8
+                    </div>
+
+                    <div>
+                        Interviews
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6 mt-3 mt-md-0">
+
+                <div class="score-box">
+
+                    <div class="score-number">
+                        +12%
+                    </div>
+
+                    <div>
+                        Improvement
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- AI RECOMMENDATION -->
+    <!-- ===================================================== -->
+
+    <div class="card-box">
+
+        <h3 class="section-title">
+
+            <i class="fas fa-robot"></i>
+            AI Recommendation
+
+        </h3>
+
+
+        <div class="recommendation">
+
+            <strong>
+                Your next focus:
+            </strong>
+
+            <p class="mb-0 mt-2">
+
+                Continue practicing technical questions and
+                improve the clarity and completeness of your answers.
+                Take regular mock interviews to build confidence.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- START INTERVIEW -->
+    <!-- ===================================================== -->
+
+    <div class="text-center mt-4">
+
+        <a
+            href="setup.html"
+            class="btn btn-primary btn-lg">
+
+            <i class="fas fa-play"></i>
+            Start New Interview
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- FOOTER -->
+<!-- ========================================================= -->
+
+<footer>
+
+    <p class="mb-0">
+        AI Interview Coach
+    </p>
+
+    <small>
+        Intelligent Interview Preparation & Performance Analysis System
+    </small>
+
+</footer>
+
+
+<!-- ========================================================= -->
+<!-- BOOTSTRAP JS -->
+<!-- ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- ========================================================= -->
+<!-- PREPARATION PAGE JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+(function () {
+
+    'use strict';
+
+
+    /* ========================================================
+       GET SAVED PROFILE
+       ======================================================== */
+
+    let profile = {};
+
+    try {
+
+        profile = JSON.parse(
+            localStorage.getItem('aiInterviewProfile') || '{}'
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Profile reading error:',
+            error
+        );
+
+    }
+
+
+    const role =
+        profile.jobRole ||
+        profile.role ||
+        profile.selectedRole ||
+        'Python Developer';
+
+
+    /* ========================================================
+       SHOW SELECTED ROLE
+       ======================================================== */
+
+    const selectedRoleElement =
+        document.getElementById('selectedRole');
+
+
+    if (selectedRoleElement) {
+
+        selectedRoleElement.textContent = role;
+
+    }
+
+
+    /* ========================================================
+       ROLE-WISE 7-DAY PLANS
+       ======================================================== */
+
+    const plans = {
+
+
+        "Python Developer": [
+
+            [
+                "Python Basics",
+                "Variables, data types and operators",
+                "Practice basic Python programs"
+            ],
+
+            [
+                "Control Flow",
+                "if, elif, else and loops",
+                "Practice conditions and loops"
+            ],
+
+            [
+                "Functions",
+                "Functions, parameters and return values",
+                "Solve 5 function problems"
+            ],
+
+            [
+                "Data Structures",
+                "Lists, tuples, sets and dictionaries",
+                "Practice data structure questions"
+            ],
+
+            [
+                "OOP",
+                "Classes, objects, inheritance and polymorphism",
+                "Practice OOP examples"
+            ],
+
+            [
+                "Exception Handling",
+                "try, except, finally and raise",
+                "Practice exception questions"
+            ],
+
+            [
+                "Final Practice",
+                "Revise important Python concepts",
+                "Take a Python mock interview"
+            ]
+
+        ],
+
+
+        "Java Developer": [
+
+            [
+                "Java Basics",
+                "Variables, data types and operators",
+                "Practice basic Java programs"
+            ],
+
+            [
+                "Control Flow",
+                "if, switch, for and while",
+                "Practice control statements"
+            ],
+
+            [
+                "OOP",
+                "Classes, objects and constructors",
+                "Practice OOP programs"
+            ],
+
+            [
+                "Inheritance",
+                "Inheritance and method overriding",
+                "Solve inheritance questions"
+            ],
+
+            [
+                "Interfaces",
+                "Interfaces and abstraction",
+                "Practice interface examples"
+            ],
+
+            [
+                "Collections",
+                "ArrayList, HashMap and HashSet",
+                "Practice collection questions"
+            ],
+
+            [
+                "Final Practice",
+                "Revise Java concepts",
+                "Take a Java mock interview"
+            ]
+
+        ],
+
+
+        "Web Developer": [
+
+            [
+                "HTML",
+                "HTML elements, forms and semantic tags",
+                "Build a simple webpage"
+            ],
+
+            [
+                "CSS",
+                "Selectors, box model and layouts",
+                "Style a webpage"
+            ],
+
+            [
+                "JavaScript Basics",
+                "Variables, functions and events",
+                "Practice JavaScript programs"
+            ],
+
+            [
+                "DOM",
+                "DOM elements and event handling",
+                "Build an interactive page"
+            ],
+
+            [
+                "Web APIs",
+                "Fetch API and JSON",
+                "Practice API calls"
+            ],
+
+            [
+                "Responsive Design",
+                "Flexbox, Grid and responsive layouts",
+                "Make a responsive webpage"
+            ],
+
+            [
+                "Final Practice",
+                "Revise web development concepts",
+                "Take a Web Developer mock interview"
+            ]
+
+        ],
+
+
+        "Data Analyst": [
+
+            [
+                "Data Analysis Basics",
+                "Data types and data cleaning",
+                "Practice data analysis questions"
+            ],
+
+            [
+                "Excel",
+                "Formulas, functions and charts",
+                "Practice Excel problems"
+            ],
+
+            [
+                "SQL",
+                "SELECT, WHERE, GROUP BY and JOIN",
+                "Solve SQL queries"
+            ],
+
+            [
+                "Python",
+                "NumPy and Pandas basics",
+                "Practice data analysis programs"
+            ],
+
+            [
+                "Visualization",
+                "Matplotlib and charts",
+                "Create simple visualizations"
+            ],
+
+            [
+                "Statistics",
+                "Mean, median, mode and probability",
+                "Solve statistics questions"
+            ],
+
+            [
+                "Final Practice",
+                "Revise data analysis concepts",
+                "Take a Data Analyst mock interview"
+            ]
+
+        ],
+
+
+        "AI/ML Engineer": [
+
+            [
+                "Python for AI",
+                "Python, NumPy and Pandas",
+                "Practice Python programs"
+            ],
+
+            [
+                "ML Basics",
+                "Supervised and unsupervised learning",
+                "Practice ML concepts"
+            ],
+
+            [
+                "Data Preprocessing",
+                "Cleaning, scaling and encoding",
+                "Practice preprocessing techniques"
+            ],
+
+            [
+                "ML Algorithms",
+                "Regression, classification and clustering",
+                "Practice algorithm questions"
+            ],
+
+            [
+                "Model Evaluation",
+                "Accuracy, precision, recall and F1",
+                "Solve evaluation problems"
+            ],
+
+            [
+                "Neural Networks",
+                "Neurons, layers and activation functions",
+                "Study basic neural networks"
+            ],
+
+            [
+                "Final Practice",
+                "Revise AI/ML concepts",
+                "Take an AI/ML mock interview"
+            ]
+
+        ],
+
+
+        "Software Developer": [
+
+            [
+                "Programming Basics",
+                "Variables, conditions and loops",
+                "Practice programming problems"
+            ],
+
+            [
+                "OOP",
+                "Classes, objects and inheritance",
+                "Practice OOP programs"
+            ],
+
+            [
+                "Data Structures",
+                "Arrays, stacks, queues and linked lists",
+                "Solve data structure problems"
+            ],
+
+            [
+                "Algorithms",
+                "Searching and sorting algorithms",
+                "Practice algorithm problems"
+            ],
+
+            [
+                "Database",
+                "SQL and database basics",
+                "Practice SQL queries"
+            ],
+
+            [
+                "Software Development",
+                "SDLC, testing and debugging",
+                "Study software development concepts"
+            ],
+
+            [
+                "Final Practice",
+                "Revise important concepts",
+                "Take a coding mock interview"
+            ]
+
+        ]
+
+    };
+
+
+    /* ========================================================
+       LOAD SELECTED PLAN
+       ======================================================== */
+
+    const selectedPlan =
+        plans[role] ||
+        plans["Python Developer"];
+
+
+    const preparationContainer =
+        document.getElementById(
+            'dynamicPreparationPlan'
+        );
+
+
+    if (preparationContainer) {
+
+        preparationContainer.innerHTML =
+            selectedPlan.map(
+                function (day, index) {
+
+                    return `
+
+                        <div class="day-item">
+
+                            <div class="day-number">
+                                Day ${index + 1}
+                            </div>
+
+                            <div class="day-content">
+
+                                <h6>
+                                    ${day[0]}
+                                </h6>
+
+                                <ul>
+
+                                    <li>
+                                        <i class="fas fa-check-circle"></i>
+                                        ${day[1]}
+                                    </li>
+
+                                    <li>
+                                        <i class="fas fa-check-circle"></i>
+                                        ${day[2]}
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join('');
+
+    }
+
+
+    /* ========================================================
+       ROLE-WISE PRACTICE QUESTIONS
+       ======================================================== */
+
+    const questions = {
+
+
+        "Python Developer": [
+
+            "What are Python data types?",
+
+            "What is the difference between list and tuple?",
+
+            "What is exception handling in Python?"
+
+        ],
+
+
+        "Java Developer": [
+
+            "What is the difference between class and object?",
+
+            "What is inheritance in Java?",
+
+            "What is the difference between constructor and method?"
+
+        ],
+
+
+        "Web Developer": [
+
+            "What is semantic HTML?",
+
+            "What is the CSS box model?",
+
+            "What is DOM in JavaScript?"
+
+        ],
+
+
+        "Data Analyst": [
+
+            "What is data cleaning?",
+
+            "What is the difference between WHERE and HAVING?",
+
+            "What is the difference between mean and median?"
+
+        ],
+
+
+        "AI/ML Engineer": [
+
+            "What is supervised learning?",
+
+            "What is data preprocessing?",
+
+            "What is the difference between classification and regression?"
+
+        ],
+
+
+        "Software Developer": [
+
+            "What is object-oriented programming?",
+
+            "What is a stack?",
+
+            "What is the difference between searching and sorting?"
+
+        ]
+
+    };
+
+
+    const questionContainer =
+        document.getElementById(
+            'practiceQuestions'
+        );
+
+
+    const selectedQuestions =
+        questions[role] ||
+        questions["Python Developer"];
+
+
+    if (questionContainer) {
+
+        questionContainer.innerHTML =
+            selectedQuestions.map(
+                function (question, index) {
+
+                    return `
+
+                        <div class="question-box">
+
+                            <strong>
+                                ${index + 1}. ${question}
+                            </strong>
+
+                            <br>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm practice-btn">
+
+                                <i class="fas fa-play"></i>
+                                Practice
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join('');
+
+    }
+
+
+    /* ========================================================
+       TASK PROGRESS
+       ======================================================== */
+
+    const checkboxes =
+        document.querySelectorAll(
+            '.task-checkbox'
+        );
+
+
+    const progressPercent =
+        document.getElementById(
+            'progressPercent'
+        );
+
+
+    const progressLabel =
+        document.getElementById(
+            'progressLabel'
+        );
+
+
+    const taskProgressBar =
+        document.getElementById(
+            'taskProgressBar'
+        );
+
+
+    function updateProgress() {
+
+        const total =
+            checkboxes.length;
+
+
+        const completed =
+            document.querySelectorAll(
+                '.task-checkbox:checked'
+            ).length;
+
+
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (completed / total) * 100
+                )
+                : 0;
+
+
+        if (progressPercent) {
+
+            progressPercent.textContent =
+                percentage + '%';
+
+        }
+
+
+        if (progressLabel) {
+
+            progressLabel.textContent =
+                'Completed: ' +
+                completed +
+                ' / ' +
+                total +
+                ' tasks';
+
+        }
+
+
+        if (taskProgressBar) {
+
+            taskProgressBar.style.width =
+                percentage + '%';
+
+        }
+
+
+        checkboxes.forEach(
+            function (checkbox) {
+
+                const task =
+                    checkbox.closest(
+                        '.task-item'
+                    );
+
+
+                if (task) {
+
+                    task.classList.toggle(
+                        'completed',
+                        checkbox.checked
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    checkboxes.forEach(
+        function (checkbox) {
+
+            checkbox.addEventListener(
+                'change',
+                updateProgress
+            );
+
+        }
+    );
+
+
+    updateProgress();
+
+
+    /* ========================================================
+       PRACTICE BUTTONS
+       ======================================================== */
+
+    document
+        .querySelectorAll('.practice-btn')
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    'click',
+                    function () {
+
+                        alert(
+                            'Practice mode will start soon.'
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* ========================================================
+       CONSOLE
+       ======================================================== */
+
+    console.log(
+        'Preparation page loaded successfully.'
+    );
+
+    console.log(
+        'Selected role:',
+        role
+    );
+
+})();
+
+</script>
+
+
+<!-- ========================================================= -->
+<!-- MAIN PROJECT JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script src="js/script.js"></script>
+
+
+</body>
+</html>
