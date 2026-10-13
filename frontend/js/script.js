@@ -11,6 +11,21 @@
 
 'use strict';
 
+// If opened directly as a local file (e.g. `start index.html`),
+// auto-redirect to the running local server so Chrome allows permanent mic permission
+if (window.location.protocol === 'file:') {
+    try {
+        var localPage = window.location.pathname.split('/').pop() || 'index.html';
+        fetch('http://127.0.0.1:5000/api/health')
+            .then(function (res) {
+                if (res.ok) {
+                    window.location.replace('http://127.0.0.1:5000/' + localPage);
+                }
+            })
+            .catch(function () { });
+    } catch (e) { }
+}
+
 var API_BASE_URL = 'http://127.0.0.1:5000';
 
 var STORAGE_KEYS = {
@@ -23,7 +38,8 @@ var STORAGE_KEYS = {
     INTERVIEW_ID: 'aiInterviewId',
     RESULTS: 'aiInterviewResults',
     HISTORY: 'aiInterviewHistory',
-    SELECTED: 'aiInterviewSelectedQuestions'
+    SELECTED: 'aiInterviewSelectedQuestions',
+    TIMER_DEADLINE: 'aiInterviewTimerDeadline'
 };
 
 var ROLES = [
@@ -78,7 +94,7 @@ function setStorage(key, data) {
 function removeStorage(key) {
     try {
         localStorage.removeItem(key);
-    } catch (e) {}
+    } catch (e) { }
 }
 
 function escapeHTML(value) {
@@ -316,49 +332,65 @@ function initProfilePage() {
             }
         )
 
-        .then(function (response) {
+            .then(function (response) {
 
-            return response.json().then(function (data) {
+                return response.json().then(function (data) {
 
-                return {
-                    ok: response.ok,
-                    data: data
-                };
-            });
-        })
+                    return {
+                        ok: response.ok,
+                        data: data
+                    };
+                });
+            })
 
-        .then(function (result) {
+            .then(function (result) {
 
-            if (
-                result.ok &&
-                result.data &&
-                result.data.status === 'success'
-            ) {
+                if (
+                    result.ok &&
+                    result.data &&
+                    result.data.status === 'success'
+                ) {
 
-                if (result.data.student_id) {
+                    if (result.data.student_id) {
 
-                    setStorage(
-                        STORAGE_KEYS.STUDENT_ID,
-                        result.data.student_id
+                        setStorage(
+                            STORAGE_KEYS.STUDENT_ID,
+                            result.data.student_id
+                        );
+                    }
+
+                    showMessage(
+                        'Profile saved successfully!',
+                        'success'
                     );
+
+                    setTimeout(function () {
+
+                        location.href = 'resume.html';
+
+                    }, 500);
+
+                } else {
+
+                    showMessage(
+                        (result.data && result.data.message) ||
+                        'Unable to save profile.',
+                        'error'
+                    );
+
+                    button.disabled = false;
+                    button.innerHTML = oldButtonHTML;
+
+                    busy = false;
                 }
+            })
+
+            .catch(function (error) {
+
+                console.error(error);
 
                 showMessage(
-                    'Profile saved successfully!',
-                    'success'
-                );
-
-                setTimeout(function () {
-
-                    location.href = 'resume.html';
-
-                }, 500);
-
-            } else {
-
-                showMessage(
-                    (result.data && result.data.message) ||
-                    'Unable to save profile.',
+                    'Backend connection failed. Make sure Flask is running.',
                     'error'
                 );
 
@@ -366,23 +398,7 @@ function initProfilePage() {
                 button.innerHTML = oldButtonHTML;
 
                 busy = false;
-            }
-        })
-
-        .catch(function (error) {
-
-            console.error(error);
-
-            showMessage(
-                'Backend connection failed. Make sure Flask is running.',
-                'error'
-            );
-
-            button.disabled = false;
-            button.innerHTML = oldButtonHTML;
-
-            busy = false;
-        });
+            });
     });
 }
 
@@ -567,7 +583,7 @@ function initResumePage() {
                         input.files =
                             dataTransfer.files;
 
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             }
         );
@@ -1148,11 +1164,11 @@ function initSetupPage() {
 
 
                 // Start a completely new interview.
-
                 setStorage(
                     STORAGE_KEYS.ANSWERS,
                     {}
                 );
+                try { sessionStorage.removeItem(STORAGE_KEYS.TIMER_DEADLINE); } catch (e) { }
 
 
                 removeStorage(
@@ -1683,12 +1699,12 @@ function makeQ(id, text, topic, i) {
 
 var BANKS = {};
 
-ROLES.forEach(function(role) {
+ROLES.forEach(function (role) {
 
     BANKS[role] = {};
 
     BANKS[role]['Technical Interview'] =
-        TECH[role].map(function(t, i) {
+        TECH[role].map(function (t, i) {
             return makeQ(
                 role + '-T-' + (i + 1),
                 t,
@@ -1698,7 +1714,7 @@ ROLES.forEach(function(role) {
         });
 
     BANKS[role]['HR Interview'] =
-        HR.map(function(t, i) {
+        HR.map(function (t, i) {
             return makeQ(
                 role + '-H-' + (i + 1),
                 t.replace(/\{role\}/g, role),
@@ -1708,7 +1724,7 @@ ROLES.forEach(function(role) {
         });
 
     BANKS[role]['Behavioral Interview'] =
-        BEHAVIORAL.map(function(t, i) {
+        BEHAVIORAL.map(function (t, i) {
             return makeQ(
                 role + '-B-' + (i + 1),
                 t,
@@ -1718,7 +1734,7 @@ ROLES.forEach(function(role) {
         });
 
     BANKS[role]['Mixed Interview'] =
-        MIXED[role].map(function(t, i) {
+        MIXED[role].map(function (t, i) {
             return makeQ(
                 role + '-M-' + (i + 1),
                 t,
@@ -1757,7 +1773,7 @@ function getInterviewQuestions(settings) {
 
     var bank = BANKS[role][type];
 
-    var filtered = bank.filter(function(q) {
+    var filtered = bank.filter(function (q) {
         return q.difficulty === diff;
     });
 
@@ -1776,7 +1792,7 @@ function getInterviewQuestions(settings) {
 // PART 2 - INTERVIEW + EXACT TIMER + REAL VOICE
 // ============================================================
 
-function createRecognition() {
+function createRecognition(lang) {
 
     var SR =
         window.SpeechRecognition ||
@@ -1788,10 +1804,10 @@ function createRecognition() {
 
     var r = new SR();
 
-    r.continuous = false;
+    r.continuous = true;
     r.interimResults = true;
     r.maxAlternatives = 1;
-    r.lang = 'en-IN';
+    r.lang = lang || 'en-IN';
 
     return r;
 }
@@ -1819,7 +1835,7 @@ function initInterviewPage() {
 
 
     var questions =
-        getInterviewQuestions(settings);
+        getSelectedInterviewQuestions(settings);
 
     var total = questions.length;
     var index = 0;
@@ -1831,16 +1847,59 @@ function initInterviewPage() {
 
     var timer = null;
     var timerStopped = false;
+    var endTime = 0;
+
+    // One deadline for the whole interview.
+    try {
+        var savedDeadline = parseInt(sessionStorage.getItem(STORAGE_KEYS.TIMER_DEADLINE), 10);
+        if (savedDeadline && savedDeadline > Date.now()) endTime = savedDeadline;
+    } catch (e) { }
+    if (!endTime) {
+        endTime = Date.now() + seconds * 1000;
+        try { sessionStorage.setItem(STORAGE_KEYS.TIMER_DEADLINE, String(endTime)); } catch (e) { }
+    }
 
     var recording = false;
+    var manualStop = false;
+    var recognitionRunning = false;
+    var recordingQuestionId = null;
+
+    var micStream = null;
+    var baseText = '';
+    var saveTimeout = null;
+
+    function getSelectedVoiceLang() {
+        var select = getEl('voiceLangSelect');
+        return (select && select.value) ? select.value : 'en-IN';
+    }
+
+    // Keep an active audio stream in memory so the browser does not
+    // repeatedly ask for microphone permission on every start/stop.
+    function ensurePersistentMicStream(callback) {
+        if (micStream && micStream.active) {
+            if (callback) callback(true);
+            return;
+        }
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function (stream) {
+                    micStream = stream;
+                    if (callback) callback(true);
+                })
+                .catch(function (err) {
+                    console.warn('Persistent microphone stream:', err);
+                    if (callback) callback(false, err);
+                });
+        } else {
+            if (callback) callback(true);
+        }
+    }
 
     var recognition =
-        createRecognition();
+        createRecognition(getSelectedVoiceLang());
 
     var answers =
         getStorage(STORAGE_KEYS.ANSWERS) || {};
-
-    var finalText = '';
 
 
     var topic =
@@ -1893,7 +1952,7 @@ function initInterviewPage() {
     // This allows Result page to use the SAME questions.
     setStorage(
         STORAGE_KEYS.SELECTED,
-        questions.map(function(q) {
+        questions.map(function (q) {
             return q.id;
         })
     );
@@ -1904,6 +1963,13 @@ function initInterviewPage() {
         if (!timerEl) {
             return;
         }
+
+        // Use the real end timestamp so browser timer throttling cannot
+        // make the interview finish early.
+        seconds = Math.max(
+            0,
+            Math.ceil((endTime - Date.now()) / 1000)
+        );
 
         var m =
             Math.floor(seconds / 60);
@@ -1956,35 +2022,14 @@ function initInterviewPage() {
 
 
     function startTimer() {
-
-        if (timer) {
-            return;
+        if (timer) return;
+        timerStopped = false;
+        if (!endTime || endTime <= Date.now()) {
+            endTime = Date.now() + (Math.max(1, parseInt(settings.duration, 10) || 15) * 60 * 1000);
+            try { sessionStorage.setItem(STORAGE_KEYS.TIMER_DEADLINE, String(endTime)); } catch (e) { }
         }
-
         updateTimer();
-
-        timer = setInterval(function() {
-
-            if (seconds > 0) {
-
-                seconds--;
-
-                updateTimer();
-
-            } else {
-
-                clearInterval(timer);
-
-                timer = null;
-
-                timerStopped = true;
-
-                updateTimer();
-
-            }
-
-        }, 1000);
-
+        timer = setInterval(function () { updateTimer(); }, 250);
     }
 
 
@@ -2022,6 +2067,19 @@ function initInterviewPage() {
             answers
         );
 
+        var indicatorEl = getEl('answerSavedIndicator');
+        if (indicatorEl) {
+            indicatorEl.innerHTML = txt
+                ? '<i class="fas fa-check-circle text-success me-1"></i>Saved'
+                : '<i class="fas fa-cloud-arrow-up text-muted me-1"></i>Auto-saved';
+        }
+
+    }
+
+
+    function queueSave() {
+        if (saveTimeout) clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(function () { saveTimeout = null; save(); }, 250);
     }
 
 
@@ -2151,11 +2209,14 @@ function initInterviewPage() {
         }
 
 
-        finalText = '';
+        var currentVal = area ? area.value.trim() : '';
+        baseText = currentVal;
 
-
-        if (recording) {
-            stopVoice();
+        var indicatorEl = getEl('answerSavedIndicator');
+        if (indicatorEl) {
+            indicatorEl.innerHTML = currentVal
+                ? '<i class="fas fa-check-circle text-success me-1"></i>Saved'
+                : '<i class="fas fa-cloud-arrow-up text-muted me-1"></i>Auto-saved';
         }
 
     }
@@ -2163,30 +2224,28 @@ function initInterviewPage() {
 
     function go(i) {
 
-        save();
-
         if (i < 0 || i >= total) {
             return;
         }
 
+        save();
+        if (recording || recognitionRunning) {
+            stopVoice();
+        }
+
         index = i;
-
         render(index);
-
     }
 
 
     function startVoice() {
 
-        if (timerStopped) {
-
-            alert(
-                'Time is up! Please finish the interview.'
-            );
-
+        if (Date.now() >= endTime) {
+            timerStopped = true;
+            alert('Time is up! Please finish the interview.');
             return;
-
         }
+        timerStopped = false;
 
 
         if (!recognition) {
@@ -2200,20 +2259,24 @@ function initInterviewPage() {
         }
 
 
-        finalText =
-            area
-                ? area.value.trim()
-                : '';
+        if (recognitionRunning) {
+            return;
+        }
 
+        var currentQuestion = questions[index];
+        if (!currentQuestion) {
+            return;
+        }
+
+        recordingQuestionId = currentQuestion.id;
+        manualStop = false;
+        baseText = area ? area.value.trim() : '';
 
         try {
-
+            recognition.lang = getSelectedVoiceLang();
             recognition.start();
-
         } catch (e) {
-
-            console.warn(e);
-
+            console.warn('Speech start error:', e);
         }
 
     }
@@ -2221,22 +2284,20 @@ function initInterviewPage() {
 
     function stopVoice() {
 
+        manualStop = true;
+        save();
+        recording = false;
+        recognitionRunning = false;
+        recordingQuestionId = null;
+        ui(false);
+
         if (recognition) {
 
             try {
-
                 recognition.stop();
-
-            } catch (e) {}
+            } catch (e) { }
 
         }
-
-
-        recording = false;
-
-        ui(false);
-
-        save();
 
     }
 
@@ -2268,12 +2329,21 @@ function initInterviewPage() {
             stopVoice();
         }
 
+        if (micStream) {
+            try {
+                micStream.getTracks().forEach(function (track) { track.stop(); });
+                micStream = null;
+            } catch (e) { }
+        }
+
 
         setStorage(
             STORAGE_KEYS.ANSWERS,
             answers
         );
 
+
+        try { sessionStorage.removeItem(STORAGE_KEYS.TIMER_DEADLINE); } catch (e) { }
 
         location.href =
             'result.html';
@@ -2288,9 +2358,10 @@ function initInterviewPage() {
     if (recognition) {
 
         recognition.onstart =
-            function() {
+            function () {
 
                 recording = true;
+                recognitionRunning = true;
 
                 ui(true);
 
@@ -2298,85 +2369,88 @@ function initInterviewPage() {
 
 
         recognition.onresult =
-            function(e) {
+            function (e) {
 
-                var interim = '';
-                var final = '';
+                var currentQuestion = questions[index];
+                if (!recording || !currentQuestion || recordingQuestionId !== currentQuestion.id) {
+                    return;
+                }
 
+                var finalTranscript = '';
+                var interimTranscript = '';
 
-                for (
-                    var i = e.resultIndex;
-                    i < e.results.length;
-                    i++
-                ) {
-
-                    var t =
-                        e.results[i][0]
-                            .transcript;
-
-
-                    if (
-                        e.results[i].isFinal
-                    ) {
-
-                        final += t + ' ';
-
+                for (var i = 0; i < e.results.length; i++) {
+                    var chunk = e.results[i][0].transcript;
+                    if (e.results[i].isFinal) {
+                        finalTranscript += chunk + ' ';
                     } else {
-
-                        interim += t;
-
+                        interimTranscript += chunk;
                     }
-
                 }
 
-
-                if (final) {
-
-                    finalText += final;
-
+                var spokenSoFar = (finalTranscript + interimTranscript).trim();
+                var full = '';
+                if (baseText && spokenSoFar) {
+                    full = baseText + ' ' + spokenSoFar;
+                } else if (spokenSoFar) {
+                    full = spokenSoFar;
+                } else {
+                    full = baseText;
                 }
 
-
-                var all =
-                    (
-                        finalText +
-                        ' ' +
-                        interim
-                    ).trim();
-
-
-                if (area && all) {
-
-                    area.value = all;
-
-                    save();
-
+                if (area && full) {
+                    area.value = full;
+                    // Fast responsive updates without blocking storage serialization
+                    queueSave();
                 }
 
             };
 
 
         recognition.onerror =
-            function(e) {
+            function (e) {
 
                 console.warn(
-                    'Voice error:',
+                    'Voice recognition event:',
                     e.error
                 );
 
-
-                recording = false;
-
-                ui(false);
-
+                // Ignore benign silence and abort notifications
+                if (e.error === 'no-speech' || e.error === 'aborted') {
+                    return;
+                }
 
                 if (
-                    e.error === 'not-allowed'
+                    e.error === 'not-allowed' ||
+                    e.error === 'service-not-allowed'
                 ) {
+
+                    recording = false;
+                    recognitionRunning = false;
+                    manualStop = true;
+                    recordingQuestionId = null;
+                    ui(false);
 
                     alert(
                         'Microphone permission was denied. Please allow microphone access for this site.'
                     );
+
+                } else if (e.error === 'audio-capture') {
+
+                    recording = false;
+                    recognitionRunning = false;
+                    manualStop = true;
+                    recordingQuestionId = null;
+                    ui(false);
+
+                    alert(
+                        'Microphone could not be accessed. Please check your microphone and browser permission.'
+                    );
+
+                } else {
+
+                    recording = true;
+                    ui(true);
 
                 }
 
@@ -2384,10 +2458,41 @@ function initInterviewPage() {
 
 
         recognition.onend =
-            function() {
+            function () {
+
+                recognitionRunning = false;
+
+                if (recording && !manualStop && !timerStopped) {
+
+                    if (area) {
+                        baseText = area.value.trim();
+                    }
+
+                    setTimeout(function () {
+
+                        if (
+                            recording &&
+                            !manualStop &&
+                            !timerStopped &&
+                            !recognitionRunning
+                        ) {
+                            try {
+                                if (recognition) {
+                                    recognition.lang = getSelectedVoiceLang();
+                                    recognition.start();
+                                }
+                            } catch (e) {
+                                console.warn('Voice auto-restart:', e);
+                            }
+                        }
+
+                    }, 80);
+
+                    return;
+
+                }
 
                 recording = false;
-
                 ui(false);
 
             };
@@ -2403,7 +2508,7 @@ function initInterviewPage() {
 
         next.addEventListener(
             'click',
-            function() {
+            function () {
 
                 go(index + 1);
 
@@ -2417,7 +2522,7 @@ function initInterviewPage() {
 
         prev.addEventListener(
             'click',
-            function() {
+            function () {
 
                 go(index - 1);
 
@@ -2431,7 +2536,7 @@ function initInterviewPage() {
 
         mic.addEventListener(
             'click',
-            function(e) {
+            function (e) {
 
                 e.preventDefault();
 
@@ -2468,10 +2573,38 @@ function initInterviewPage() {
 
         area.addEventListener(
             'input',
-            save
+            function () {
+                baseText = area.value.trim();
+                save();
+            }
         );
 
+        area.addEventListener('change', save);
+        area.addEventListener('blur', save);
+
     }
+
+    var voiceLangSelect = getEl('voiceLangSelect');
+    if (voiceLangSelect) {
+        voiceLangSelect.addEventListener('change', function () {
+            if (recognition) {
+                recognition.lang = voiceLangSelect.value;
+            }
+            if (recording) {
+                stopVoice();
+                setTimeout(startVoice, 120);
+            }
+        });
+    }
+
+    window.addEventListener('beforeunload', function () {
+        save();
+        if (micStream) {
+            try {
+                micStream.getTracks().forEach(function (track) { track.stop(); });
+            } catch (e) { }
+        }
+    });
 
 
     // ========================================================
@@ -2480,7 +2613,7 @@ function initInterviewPage() {
 
     document.addEventListener(
         'keydown',
-        function(e) {
+        function (e) {
 
             if (
                 e.target &&
@@ -2520,6 +2653,9 @@ function initInterviewPage() {
 
     startTimer();
 
+    // Warm up persistent microphone stream so browser keeps permission active
+    ensurePersistentMicStream(function () { });
+
 }
 // ============================================================
 // PART 3 - RESULT + QUESTION-WISE SCORING
@@ -2530,13 +2666,13 @@ function initInterviewPage() {
 // AVERAGE
 // ------------------------------------------------------------
 
-function avg(a,k){
-    if(!a.length) return 0;
+function avg(a, k) {
+    if (!a.length) return 0;
 
     return Math.round(
-        a.reduce(function(sum,item){
+        a.reduce(function (sum, item) {
             return sum + (Number(item[k]) || 0);
-        },0) / a.length
+        }, 0) / a.length
     );
 }
 
@@ -2544,29 +2680,29 @@ function avg(a,k){
 /* ---------- QUESTION-AWARE SCORING ---------- */
 
 var STOP_WORDS = [
-    'what','what is','what are','why','how','when','where','which',
-    'explain','define','describe','tell','about','difference','between',
-    'the','a','an','and','or','of','to','in','on','for','with','from',
-    'is','are','was','were','can','could','would','should','do','does',
-    'your','you','give','example','examples','main','used','use'
+    'what', 'what is', 'what are', 'why', 'how', 'when', 'where', 'which',
+    'explain', 'define', 'describe', 'tell', 'about', 'difference', 'between',
+    'the', 'a', 'an', 'and', 'or', 'of', 'to', 'in', 'on', 'for', 'with', 'from',
+    'is', 'are', 'was', 'were', 'can', 'could', 'would', 'should', 'do', 'does',
+    'your', 'you', 'give', 'example', 'examples', 'main', 'used', 'use'
 ];
 
 
-function normalizeText(text){
+function normalizeText(text) {
     return String(text || '')
         .toLowerCase()
-        .replace(/[^a-z0-9+#.\s]/g,' ')
-        .replace(/\s+/g,' ')
+        .replace(/[^a-z0-9+#.\s]/g, ' ')
+        .replace(/\s+/g, ' ')
         .trim();
 }
 
 
-function getWords(text){
+function getWords(text) {
     var words = normalizeText(text).split(/\s+/);
 
-    return words.filter(function(word){
-        if(word.length < 3) return false;
-        if(STOP_WORDS.indexOf(word) !== -1) return false;
+    return words.filter(function (word) {
+        if (word.length < 3) return false;
+        if (STOP_WORDS.indexOf(word) !== -1) return false;
         return true;
     });
 }
@@ -2576,138 +2712,138 @@ function getWords(text){
 var CONCEPT_KEYWORDS = {
 
     'python': [
-        'interpreted','high level','dynamically typed',
-        'object oriented','indentation','readable',
-        'library','libraries','module','modules'
+        'interpreted', 'high level', 'dynamically typed',
+        'object oriented', 'indentation', 'readable',
+        'library', 'libraries', 'module', 'modules'
     ],
 
     'java': [
-        'object oriented','class','object','jvm',
-        'bytecode','platform independent','garbage collection'
+        'object oriented', 'class', 'object', 'jvm',
+        'bytecode', 'platform independent', 'garbage collection'
     ],
 
     'javascript': [
-        'dynamic','browser','dom','event','function',
-        'object','asynchronous','promise'
+        'dynamic', 'browser', 'dom', 'event', 'function',
+        'object', 'asynchronous', 'promise'
     ],
 
     'html': [
-        'markup','tag','element','structure','webpage'
+        'markup', 'tag', 'element', 'structure', 'webpage'
     ],
 
     'css': [
-        'style','layout','selector','property','design',
-        'responsive','flexbox','grid'
+        'style', 'layout', 'selector', 'property', 'design',
+        'responsive', 'flexbox', 'grid'
     ],
 
     'sql': [
-        'database','table','query','select','insert',
-        'update','delete','join'
+        'database', 'table', 'query', 'select', 'insert',
+        'update', 'delete', 'join'
     ],
 
     'database': [
-        'data','table','record','query','storage',
-        'database','sql'
+        'data', 'table', 'record', 'query', 'storage',
+        'database', 'sql'
     ],
 
     'machine learning': [
-        'data','model','training','testing',
-        'prediction','algorithm','features'
+        'data', 'model', 'training', 'testing',
+        'prediction', 'algorithm', 'features'
     ],
 
     'artificial intelligence': [
-        'intelligent','agent','reasoning','learning',
-        'problem','decision','knowledge'
+        'intelligent', 'agent', 'reasoning', 'learning',
+        'problem', 'decision', 'knowledge'
     ],
 
     'ai': [
-        'intelligent','agent','learning','reasoning',
-        'decision','knowledge'
+        'intelligent', 'agent', 'learning', 'reasoning',
+        'decision', 'knowledge'
     ],
 
     'deep learning': [
-        'neural','network','layers','training',
-        'data','weights','backpropagation'
+        'neural', 'network', 'layers', 'training',
+        'data', 'weights', 'backpropagation'
     ],
 
     'neural network': [
-        'neuron','layers','weights','activation',
-        'input','output','training'
+        'neuron', 'layers', 'weights', 'activation',
+        'input', 'output', 'training'
     ],
 
     'data analyst': [
-        'data','analysis','excel','sql','python',
-        'visualization','insights','statistics'
+        'data', 'analysis', 'excel', 'sql', 'python',
+        'visualization', 'insights', 'statistics'
     ],
 
     'pandas': [
-        'dataframe','series','data','rows','columns',
-        'analysis','python'
+        'dataframe', 'series', 'data', 'rows', 'columns',
+        'analysis', 'python'
     ],
 
     'numpy': [
-        'array','numerical','matrix','ndarray',
-        'operations','python'
+        'array', 'numerical', 'matrix', 'ndarray',
+        'operations', 'python'
     ],
 
     'flask': [
-        'python','web','framework','route',
-        'api','server','request','response'
+        'python', 'web', 'framework', 'route',
+        'api', 'server', 'request', 'response'
     ],
 
     'api': [
-        'application','interface','request',
-        'response','endpoint','server'
+        'application', 'interface', 'request',
+        'response', 'endpoint', 'server'
     ],
 
     'oops': [
-        'class','object','inheritance',
-        'encapsulation','polymorphism','abstraction'
+        'class', 'object', 'inheritance',
+        'encapsulation', 'polymorphism', 'abstraction'
     ],
 
     'oop': [
-        'class','object','inheritance',
-        'encapsulation','polymorphism','abstraction'
+        'class', 'object', 'inheritance',
+        'encapsulation', 'polymorphism', 'abstraction'
     ],
 
     'inheritance': [
-        'class','parent','child','subclass',
-        'superclass','reuse'
+        'class', 'parent', 'child', 'subclass',
+        'superclass', 'reuse'
     ],
 
     'polymorphism': [
-        'method','overloading','overriding',
-        'object','multiple','forms'
+        'method', 'overloading', 'overriding',
+        'object', 'multiple', 'forms'
     ],
 
     'exception': [
-        'error','try','except','catch',
-        'handling','runtime'
+        'error', 'try', 'except', 'catch',
+        'handling', 'runtime'
     ],
 
     'data structure': [
-        'data','organization','storage',
-        'operation','efficient'
+        'data', 'organization', 'storage',
+        'operation', 'efficient'
     ],
 
     'algorithm': [
-        'steps','problem','solution',
-        'procedure','efficiency'
+        'steps', 'problem', 'solution',
+        'procedure', 'efficiency'
     ]
 };
 
 
-function getConceptKeywords(question){
+function getConceptKeywords(question) {
 
     var q = normalizeText(question);
     var concepts = [];
 
-    Object.keys(CONCEPT_KEYWORDS).forEach(function(key){
+    Object.keys(CONCEPT_KEYWORDS).forEach(function (key) {
 
-        if(q.indexOf(key) !== -1){
+        if (q.indexOf(key) !== -1) {
 
-            CONCEPT_KEYWORDS[key].forEach(function(word){
-                if(concepts.indexOf(word) === -1){
+            CONCEPT_KEYWORDS[key].forEach(function (word) {
+                if (concepts.indexOf(word) === -1) {
                     concepts.push(word);
                 }
             });
@@ -2720,18 +2856,18 @@ function getConceptKeywords(question){
 }
 
 
-function countMatches(answer,keywords){
+function countMatches(answer, keywords) {
 
-    if(!keywords.length) return 0;
+    if (!keywords.length) return 0;
 
     var lowerAnswer = normalizeText(answer);
     var matched = 0;
 
-    keywords.forEach(function(keyword){
+    keywords.forEach(function (keyword) {
 
         var key = normalizeText(keyword);
 
-        if(key && lowerAnswer.indexOf(key) !== -1){
+        if (key && lowerAnswer.indexOf(key) !== -1) {
             matched++;
         }
 
@@ -2762,41 +2898,41 @@ function analyzeAnswer(question, text) {
     var questionWords = q
         .replace(/[^a-z0-9+#.]/g, ' ')
         .split(/\s+/)
-        .filter(function(w) {
+        .filter(function (w) {
             return w.length >= 3;
         });
 
     var answerWords = t
         .replace(/[^a-z0-9+#.]/g, ' ')
         .split(/\s+/)
-        .filter(function(w) {
+        .filter(function (w) {
             return w.length >= 3;
         });
 
     // Common words that should not affect relevance
     var stopWords = {
-        'what':1,'what is':1,'what are':1,'how':1,'why':1,
-        'the':1,'and':1,'are':1,'was':1,'were':1,'for':1,
-        'with':1,'this':1,'that':1,'from':1,'you':1,'your':1,
-        'would':1,'could':1,'should':1,'can':1,'does':1,
-        'did':1,'into':1,'about':1,'have':1,'has':1,'had':1,
-        'explain':1,'describe':1,'tell':1,'give':1
+        'what': 1, 'what is': 1, 'what are': 1, 'how': 1, 'why': 1,
+        'the': 1, 'and': 1, 'are': 1, 'was': 1, 'were': 1, 'for': 1,
+        'with': 1, 'this': 1, 'that': 1, 'from': 1, 'you': 1, 'your': 1,
+        'would': 1, 'could': 1, 'should': 1, 'can': 1, 'does': 1,
+        'did': 1, 'into': 1, 'about': 1, 'have': 1, 'has': 1, 'had': 1,
+        'explain': 1, 'describe': 1, 'tell': 1, 'give': 1
     };
 
     // Find important words from the question
-    var importantWords = questionWords.filter(function(w) {
+    var importantWords = questionWords.filter(function (w) {
         return !stopWords[w];
     });
 
     // Remove duplicates
-    importantWords = importantWords.filter(function(w, i, arr) {
+    importantWords = importantWords.filter(function (w, i, arr) {
         return arr.indexOf(w) === i;
     });
 
     // Question-answer word matching
     var matched = 0;
 
-    importantWords.forEach(function(word) {
+    importantWords.forEach(function (word) {
         if (answerWords.indexOf(word) !== -1) {
             matched++;
         }
@@ -2811,22 +2947,22 @@ function analyzeAnswer(question, text) {
 
     // Technical concept matching
     var concepts = [
-        'python','java','javascript','html','css','sql',
-        'function','class','object','method','constructor',
-        'list','tuple','set','dictionary','array',
-        'exception','inheritance','polymorphism',
-        'encapsulation','abstraction','database','api',
-        'algorithm','data structure','stack','queue',
-        'linked list','tree','graph','sorting','search',
-        'machine learning','model','training','testing',
-        'accuracy','overfitting','neural network',
-        'debug','debugging','code','program','software',
-        'project','mysql','rest','http','git'
+        'python', 'java', 'javascript', 'html', 'css', 'sql',
+        'function', 'class', 'object', 'method', 'constructor',
+        'list', 'tuple', 'set', 'dictionary', 'array',
+        'exception', 'inheritance', 'polymorphism',
+        'encapsulation', 'abstraction', 'database', 'api',
+        'algorithm', 'data structure', 'stack', 'queue',
+        'linked list', 'tree', 'graph', 'sorting', 'search',
+        'machine learning', 'model', 'training', 'testing',
+        'accuracy', 'overfitting', 'neural network',
+        'debug', 'debugging', 'code', 'program', 'software',
+        'project', 'mysql', 'rest', 'http', 'git'
     ];
 
     var conceptMatches = 0;
 
-    concepts.forEach(function(word) {
+    concepts.forEach(function (word) {
         if (t.indexOf(word) !== -1) {
             conceptMatches++;
         }
@@ -2871,7 +3007,7 @@ function analyzeAnswer(question, text) {
     }
 
     // Clarity
-    var sentences = t.split(/[.!?]+/).filter(function(s) {
+    var sentences = t.split(/[.!?]+/).filter(function (s) {
         return s.trim().length > 0;
     }).length;
 
@@ -2928,7 +3064,7 @@ function analyzeAnswer(question, text) {
     };
 }/* ---------- USE THE SAME QUESTIONS FROM THE INTERVIEW ---------- */
 
-function getSelectedInterviewQuestions(settings){
+function getSelectedInterviewQuestions(settings) {
 
     var selectedIds =
         getStorage(STORAGE_KEYS.SELECTED) || [];
@@ -2944,21 +3080,21 @@ function getSelectedInterviewQuestions(settings){
 
     var questionMap = {};
 
-    bank.forEach(function(question){
+    bank.forEach(function (question) {
         questionMap[question.id] = question;
     });
 
 
     var selectedQuestions = selectedIds
-        .map(function(id){
+        .map(function (id) {
             return questionMap[id];
         })
-        .filter(function(question){
+        .filter(function (question) {
             return question;
         });
 
 
-    if(selectedQuestions.length){
+    if (selectedQuestions.length) {
         return selectedQuestions;
     }
 
@@ -2967,7 +3103,7 @@ function getSelectedInterviewQuestions(settings){
 
     setStorage(
         STORAGE_KEYS.SELECTED,
-        questions.map(function(q){
+        questions.map(function (q) {
             return q.id;
         })
     );
@@ -2978,7 +3114,7 @@ function getSelectedInterviewQuestions(settings){
 
 /* ---------- FINAL RESULT CALCULATION ---------- */
 
-function calculateResult(){
+function calculateResult() {
 
     var settings =
         getStorage(STORAGE_KEYS.SETTINGS) || {};
@@ -2995,36 +3131,36 @@ function calculateResult(){
     var items = [];
 
 
-    questions.forEach(function(q){
+    questions.forEach(function (q) {
 
         var answer =
             answers['q' + q.id] || '';
 
         var analysis =
-            analyzeAnswer(q.text,answer);
+            analyzeAnswer(q.text, answer);
 
 
         items.push({
 
-            questionId:q.id,
+            questionId: q.id,
 
-            question:q.text,
+            question: q.text,
 
-            answer:answer,
+            answer: answer,
 
-            score:analysis.score,
+            score: analysis.score,
 
-            technical:analysis.technical,
+            technical: analysis.technical,
 
-            relevance:analysis.relevance,
+            relevance: analysis.relevance,
 
-            communication:analysis.communication,
+            communication: analysis.communication,
 
-            clarity:analysis.clarity,
+            clarity: analysis.clarity,
 
-            completeness:analysis.completeness,
+            completeness: analysis.completeness,
 
-            feedback:analysis.feedback
+            feedback: analysis.feedback
 
         });
 
@@ -3033,25 +3169,25 @@ function calculateResult(){
 
     var result = {
 
-        overall:avg(items,'score'),
+        overall: avg(items, 'score'),
 
-        technical:avg(items,'technical'),
+        technical: avg(items, 'technical'),
 
-        relevance:avg(items,'relevance'),
+        relevance: avg(items, 'relevance'),
 
-        communication:avg(items,'communication'),
+        communication: avg(items, 'communication'),
 
-        clarity:avg(items,'clarity'),
+        clarity: avg(items, 'clarity'),
 
-        completeness:avg(items,'completeness'),
+        completeness: avg(items, 'completeness'),
 
-        readiness:avg(items,'score'),
+        readiness: avg(items, 'score'),
 
-        analyses:items,
+        analyses: items,
 
-        settings:settings,
+        settings: settings,
 
-        createdAt:new Date().toISOString()
+        createdAt: new Date().toISOString()
 
     };
 
@@ -3067,412 +3203,41 @@ function initResultPage() {
     var canvas =
         getEl('scoreRingCanvas');
 
-
     if (!canvas) {
-
         return;
-
     }
 
-
+    // Calculate actual scores from user answers
     var result =
         calculateResult();
 
-
+    // Save result to localStorage so the result.html inline script can read it
     setStorage(
         STORAGE_KEYS.RESULTS,
         result
     );
 
-
-    // --------------------------------------------------------
-    // SAVE HISTORY
-    // --------------------------------------------------------
-
+    // Save to history
     var history =
         getStorage(
             STORAGE_KEYS.HISTORY
         ) || [];
 
-
     history.push({
-
         score: result.overall,
-
-        role:
-            result.settings.jobRole,
-
-        type:
-            result.settings.interviewType,
-
-        difficulty:
-            result.settings.difficulty,
-
-        date:
-            result.createdAt
-
+        role: result.settings.jobRole,
+        type: result.settings.interviewType,
+        difficulty: result.settings.difficulty,
+        date: result.createdAt
     });
-
 
     setStorage(
         STORAGE_KEYS.HISTORY,
         history.slice(-10)
     );
 
-
-    // --------------------------------------------------------
-    // RESULT VALUES
-    // --------------------------------------------------------
-
-    var ids = {
-
-        resultJobRole:
-            result.settings.jobRole ||
-            'Python Developer',
-
-        resultInterviewType:
-            result.settings.interviewType ||
-            'Technical Interview',
-
-        resultDifficulty:
-            result.settings.difficulty ||
-            'Beginner',
-
-        overallScore:
-            result.overall,
-
-        technicalScore:
-            result.technical,
-
-        relevanceScore:
-            result.relevance,
-
-        communicationScore:
-            result.communication,
-
-        clarityScore:
-            result.clarity,
-
-        completenessScore:
-            result.completeness,
-
-        readinessScore:
-            result.readiness
-
-    };
-
-
-    Object.keys(ids).forEach(
-        function(id) {
-
-            var element =
-                getEl(id);
-
-
-            if (element) {
-
-                element.textContent =
-                    ids[id];
-
-            }
-
-        }
-    );
-
-
-    // --------------------------------------------------------
-    // SCORE RING
-    // --------------------------------------------------------
-
-    var ctx =
-        canvas.getContext('2d');
-
-
-    var cx = 90;
-    var cy = 90;
-    var rad = 70;
-    var lw = 12;
-
-
-    ctx.clearRect(
-        0,
-        0,
-        180,
-        180
-    );
-
-
-    // Background circle
-    ctx.beginPath();
-
-    ctx.arc(
-        cx,
-        cy,
-        rad,
-        0,
-        2 * Math.PI
-    );
-
-
-    ctx.strokeStyle =
-        '#e2e8f0';
-
-    ctx.lineWidth =
-        lw;
-
-    ctx.stroke();
-
-
-    // Score circle
-    var start =
-        -Math.PI / 2;
-
-
-    var end =
-        start +
-        2 * Math.PI *
-        result.overall /
-        100;
-
-
-    var gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            180,
-            180
-        );
-
-
-    gradient.addColorStop(
-        0,
-        '#2563eb'
-    );
-
-
-    gradient.addColorStop(
-        1,
-        '#7c3aed'
-    );
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        cx,
-        cy,
-        rad,
-        start,
-        end
-    );
-
-
-    ctx.strokeStyle =
-        gradient;
-
-    ctx.lineWidth =
-        lw;
-
-    ctx.lineCap =
-        'round';
-
-    ctx.stroke();
-
-
-    // --------------------------------------------------------
-    // RADAR CHART
-    // --------------------------------------------------------
-
-    var radar =
-        getEl('radarChart');
-
-
-    if (
-        radar &&
-        typeof Chart !== 'undefined'
-    ) {
-
-        new Chart(
-            radar,
-            {
-
-                type: 'radar',
-
-                data: {
-
-                    labels: [
-                        'Technical',
-                        'Relevance',
-                        'Communication',
-                        'Clarity',
-                        'Completeness'
-                    ],
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                'Performance',
-
-                            data: [
-
-                                result.technical,
-
-                                result.relevance,
-
-                                result.communication,
-
-                                result.clarity,
-
-                                result.completeness
-
-                            ],
-
-                            backgroundColor:
-                                'rgba(37,99,235,.15)',
-
-                            borderColor:
-                                '#2563eb',
-
-                            borderWidth: 2
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    scales: {
-
-                        r: {
-
-                            beginAtZero: true,
-
-                            max: 100
-
-                        }
-
-                    },
-
-                    plugins: {
-
-                        legend: {
-                            display: false
-                        }
-
-                    }
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // --------------------------------------------------------
-    // READINESS BAR
-    // --------------------------------------------------------
-
-    var readinessBar =
-        document.querySelector(
-            '.readiness-bar .progress-bar'
-        );
-
-
-    if (readinessBar) {
-
-        readinessBar.style.width =
-            result.readiness + '%';
-
-    }
-
-
-    // --------------------------------------------------------
-    // QUESTION-WISE ANALYSIS
-    // --------------------------------------------------------
-
-    var body =
-        getEl(
-            'questionAnalysisBody'
-        );
-
-
-    if (body) {
-
-        body.innerHTML = '';
-
-
-        result.analyses.forEach(
-            function(item, index) {
-
-                var div =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                div.className =
-                    'question-analysis-item';
-
-
-                div.innerHTML =
-
-                    '<strong>Q' +
-                    (index + 1) +
-                    ': ' +
-                    escapeHTML(
-                        item.question
-                    ) +
-                    '</strong>' +
-
-                    '<p><b>Your Score:</b> ' +
-                    item.score +
-                    '/100</p>' +
-
-                    '<p><b>Technical:</b> ' +
-                    item.technical +
-                    '/100</p>' +
-
-                    '<p><b>Relevance:</b> ' +
-                    item.relevance +
-                    '/100</p>' +
-
-                    '<p><b>Communication:</b> ' +
-                    item.communication +
-                    '/100</p>' +
-
-                    '<p><b>Clarity:</b> ' +
-                    item.clarity +
-                    '/100</p>' +
-
-                    '<p><b>Completeness:</b> ' +
-                    item.completeness +
-                    '/100</p>' +
-
-                    '<p>' +
-                    escapeHTML(
-                        item.feedback
-                    ) +
-                    '</p>';
-
-
-                body.appendChild(div);
-
-            }
-        );
-
-    }
-
+    // All DOM rendering is handled by result.html's inline script
+    // which reads from STORAGE_KEYS.RESULTS after this function runs.
 }
 
 
@@ -3504,14 +3269,14 @@ function initDashboardPage() {
 
     var scores =
         history.length
-            ? history.map(function(item) {
+            ? history.map(function (item) {
                 return item.score;
             })
             : [];
 
 
     var labels =
-        scores.map(function(_, i) {
+        scores.map(function (_, i) {
 
             return 'Interview ' +
                 (i + 1);
@@ -3523,7 +3288,7 @@ function initDashboardPage() {
         scores.length
             ? Math.round(
                 scores.reduce(
-                    function(a, b) {
+                    function (a, b) {
                         return a + b;
                     },
                     0
@@ -3852,7 +3617,7 @@ function initPreparationPage() {
 
         var selectedPlan = plans[role] || plans['Python Developer'];
 
-        planContainer.innerHTML = selectedPlan.map(function(item) {
+        planContainer.innerHTML = selectedPlan.map(function (item) {
 
             return `
                 <div class="card mb-3 shadow-sm">
@@ -3903,7 +3668,7 @@ function initPreparationPage() {
 
             '<p>Practice questions for your selected role.</p>' +
 
-            questions.slice(0, 10).map(function(q, index) {
+            questions.slice(0, 10).map(function (q, index) {
 
                 return `
                     <div class="practice-question mb-3">
@@ -3944,7 +3709,7 @@ function initPreparationPage() {
         var total = boxes.length;
         var completed = 0;
 
-        boxes.forEach(function(box) {
+        boxes.forEach(function (box) {
 
             if (box.checked) {
                 completed++;
@@ -3975,7 +3740,7 @@ function initPreparationPage() {
         }
     }
 
-    boxes.forEach(function(box) {
+    boxes.forEach(function (box) {
 
         box.addEventListener(
             'change',
@@ -3993,7 +3758,7 @@ function initPreparationPage() {
 
 document.addEventListener(
     'DOMContentLoaded',
-    function() {
+    function () {
 
         initProfilePage();
 

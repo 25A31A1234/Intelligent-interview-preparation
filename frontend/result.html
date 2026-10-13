@@ -180,22 +180,48 @@
 
     .breakdown-item .progress .progress-bar {
       border-radius: 40px;
-      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      transition: width 0.8s ease;
     }
+
+    .bar-excellent { background: linear-gradient(90deg, #059669, #10b981); }
+    .bar-good { background: linear-gradient(90deg, #2563eb, #7c3aed); }
+    .bar-average { background: linear-gradient(90deg, #d97706, #f59e0b); }
+    .bar-poor { background: linear-gradient(90deg, #dc2626, #f87171); }
 
     .badge-excellent {
       background: #dcfce7;
       color: #166534;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
     }
 
     .badge-good {
       background: #dbeafe;
       color: #1e40af;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
     }
 
-    .badge-needs {
+    .badge-average {
       background: #fef3c7;
       color: #92400e;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+
+    .badge-poor {
+      background: #fee2e2;
+      color: #991b1b;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
     }
 
     /* readiness */
@@ -208,6 +234,7 @@
     .readiness-bar .progress-bar {
       border-radius: 40px;
       background: linear-gradient(90deg, #2563eb, #7c3aed);
+      transition: width 0.8s ease;
     }
 
     /* footer */
@@ -225,14 +252,131 @@
       color: #60a5fa;
     }
 
-    /* demo badge */
-    .demo-badge {
-      background: #fef3c7;
+    /* question detail cards */
+    .q-detail-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.4rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .q-detail-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 16px -4px rgba(0,0,0,0.06);
+    }
+
+    .q-detail-card.q-excellent { border-left: 4px solid #059669; }
+    .q-detail-card.q-good { border-left: 4px solid #2563eb; }
+    .q-detail-card.q-average { border-left: 4px solid #d97706; }
+    .q-detail-card.q-poor { border-left: 4px solid #dc2626; }
+    .q-detail-card.q-unanswered { border-left: 4px solid #94a3b8; }
+
+    .q-score-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .q-score-circle.sc-excellent { background: linear-gradient(145deg, #059669, #10b981); }
+    .q-score-circle.sc-good { background: linear-gradient(145deg, #2563eb, #7c3aed); }
+    .q-score-circle.sc-average { background: linear-gradient(145deg, #d97706, #f59e0b); }
+    .q-score-circle.sc-poor { background: linear-gradient(145deg, #dc2626, #ef4444); }
+    .q-score-circle.sc-zero { background: #94a3b8; }
+
+    .q-mini-bar {
+      height: 4px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      flex-grow: 1;
+    }
+
+    .q-mini-bar .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+
+    .q-answer-preview {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.6;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .q-answer-preview.empty-answer {
+      color: #94a3b8;
+      font-style: italic;
+    }
+
+    .q-feedback-text {
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      color: #1e40af;
+      border: 1px solid #dbeafe;
+    }
+
+    .q-feedback-text.fb-warning {
+      background: #fffbeb;
       color: #92400e;
-      font-size: 0.7rem;
-      padding: 0.15rem 0.8rem;
-      border-radius: 40px;
+      border-color: #fef3c7;
+    }
+
+    .q-feedback-text.fb-danger {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fee2e2;
+    }
+
+    .q-detail-toggle {
+      cursor: pointer;
+      color: #2563eb;
+      font-size: 0.82rem;
       font-weight: 600;
+      transition: 0.15s;
+    }
+
+    .q-detail-toggle:hover {
+      color: #7c3aed;
+    }
+
+    .q-detail-expanded {
+      display: none;
+      margin-top: 0.8rem;
+    }
+
+    .q-detail-expanded.show {
+      display: block;
+    }
+
+    /* improvement tips */
+    .improvement-tip {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 14px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+
+    .improvement-tip i {
+      color: #d97706;
     }
 
     /* responsive */
@@ -255,28 +399,6 @@
       .navbar-brand {
         font-size: 1.2rem;
       }
-    }
-
-    @media (max-width: 768px) {
-      .table-responsive-custom {
-        font-size: 0.85rem;
-      }
-    }
-
-    /* table styling */
-    .table-results th {
-      font-weight: 600;
-      color: #475569;
-      border-bottom: 2px solid #e2e8f0;
-    }
-
-    .table-results td {
-      vertical-align: middle;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .table-results tr:last-child td {
-      border-bottom: none;
     }
   </style>
 </head>
@@ -311,16 +433,16 @@
     <!-- HEADER -->
     <div class="text-center mb-4">
       <h1 class="display-5 fw-bold">Interview Completed! <span class="gradient-text">🎉</span></h1>
-      <p class="text-secondary fs-5" style="font-weight: 400;">Here is your interview performance analysis.</p>
+      <p class="text-secondary fs-5" style="font-weight: 400;">Here is your detailed performance analysis.</p>
       <div class="d-flex flex-wrap justify-content-center gap-3 mt-2">
         <span id="resultJobRole" class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-briefcase text-primary me-1"></i> Python Developer</span>
         <span id="resultInterviewType" class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-list-check text-primary me-1"></i> Technical Interview</span>
-        <span id="resultDifficulty" class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-signal text-primary me-1"></i> Intermediate</span>
-        <span class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-hashtag text-primary me-1"></i> 5 Questions</span>
+        <span id="resultDifficulty" class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-signal text-primary me-1"></i> Beginner</span>
+        <span id="resultQuestionCount" class="badge bg-light text-dark px-3 py-2 rounded-pill"><i class="fas fa-hashtag text-primary me-1"></i> 5 Questions</span>
       </div>
     </div>
 
-    <!-- ===== ROW 1: Overall Score + Quick Info ===== -->
+    <!-- ===== ROW 1: Overall Score + Performance Breakdown ===== -->
     <div class="row g-4 mb-4">
       <div class="col-lg-4">
         <div class="result-card text-center">
@@ -328,14 +450,13 @@
           <div class="score-ring-container">
             <canvas id="scoreRingCanvas" width="180" height="180"></canvas>
             <div class="score-center">
-              <div class="score-number">78</div>
+              <div class="score-number" id="overallScore">0</div>
               <div class="score-label">/ 100</div>
             </div>
           </div>
           <div class="mt-3">
-            <span class="badge bg-success bg-opacity-15 text-success px-3 py-2 rounded-pill fs-6">Good Performance</span>
-            <p class="text-muted small mt-2 mb-0">You have a good foundation. Focus on improving technical depth and answer clarity.</p>
-            <span class="demo-badge mt-2 d-inline-block"><i class="fas fa-flask me-1"></i> Demo Score</span>
+            <span id="overallBadge" class="badge px-3 py-2 rounded-pill fs-6">—</span>
+            <p id="overallSummary" class="text-muted small mt-2 mb-0"></p>
           </div>
         </div>
       </div>
@@ -343,48 +464,8 @@
       <div class="col-lg-8">
         <div class="result-card">
           <h6 class="fw-semibold text-secondary mb-3"><i class="fas fa-chart-simple text-primary me-2"></i>Performance Breakdown</h6>
-          <div class="breakdown-item d-flex align-items-center">
-            <div class="me-3" style="width: 36px;"><i class="fas fa-microchip text-primary fs-5"></i></div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <span class="fw-semibold">Technical Knowledge</span>
-                <span class="fw-bold">82 / 100</span>
-              </div>
-              <div class="progress"><div class="progress-bar" style="width: 82%;"></div></div>
-            </div>
-          </div>
-          <div class="breakdown-item d-flex align-items-center">
-            <div class="me-3" style="width: 36px;"><i class="fas fa-bullseye text-primary fs-5"></i></div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <span class="fw-semibold">Relevance</span>
-                <span class="fw-bold">80 / 100</span>
-              </div>
-              <div class="progress"><div class="progress-bar" style="width: 80%;"></div></div>
-            </div>
-          </div>
-          <div class="breakdown-item d-flex align-items-center">
-            <div class="me-3" style="width: 36px;"><i class="fas fa-comment-dots text-primary fs-5"></i></div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <span class="fw-semibold">Communication</span>
-                <span class="fw-bold">74 / 100</span>
-              </div>
-              <div class="progress"><div class="progress-bar" style="width: 74%;"></div></div>
-            </div>
-          </div>
-          <div class="breakdown-item d-flex align-items-center">
-            <div class="me-3" style="width: 36px;"><i class="fas fa-lightbulb text-primary fs-5"></i></div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <span class="fw-semibold">Clarity</span>
-                <span class="fw-bold">76 / 100</span>
-              </div>
-              <div class="progress"><div class="progress-bar" style="width: 76%;"></div></div>
-            </div>
-          </div>
-          <div class="mt-2 text-end">
-            <span class="demo-badge"><i class="fas fa-flask me-1"></i> Demo Data</span>
+          <div id="breakdownContainer">
+            <!-- Dynamically filled by JS -->
           </div>
         </div>
       </div>
@@ -398,9 +479,6 @@
           <div style="position: relative; height: 280px;">
             <canvas id="radarChart"></canvas>
           </div>
-          <div class="text-end mt-2">
-            <span class="demo-badge"><i class="fas fa-flask me-1"></i> Demo Visualization</span>
-          </div>
         </div>
       </div>
 
@@ -408,25 +486,19 @@
         <div class="row g-3">
           <!-- Strengths -->
           <div class="col-12">
-            <div class="result-card bg-success bg-opacity-5 border border-success border-opacity-10">
+            <div class="result-card bg-success bg-opacity-5 border border-success border-opacity-10" style="height: auto;">
               <h6 class="fw-bold text-success"><i class="fas fa-thumbs-up me-2"></i>Your Strengths</h6>
-              <ul class="list-unstyled mb-0">
-                <li><i class="fas fa-check-circle text-success me-2"></i> Good understanding of Python fundamentals</li>
-                <li><i class="fas fa-check-circle text-success me-2"></i> Relevant answers</li>
-                <li><i class="fas fa-check-circle text-success me-2"></i> Good problem-solving approach</li>
-                <li><i class="fas fa-check-circle text-success me-2"></i> Consistent interview performance</li>
+              <ul id="strengthsList" class="list-unstyled mb-0">
+                <!-- Dynamically filled -->
               </ul>
             </div>
           </div>
           <!-- Weak Areas -->
           <div class="col-12">
-            <div class="result-card bg-warning bg-opacity-5 border border-warning border-opacity-10">
+            <div class="result-card bg-warning bg-opacity-5 border border-warning border-opacity-10" style="height: auto;">
               <h6 class="fw-bold text-warning"><i class="fas fa-lightbulb me-2"></i>Areas to Improve</h6>
-              <ul class="list-unstyled mb-0">
-                <li><i class="fas fa-arrow-up text-warning me-2"></i> Exception Handling</li>
-                <li><i class="fas fa-arrow-up text-warning me-2"></i> Object-Oriented Programming</li>
-                <li><i class="fas fa-arrow-up text-warning me-2"></i> Answer Structure</li>
-                <li><i class="fas fa-arrow-up text-warning me-2"></i> Technical Explanation Depth</li>
+              <ul id="weaknessesList" class="list-unstyled mb-0">
+                <!-- Dynamically filled -->
               </ul>
             </div>
           </div>
@@ -438,15 +510,10 @@
     <div class="row g-4 mb-4">
       <div class="col-lg-7">
         <div class="result-card">
-          <div class="d-flex justify-content-between align-items-start">
-            <h6 class="fw-semibold text-secondary"><i class="fas fa-robot text-primary me-2"></i>AI Interview Feedback</h6>
-            <span class="demo-badge"><i class="fas fa-flask me-1"></i> Demo AI Analysis</span>
-          </div>
-          <p class="mb-0" style="font-size: 1.05rem; line-height: 1.7;">
-            Your answers demonstrate a good understanding of core Python concepts. You should focus on explaining technical concepts with simple examples and organizing your answers more clearly.
-          </p>
-          <div class="mt-2 text-muted small">
-            <i class="fas fa-info-circle me-1"></i> Real AI analysis will be implemented in Part 3.
+          <h6 class="fw-semibold text-secondary"><i class="fas fa-robot text-primary me-2"></i>AI Interview Feedback</h6>
+          <p id="aiFeedbackText" class="mb-0 mt-2" style="font-size: 1.05rem; line-height: 1.7;"></p>
+          <div id="improvementTips" class="mt-3">
+            <!-- Dynamically filled -->
           </div>
         </div>
       </div>
@@ -454,74 +521,28 @@
       <div class="col-lg-5">
         <div class="result-card text-center">
           <h6 class="fw-semibold text-secondary"><i class="fas fa-graduation-cap text-primary me-2"></i>Interview Readiness</h6>
-          <div class="display-4 fw-bold gradient-text">78%</div>
-          <span class="badge bg-success bg-opacity-15 text-success px-3 py-2 rounded-pill">Good</span>
+          <div class="display-4 fw-bold gradient-text" id="readinessPercent">0%</div>
+          <span id="readinessBadge" class="badge px-3 py-2 rounded-pill">—</span>
           <div class="readiness-bar mt-3">
-            <div class="progress-bar" style="width: 78%;"></div>
+            <div class="progress-bar" id="readinessBarFill" style="width: 0%;"></div>
           </div>
-          <p class="text-muted small mt-2 mb-0">You are making good progress. Continue practicing your weak areas to improve your interview readiness.</p>
-          <span class="demo-badge mt-2 d-inline-block"><i class="fas fa-flask me-1"></i> Demo Score</span>
+          <p id="readinessAdvice" class="text-muted small mt-2 mb-0"></p>
         </div>
       </div>
     </div>
 
-    <!-- ===== ROW 4: Question-wise Performance Table ===== -->
+    <!-- ===== ROW 4: Question-wise Detailed Performance ===== -->
     <div class="row g-4 mb-4">
       <div class="col-12">
-        <div class="result-card">
-          <h6 class="fw-semibold text-secondary mb-3"><i class="fas fa-table text-primary me-2"></i>Question-wise Performance</h6>
-          <div class="table-responsive table-responsive-custom">
-            <table class="table table-results mb-0">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Question</th>
-                  <th>Topic</th>
-                  <th class="text-center">Score</th>
-                  <th class="text-end">Performance</th>
-                </tr>
-              </thead>
-              <tbody id="questionAnalysisBody">
-                <tr>
-                  <td>Q1</td>
-                  <td>Python Lists vs Tuples</td>
-                  <td>Python</td>
-                  <td class="text-center fw-bold">85</td>
-                  <td class="text-end"><span class="badge badge-excellent">Excellent</span></td>
-                </tr>
-                <tr>
-                  <td>Q2</td>
-                  <td>Functions in Python</td>
-                  <td>Python</td>
-                  <td class="text-center fw-bold">80</td>
-                  <td class="text-end"><span class="badge badge-good">Good</span></td>
-                </tr>
-                <tr>
-                  <td>Q3</td>
-                  <td>Exception Handling</td>
-                  <td>Python</td>
-                  <td class="text-center fw-bold">65</td>
-                  <td class="text-end"><span class="badge badge-needs">Needs Improvement</span></td>
-                </tr>
-                <tr>
-                  <td>Q4</td>
-                  <td>Object-Oriented Programming</td>
-                  <td>Python</td>
-                  <td class="text-center fw-bold">72</td>
-                  <td class="text-end"><span class="badge badge-good">Good</span></td>
-                </tr>
-                <tr>
-                  <td>Q5</td>
-                  <td>Python Dictionaries</td>
-                  <td>Python</td>
-                  <td class="text-center fw-bold">88</td>
-                  <td class="text-end"><span class="badge badge-excellent">Excellent</span></td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="result-card" style="height: auto;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-semibold text-secondary mb-0"><i class="fas fa-clipboard-list text-primary me-2"></i>Question-wise Performance</h6>
+            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" id="expandAllBtn" style="font-size: 0.8rem;">
+              <i class="fas fa-expand me-1"></i> Expand All
+            </button>
           </div>
-          <div class="text-end mt-2">
-            <span class="demo-badge"><i class="fas fa-flask me-1"></i> Demo Data</span>
+          <div id="questionAnalysisBody">
+            <!-- Dynamically filled with detailed question cards -->
           </div>
         </div>
       </div>
@@ -562,128 +583,528 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Main application logic (loads calculateResult, analyzeAnswer, etc.) -->
+  <script src="js/script.js"></script>
+
   <!-- ============================================================ -->
-  <!-- JAVASCRIPT – Chart.js + Ring Score                           -->
+  <!-- RESULT PAGE RENDERING                                        -->
   <!-- ============================================================ -->
   <script>
-    (function() {
+    (function () {
       'use strict';
 
-      // ---- 1. Circular Score Ring (using canvas) ----
-      const canvas = document.getElementById('scoreRingCanvas');
-      const ctx = canvas.getContext('2d');
-      const score = 78;
-      const total = 100;
-      const radius = 70;
-      const centerX = 90;
-      const centerY = 90;
-      const lineWidth = 12;
+      // Wait for initResultPage() from script.js to calculate and store result
+      var result = JSON.parse(localStorage.getItem('aiInterviewResults'));
+      if (!result || !result.analyses) {
+        console.warn('No result data found.');
+        return;
+      }
 
-      function drawRing(percent) {
+      var settings = result.settings || {};
+      var analyses = result.analyses || [];
+
+      // ---- Header badges ----
+      var roleEl = document.getElementById('resultJobRole');
+      var typeEl = document.getElementById('resultInterviewType');
+      var diffEl = document.getElementById('resultDifficulty');
+      var countEl = document.getElementById('resultQuestionCount');
+
+      if (roleEl) roleEl.innerHTML = '<i class="fas fa-briefcase text-primary me-1"></i> ' + escapeHTMLLocal(settings.jobRole || 'Python Developer');
+      if (typeEl) typeEl.innerHTML = '<i class="fas fa-list-check text-primary me-1"></i> ' + escapeHTMLLocal(settings.interviewType || 'Technical Interview');
+      if (diffEl) diffEl.innerHTML = '<i class="fas fa-signal text-primary me-1"></i> ' + escapeHTMLLocal(settings.difficulty || 'Beginner');
+      if (countEl) countEl.innerHTML = '<i class="fas fa-hashtag text-primary me-1"></i> ' + analyses.length + ' Questions';
+
+      // ---- Overall Score Ring ----
+      var scoreEl = document.getElementById('overallScore');
+      if (scoreEl) scoreEl.textContent = result.overall;
+
+      var canvas = document.getElementById('scoreRingCanvas');
+      if (canvas) {
+        var ctx = canvas.getContext('2d');
+        var cx = 90, cy = 90, rad = 70, lw = 12;
         ctx.clearRect(0, 0, 180, 180);
-        // background ring
+
+        // Background ring
         ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.arc(cx, cy, rad, 0, 2 * Math.PI);
         ctx.strokeStyle = '#e2e8f0';
-        ctx.lineWidth = lineWidth;
+        ctx.lineWidth = lw;
         ctx.stroke();
 
-        // foreground ring
-        const startAngle = -Math.PI / 2;
-        const endAngle = startAngle + (2 * Math.PI * percent);
-        const gradient = ctx.createLinearGradient(0, 0, 180, 180);
-        gradient.addColorStop(0, '#2563eb');
-        gradient.addColorStop(1, '#7c3aed');
+        // Foreground ring
+        var startAngle = -Math.PI / 2;
+        var endAngle = startAngle + (2 * Math.PI * result.overall / 100);
+        var ringColor = getScoreColor(result.overall);
+        var gradient = ctx.createLinearGradient(0, 0, 180, 180);
+        if (result.overall >= 80) {
+          gradient.addColorStop(0, '#059669');
+          gradient.addColorStop(1, '#10b981');
+        } else if (result.overall >= 60) {
+          gradient.addColorStop(0, '#2563eb');
+          gradient.addColorStop(1, '#7c3aed');
+        } else if (result.overall >= 40) {
+          gradient.addColorStop(0, '#d97706');
+          gradient.addColorStop(1, '#f59e0b');
+        } else {
+          gradient.addColorStop(0, '#dc2626');
+          gradient.addColorStop(1, '#f87171');
+        }
         ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.arc(cx, cy, rad, startAngle, endAngle);
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = lineWidth;
+        ctx.lineWidth = lw;
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        // small dot at end
-        const dotAngle = endAngle;
-        const dotX = centerX + radius * Math.cos(dotAngle);
-        const dotY = centerY + radius * Math.sin(dotAngle);
+        // End dot
+        var dotX = cx + rad * Math.cos(endAngle);
+        var dotY = cy + rad * Math.sin(endAngle);
         ctx.beginPath();
         ctx.arc(dotX, dotY, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = '#7c3aed';
+        ctx.fillStyle = ringColor;
         ctx.fill();
       }
 
-      drawRing(score / total);
+      // Overall badge
+      var overallBadge = document.getElementById('overallBadge');
+      var overallSummary = document.getElementById('overallSummary');
+      if (overallBadge) {
+        var info = getPerformanceInfo(result.overall);
+        overallBadge.className = 'badge px-3 py-2 rounded-pill fs-6 ' + info.badgeClass;
+        overallBadge.textContent = info.label;
+      }
+      if (overallSummary) {
+        overallSummary.textContent = getOverallSummary(result);
+      }
 
-      // ---- 2. Radar Chart (Chart.js) ----
-      const radarCtx = document.getElementById('radarChart').getContext('2d');
+      // ---- Performance Breakdown ----
+      var breakdownContainer = document.getElementById('breakdownContainer');
+      if (breakdownContainer) {
+        var metrics = [
+          { key: 'technical', label: 'Technical Knowledge', icon: 'fa-microchip', value: result.technical },
+          { key: 'relevance', label: 'Relevance', icon: 'fa-bullseye', value: result.relevance },
+          { key: 'communication', label: 'Communication', icon: 'fa-comment-dots', value: result.communication },
+          { key: 'clarity', label: 'Clarity', icon: 'fa-lightbulb', value: result.clarity },
+          { key: 'completeness', label: 'Completeness', icon: 'fa-check-double', value: result.completeness }
+        ];
 
-      new Chart(radarCtx, {
-        type: 'radar',
-        data: {
-          labels: ['Technical Knowledge', 'Relevance', 'Communication', 'Clarity', 'Completeness'],
-          datasets: [{
-            label: 'Performance Score',
-            data: [82, 80, 74, 76, 70],
-            backgroundColor: 'rgba(37, 99, 235, 0.15)',
-            borderColor: '#2563eb',
-            borderWidth: 2.5,
-            pointBackgroundColor: '#2563eb',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2,
-            pointRadius: 5,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            r: {
-              beginAtZero: true,
-              max: 100,
-              ticks: {
-                stepSize: 25,
-                color: '#94a3b8',
-                backdropColor: 'transparent',
-                font: { size: 10 }
-              },
-              grid: {
-                color: '#e2e8f0'
-              },
-              angleLines: {
-                color: '#e2e8f0'
-              },
-              pointLabels: {
-                color: '#1e293b',
-                font: { size: 11, weight: '600' }
-              }
-            }
+        breakdownContainer.innerHTML = metrics.map(function (m) {
+          var barClass = getBarClass(m.value);
+          var perfInfo = getPerformanceInfo(m.value);
+          return '<div class="breakdown-item d-flex align-items-center">' +
+            '<div class="me-3" style="width: 36px;"><i class="fas ' + m.icon + ' text-primary fs-5"></i></div>' +
+            '<div class="flex-grow-1">' +
+              '<div class="d-flex justify-content-between align-items-center">' +
+                '<span class="fw-semibold">' + m.label + '</span>' +
+                '<div class="d-flex align-items-center gap-2">' +
+                  '<span class="fw-bold">' + m.value + ' / 100</span>' +
+                  '<span class="' + perfInfo.badgeSmall + '" style="font-size:0.7rem;">' + perfInfo.label + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<div class="progress"><div class="progress-bar ' + barClass + '" style="width: 0%;"></div></div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        // Animate bars
+        setTimeout(function () {
+          var bars = breakdownContainer.querySelectorAll('.progress-bar');
+          metrics.forEach(function (m, i) {
+            if (bars[i]) bars[i].style.width = m.value + '%';
+          });
+        }, 100);
+      }
+
+      // ---- Radar Chart ----
+      var radarEl = document.getElementById('radarChart');
+      if (radarEl && typeof Chart !== 'undefined') {
+        try {
+          var existingChart = Chart.getChart(radarEl);
+          if (existingChart) existingChart.destroy();
+        } catch (e) {}
+
+        new Chart(radarEl, {
+          type: 'radar',
+          data: {
+            labels: ['Technical', 'Relevance', 'Communication', 'Clarity', 'Completeness'],
+            datasets: [{
+              label: 'Your Performance',
+              data: [result.technical, result.relevance, result.communication, result.clarity, result.completeness],
+              backgroundColor: 'rgba(37, 99, 235, 0.15)',
+              borderColor: '#2563eb',
+              borderWidth: 2.5,
+              pointBackgroundColor: '#2563eb',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: 5
+            }]
           },
-          plugins: {
-            legend: {
-              display: false
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { stepSize: 25, color: '#94a3b8', backdropColor: 'transparent', font: { size: 10 } },
+                grid: { color: '#e2e8f0' },
+                angleLines: { color: '#e2e8f0' },
+                pointLabels: { color: '#1e293b', font: { size: 11, weight: '600' } }
+              }
             },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return context.parsed.r + '/100';
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function (context) { return context.parsed.r + '/100'; }
                 }
               }
             }
           }
+        });
+      }
+
+      // ---- Strengths & Weaknesses ----
+      var strengthsList = document.getElementById('strengthsList');
+      var weaknessesList = document.getElementById('weaknessesList');
+
+      if (strengthsList && weaknessesList) {
+        var metricsForSW = [
+          { label: 'Technical Knowledge', value: result.technical },
+          { label: 'Answer Relevance', value: result.relevance },
+          { label: 'Communication Skills', value: result.communication },
+          { label: 'Answer Clarity', value: result.clarity },
+          { label: 'Answer Completeness', value: result.completeness }
+        ];
+
+        var strengths = [];
+        var weaknesses = [];
+
+        metricsForSW.forEach(function (m) {
+          if (m.value >= 70) {
+            strengths.push(m.label + ' (' + m.value + '/100)');
+          } else if (m.value < 50) {
+            weaknesses.push(m.label + ' (' + m.value + '/100)');
+          }
+        });
+
+        // Also identify best and worst questions
+        var sortedAnalyses = analyses.slice().sort(function (a, b) { return b.score - a.score; });
+        var bestQ = sortedAnalyses[0];
+        var worstQ = sortedAnalyses[sortedAnalyses.length - 1];
+
+        if (bestQ && bestQ.score >= 60) {
+          strengths.push('Best answer on: "' + truncate(bestQ.question, 50) + '" (Score: ' + bestQ.score + ')');
         }
-      });
 
-      // ---- 3. Animate progress bars on load ----
-      document.querySelectorAll('.breakdown-item .progress-bar, .readiness-bar .progress-bar').forEach(function(bar) {
-        const targetWidth = bar.style.width;
-        bar.style.width = '0%';
-        setTimeout(function() {
-          bar.style.width = targetWidth;
-        }, 100);
-      });
+        if (strengths.length === 0) {
+          strengths.push('Keep practicing — your scores will improve with preparation!');
+        }
 
-      console.log('Result page loaded with demo data.');
+        if (worstQ && worstQ.score < 50) {
+          weaknesses.push('Struggled with: "' + truncate(worstQ.question, 50) + '" (Score: ' + worstQ.score + ')');
+        }
+
+        // Count unanswered questions
+        var unanswered = analyses.filter(function (a) { return !a.answer || a.answer.trim() === ''; }).length;
+        if (unanswered > 0) {
+          weaknesses.push(unanswered + ' question' + (unanswered > 1 ? 's were' : ' was') + ' left unanswered');
+        }
+
+        if (weaknesses.length === 0) {
+          weaknesses.push('Great job — no major weak areas detected!');
+        }
+
+        strengthsList.innerHTML = strengths.map(function (s) {
+          return '<li class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>' + escapeHTMLLocal(s) + '</li>';
+        }).join('');
+
+        weaknessesList.innerHTML = weaknesses.map(function (w) {
+          return '<li class="mb-1"><i class="fas fa-arrow-up text-warning me-2"></i>' + escapeHTMLLocal(w) + '</li>';
+        }).join('');
+      }
+
+      // ---- AI Feedback ----
+      var feedbackEl = document.getElementById('aiFeedbackText');
+      var tipsEl = document.getElementById('improvementTips');
+
+      if (feedbackEl) {
+        feedbackEl.textContent = generateAIFeedback(result, analyses);
+      }
+
+      if (tipsEl) {
+        var tips = generateImprovementTips(result, analyses);
+        tipsEl.innerHTML = tips.map(function (tip) {
+          return '<div class="improvement-tip"><i class="fas fa-lightbulb me-2"></i>' + escapeHTMLLocal(tip) + '</div>';
+        }).join('');
+      }
+
+      // ---- Readiness ----
+      var readinessPercent = document.getElementById('readinessPercent');
+      var readinessBadge = document.getElementById('readinessBadge');
+      var readinessBarFill = document.getElementById('readinessBarFill');
+      var readinessAdvice = document.getElementById('readinessAdvice');
+
+      if (readinessPercent) readinessPercent.textContent = result.readiness + '%';
+      if (readinessBarFill) {
+        setTimeout(function () { readinessBarFill.style.width = result.readiness + '%'; }, 200);
+      }
+      if (readinessBadge) {
+        var rInfo = getPerformanceInfo(result.readiness);
+        readinessBadge.className = 'badge px-3 py-2 rounded-pill ' + rInfo.badgeClass;
+        readinessBadge.textContent = rInfo.label;
+      }
+      if (readinessAdvice) {
+        readinessAdvice.textContent = getReadinessAdvice(result.readiness);
+      }
+
+      // ---- Question-wise Detailed Performance ----
+      var questionBody = document.getElementById('questionAnalysisBody');
+      if (questionBody) {
+        questionBody.innerHTML = analyses.map(function (item, idx) {
+          var scoreClass = getScoreClass(item.score);
+          var scoreCircleClass = getScoreCircleClass(item.score);
+          var perfInfo = getPerformanceInfo(item.score);
+          var hasAnswer = item.answer && item.answer.trim();
+          var feedbackClass = item.score >= 60 ? '' : (item.score >= 40 ? 'fb-warning' : 'fb-danger');
+
+          var miniMetrics = [
+            { label: 'Technical', value: item.technical, color: getScoreColor(item.technical) },
+            { label: 'Relevance', value: item.relevance, color: getScoreColor(item.relevance) },
+            { label: 'Communication', value: item.communication, color: getScoreColor(item.communication) },
+            { label: 'Clarity', value: item.clarity, color: getScoreColor(item.clarity) },
+            { label: 'Completeness', value: item.completeness, color: getScoreColor(item.completeness) }
+          ];
+
+          return '<div class="q-detail-card ' + scoreClass + '">' +
+            '<div class="d-flex align-items-start gap-3">' +
+              '<div class="q-score-circle ' + scoreCircleClass + '">' + item.score + '</div>' +
+              '<div class="flex-grow-1">' +
+                '<div class="d-flex justify-content-between align-items-start flex-wrap gap-1">' +
+                  '<div>' +
+                    '<span class="fw-bold text-muted" style="font-size:0.78rem;">Q' + (idx + 1) + '</span> ' +
+                    '<span class="fw-semibold">' + escapeHTMLLocal(item.question) + '</span>' +
+                  '</div>' +
+                  '<span class="' + perfInfo.badgeSmall + '">' + perfInfo.label + '</span>' +
+                '</div>' +
+
+                // Mini score bars
+                '<div class="d-flex flex-wrap gap-2 mt-2">' +
+                  miniMetrics.map(function (mm) {
+                    return '<div class="d-flex align-items-center gap-1" style="min-width: 120px; font-size: 0.75rem;">' +
+                      '<span class="text-muted" style="width: 75px;">' + mm.label + '</span>' +
+                      '<div class="q-mini-bar"><div class="bar-fill" style="width:' + mm.value + '%; background:' + mm.color + ';"></div></div>' +
+                      '<span class="fw-bold" style="width:28px; text-align:right;">' + mm.value + '</span>' +
+                    '</div>';
+                  }).join('') +
+                '</div>' +
+
+                // Toggle details
+                '<div class="q-detail-toggle mt-2" onclick="toggleDetail(' + idx + ')">' +
+                  '<i class="fas fa-chevron-down me-1" id="toggleIcon' + idx + '"></i> View details' +
+                '</div>' +
+
+                // Expanded detail
+                '<div class="q-detail-expanded" id="detail' + idx + '">' +
+                  '<div class="mb-2">' +
+                    '<small class="fw-semibold text-muted">Your Answer:</small>' +
+                    '<div class="q-answer-preview ' + (!hasAnswer ? 'empty-answer' : '') + '">' +
+                      (hasAnswer ? escapeHTMLLocal(item.answer) : '⚠ No answer was provided for this question.') +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="q-feedback-text ' + feedbackClass + '">' +
+                    '<i class="fas fa-comment-medical me-1"></i> ' + escapeHTMLLocal(item.feedback) +
+                  '</div>' +
+                '</div>' +
+
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // Expand All toggle
+      var expandAllBtn = document.getElementById('expandAllBtn');
+      if (expandAllBtn) {
+        var allExpanded = false;
+        expandAllBtn.addEventListener('click', function () {
+          allExpanded = !allExpanded;
+          analyses.forEach(function (_, idx) {
+            var detail = document.getElementById('detail' + idx);
+            var icon = document.getElementById('toggleIcon' + idx);
+            if (detail) {
+              if (allExpanded) {
+                detail.classList.add('show');
+              } else {
+                detail.classList.remove('show');
+              }
+            }
+            if (icon) {
+              icon.className = allExpanded ? 'fas fa-chevron-up me-1' : 'fas fa-chevron-down me-1';
+            }
+          });
+          expandAllBtn.innerHTML = allExpanded
+            ? '<i class="fas fa-compress me-1"></i> Collapse All'
+            : '<i class="fas fa-expand me-1"></i> Expand All';
+        });
+      }
+
+      // ============================================================
+      // HELPER FUNCTIONS
+      // ============================================================
+
+      function escapeHTMLLocal(val) {
+        return String(val || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function truncate(str, len) {
+        str = String(str || '');
+        return str.length > len ? str.substring(0, len) + '…' : str;
+      }
+
+      function getScoreColor(score) {
+        if (score >= 80) return '#059669';
+        if (score >= 60) return '#2563eb';
+        if (score >= 40) return '#d97706';
+        return '#dc2626';
+      }
+
+      function getBarClass(score) {
+        if (score >= 80) return 'bar-excellent';
+        if (score >= 60) return 'bar-good';
+        if (score >= 40) return 'bar-average';
+        return 'bar-poor';
+      }
+
+      function getScoreClass(score) {
+        if (score === 0) return 'q-unanswered';
+        if (score >= 80) return 'q-excellent';
+        if (score >= 60) return 'q-good';
+        if (score >= 40) return 'q-average';
+        return 'q-poor';
+      }
+
+      function getScoreCircleClass(score) {
+        if (score === 0) return 'sc-zero';
+        if (score >= 80) return 'sc-excellent';
+        if (score >= 60) return 'sc-good';
+        if (score >= 40) return 'sc-average';
+        return 'sc-poor';
+      }
+
+      function getPerformanceInfo(score) {
+        if (score >= 80) return { label: 'Excellent', badgeClass: 'bg-success bg-opacity-15 text-success', badgeSmall: 'badge badge-excellent' };
+        if (score >= 60) return { label: 'Good', badgeClass: 'bg-primary bg-opacity-15 text-primary', badgeSmall: 'badge badge-good' };
+        if (score >= 40) return { label: 'Average', badgeClass: 'bg-warning bg-opacity-15 text-warning', badgeSmall: 'badge badge-average' };
+        return { label: 'Needs Work', badgeClass: 'bg-danger bg-opacity-15 text-danger', badgeSmall: 'badge badge-poor' };
+      }
+
+      function getOverallSummary(result) {
+        var s = result.overall;
+        if (s >= 85) return 'Outstanding performance! You demonstrated strong technical knowledge and communication skills.';
+        if (s >= 70) return 'Good job! You have a solid foundation. Focus on improving technical depth for even better results.';
+        if (s >= 50) return 'Fair performance. Review the questions you struggled with and practice explaining concepts more clearly.';
+        if (s >= 25) return 'You need more preparation. Focus on understanding core concepts and practice structuring your answers.';
+        return 'Significant improvement needed. Start by revising fundamentals and practice answering questions aloud.';
+      }
+
+      function getReadinessAdvice(score) {
+        if (score >= 80) return 'You are well-prepared for interviews! Keep practicing to maintain your edge.';
+        if (score >= 60) return 'You are on the right track. Focus on your weak areas to boost your confidence.';
+        if (score >= 40) return 'More practice is needed. Revisit topics where you scored below 50 and try mock interviews.';
+        return 'Start with focused preparation. Use the Preparation page to build your knowledge systematically.';
+      }
+
+      function generateAIFeedback(result, analyses) {
+        var parts = [];
+        var answered = analyses.filter(function (a) { return a.answer && a.answer.trim(); }).length;
+        var total = analyses.length;
+
+        if (answered === 0) {
+          return 'You did not provide any answers during the interview. Please attempt the questions to receive meaningful feedback.';
+        }
+
+        if (answered < total) {
+          parts.push('You answered ' + answered + ' out of ' + total + ' questions. Leaving questions unanswered significantly impacts your score.');
+        }
+
+        if (result.overall >= 80) {
+          parts.push('Excellent performance! Your answers show strong understanding of the subject matter.');
+        } else if (result.overall >= 60) {
+          parts.push('Good effort overall. Your answers demonstrate a reasonable understanding of the concepts.');
+        } else if (result.overall >= 40) {
+          parts.push('Your answers show partial understanding. More depth and clarity would strengthen your responses.');
+        } else {
+          parts.push('Your answers need significant improvement. Focus on understanding the core concepts before practicing interviews.');
+        }
+
+        if (result.technical < 50) {
+          parts.push('Your technical knowledge score is low (' + result.technical + '/100). Use more technical terms and mention specific concepts in your answers.');
+        }
+        if (result.relevance < 50) {
+          parts.push('Your answer relevance is low (' + result.relevance + '/100). Make sure your answers directly address what the question asks.');
+        }
+        if (result.completeness < 50) {
+          parts.push('Your answers are too brief (' + result.completeness + '/100). Aim for detailed explanations with examples.');
+        }
+        if (result.clarity < 50) {
+          parts.push('Your clarity score is low (' + result.clarity + '/100). Use complete sentences and organize your thoughts before answering.');
+        }
+
+        return parts.join(' ');
+      }
+
+      function generateImprovementTips(result, analyses) {
+        var tips = [];
+
+        if (result.technical < 60) {
+          tips.push('Study key technical concepts for ' + (settings.jobRole || 'your role') + ' — use proper terminology in your answers.');
+        }
+        if (result.relevance < 60) {
+          tips.push('Read each question carefully and answer what is specifically asked. Avoid going off-topic.');
+        }
+        if (result.completeness < 60) {
+          tips.push('Provide longer, more detailed answers. Aim for at least 3-4 sentences per question with examples.');
+        }
+        if (result.clarity < 60) {
+          tips.push('Structure your answers: start with a definition, explain the concept, then give an example.');
+        }
+        if (result.communication < 60) {
+          tips.push('Practice speaking or writing answers in complete, well-formed sentences.');
+        }
+
+        var unanswered = analyses.filter(function (a) { return !a.answer || a.answer.trim() === ''; }).length;
+        if (unanswered > 0) {
+          tips.push('Always attempt every question — even a partial answer is better than no answer.');
+        }
+
+        if (tips.length === 0) {
+          tips.push('Keep up the great work! Challenge yourself with Advanced difficulty for further growth.');
+        }
+
+        return tips;
+      }
+
     })();
+
+    // Global toggle function for question details
+    function toggleDetail(idx) {
+      var detail = document.getElementById('detail' + idx);
+      var icon = document.getElementById('toggleIcon' + idx);
+      if (detail) {
+        detail.classList.toggle('show');
+      }
+      if (icon) {
+        icon.className = detail && detail.classList.contains('show')
+          ? 'fas fa-chevron-up me-1'
+          : 'fas fa-chevron-down me-1';
+      }
+    }
   </script>
-<script src="js/script.js"></script>
 </body>
 </html>

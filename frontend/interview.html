@@ -419,22 +419,33 @@
             <label class="fw-semibold text-light">
               <i class="fas fa-pen-to-square text-primary me-2"></i>Your Answer
             </label>
-            <span class="text-muted small">Voice-to-text will be connected in Part 2.</span>
+            <span class="text-muted small" id="answerSavedIndicator"><i class="fas fa-cloud-arrow-up text-success me-1"></i>Auto-saved</span>
           </div>
-          <textarea class="form-control-dark w-100" id="answerTextarea" rows="4" placeholder="Your answer will appear here after voice recognition... (you can also type manually for this demo)"></textarea>
+          <textarea class="form-control-dark w-100" id="answerTextarea" rows="4" placeholder="Speak using the microphone or type your answer here... You can edit your answer at any time."></textarea>
         </div>
 
         <!-- ===== MICROPHONE SECTION ===== -->
         <div class="text-center mb-4">
-          <button class="mic-btn" id="micButton">
-            <span class="mic-icon"><i class="fas fa-microphone"></i></span>
-            <span class="mic-label" id="micLabel">Start Answer</span>
-          </button>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <button class="mic-btn" id="micButton">
+              <span class="mic-icon"><i class="fas fa-microphone"></i></span>
+              <span class="mic-label" id="micLabel">Start Answer</span>
+            </button>
+          </div>
           <div class="recording-indicator mt-2" id="recordingIndicator">
-            <i class="fas fa-circle text-danger me-1" style="font-size: 0.7rem;"></i> Recording...
+            <i class="fas fa-circle text-danger me-1" style="font-size: 0.7rem;"></i> Listening to your voice...
+          </div>
+          <div class="d-inline-flex align-items-center gap-2 mt-2 px-3 py-1 rounded-pill" style="background: rgba(30, 41, 59, 0.75); border: 1px solid #334155;">
+            <i class="fas fa-language text-primary small"></i>
+            <span class="small text-muted">Voice Accent:</span>
+            <select id="voiceLangSelect" class="form-select form-select-sm bg-transparent text-light border-0 py-0" style="width: auto; cursor: pointer; font-size: 0.82rem; outline: none; box-shadow: none;">
+              <option value="en-IN" class="bg-dark text-light" selected>English (India) - Recommended</option>
+              <option value="en-US" class="bg-dark text-light">English (US)</option>
+              <option value="en-GB" class="bg-dark text-light">English (UK)</option>
+            </select>
           </div>
           <p class="text-muted small mt-2 mb-0">
-            <i class="fas fa-info-circle me-1"></i> Click the mic to simulate recording (frontend demo)
+            <i class="fas fa-shield-alt text-success me-1"></i> Microphone permission is held active — no repeated popups.
           </p>
         </div>
 
@@ -451,12 +462,6 @@
           <button class="btn btn-danger-custom" id="finishBtn">
             <i class="fas fa-flag-checkered me-1"></i> Finish Interview
           </button>
-        </div>
-
-        <!-- demo status note (inside main column) -->
-        <div class="demo-note mt-4">
-          <i class="fas fa-laptop-code"></i>
-          Frontend Demo Mode — AI evaluation and voice recognition will be connected in Part 2 and Part 3.
         </div>
       </div>
 
@@ -502,244 +507,7 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- ============================================================ -->
-  <!-- JAVASCRIPT – all frontend logic                              -->
-  <!-- ============================================================ -->
-  <script>
-    (function() {
-      'use strict';
-
-      // ---- SAMPLE QUESTIONS (5 Python-related) ----
-      const questions = [{
-        text: "Explain the difference between a list and a tuple in Python.",
-        topic: "Python",
-        difficulty: "Intermediate"
-      }, {
-        text: "What is a function in Python? How do you define and call a function?",
-        topic: "Python",
-        difficulty: "Beginner"
-      }, {
-        text: "Explain how exception handling works in Python with try, except, and finally.",
-        topic: "Python",
-        difficulty: "Intermediate"
-      }, {
-        text: "What is Object-Oriented Programming (OOP)? Explain the four pillars of OOP in Python.",
-        topic: "Python",
-        difficulty: "Advanced"
-      }, {
-        text: "How do dictionaries work in Python? Explain how to add, update, and retrieve items.",
-        topic: "Python",
-        difficulty: "Beginner"
-      }];
-
-      const totalQ = questions.length;
-
-      // ---- DOM refs ----
-      const questionText = document.getElementById('questionText');
-      const topicBadge = document.getElementById('topicBadge');
-      const difficultyBadge = document.getElementById('difficultyBadge');
-      const qNumberDisplay = document.getElementById('qNumberDisplay');
-      const questionCounterDisplay = document.getElementById('questionCounterDisplay');
-      const progressBar = document.getElementById('progressBar');
-      const progressLabel = document.getElementById('progressLabel');
-
-      const answerTextarea = document.getElementById('answerTextarea');
-      const micButton = document.getElementById('micButton');
-      const micLabel = document.getElementById('micLabel');
-      const recordingIndicator = document.getElementById('recordingIndicator');
-
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const finishBtn = document.getElementById('finishBtn');
-
-      const timerDisplay = document.getElementById('timerDisplay');
-      const timeUpMessage = document.getElementById('timeUpMessage');
-
-      // ---- state ----
-      let currentIndex = 0; // 0-based
-      let isRecording = false;
-      let timerSeconds = 120; // 2 minutes
-      let timerInterval = null;
-      let isTimerStopped = false;
-
-      // ---- render question ----
-      function renderQuestion(index) {
-        const q = questions[index];
-        questionText.textContent = q.text;
-        topicBadge.textContent = q.topic;
-        difficultyBadge.textContent = q.difficulty;
-
-        const qNum = index + 1;
-        qNumberDisplay.textContent = `Question ${qNum}`;
-        questionCounterDisplay.textContent = `Q${qNum} / ${totalQ}`;
-
-        // progress: (index+1)/total * 100
-        const pct = ((index + 1) / totalQ) * 100;
-        progressBar.style.width = pct + '%';
-        progressBar.setAttribute('aria-valuenow', pct);
-        progressLabel.textContent = `Question ${qNum} of ${totalQ}`;
-
-        // disable prev on first
-        prevBtn.disabled = (index === 0);
-      }
-
-      // ---- reset answer & mic state ----
-      function resetAnswerAndMic() {
-        answerTextarea.value = '';
-        // reset mic
-        if (isRecording) {
-          isRecording = false;
-          micButton.classList.remove('recording');
-          micLabel.textContent = 'Start Answer';
-          recordingIndicator.classList.remove('show');
-        }
-      }
-
-      // ---- navigate ----
-      function goToQuestion(index) {
-        if (index < 0 || index >= totalQ) return;
-        currentIndex = index;
-        renderQuestion(index);
-        resetAnswerAndMic();
-      }
-
-      function nextQuestion() {
-        if (currentIndex < totalQ - 1) {
-          goToQuestion(currentIndex + 1);
-        }
-      }
-
-      function prevQuestion() {
-        if (currentIndex > 0) {
-          goToQuestion(currentIndex - 1);
-        }
-      }
-
-      // ---- timer ----
-      function updateTimerDisplay() {
-        const mins = Math.floor(timerSeconds / 60);
-        const secs = timerSeconds % 60;
-        timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-        if (timerSeconds <= 10) {
-          timerDisplay.classList.add('warning');
-        } else {
-          timerDisplay.classList.remove('warning');
-        }
-
-        if (timerSeconds <= 0) {
-          timerDisplay.textContent = '00:00';
-          timeUpMessage.style.display = 'block';
-          if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            isTimerStopped = true;
-          }
-        } else {
-          timeUpMessage.style.display = 'none';
-        }
-      }
-
-      function startTimer() {
-        if (timerInterval) return;
-        isTimerStopped = false;
-        timerInterval = setInterval(function() {
-          if (timerSeconds > 0) {
-            timerSeconds--;
-            updateTimerDisplay();
-          } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            isTimerStopped = true;
-            updateTimerDisplay();
-          }
-        }, 1000);
-      }
-
-      // reset timer (called on page load)
-      function resetTimer() {
-        if (timerInterval) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-        }
-        timerSeconds = 120;
-        isTimerStopped = false;
-        updateTimerDisplay();
-        startTimer();
-      }
-
-      // ---- mic toggle (simulation) ----
-      function toggleMic() {
-        if (isTimerStopped) {
-          // if time is up, don't allow recording
-          alert('Time is up! Please finish the interview.');
-          return;
-        }
-        isRecording = !isRecording;
-        if (isRecording) {
-          micButton.classList.add('recording');
-          micLabel.textContent = 'Stop';
-          recordingIndicator.classList.add('show');
-          // simulate "recording" by adding some placeholder text after a short delay
-          // but don't overwrite if user typed manually
-        } else {
-          micButton.classList.remove('recording');
-          micLabel.textContent = 'Start Answer';
-          recordingIndicator.classList.remove('show');
-        }
-      }
-
-      // ---- finish interview ----
-      function finishInterview() {
-        if (confirm('Are you sure you want to finish the interview?')) {
-          // stop timer
-          if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-          }
-          window.location.href = 'result.html';
-        }
-      }
-
-      // ---- event listeners ----
-      nextBtn.addEventListener('click', nextQuestion);
-      prevBtn.addEventListener('click', prevQuestion);
-
-      micButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleMic();
-      });
-
-      finishBtn.addEventListener('click', finishInterview);
-
-      // keyboard shortcuts (optional): arrow keys for navigation
-      document.addEventListener('keydown', function(e) {
-        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
-        if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          nextQuestion();
-        } else if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          prevQuestion();
-        }
-      });
-
-      // ---- init ----
-      renderQuestion(0);
-      resetAnswerAndMic();
-      resetTimer();
-
-      // ---- if user clicks "Start Answer" but no text, we could optionally simulate voice-to-text
-      // but we keep it simple: just recording state.
-      // For extra prototype feel, when recording stops, we can append a sample text
-      // but we let the user type manually as per requirement.
-
-      // ---- additional: if recording stops, we could simulate a transcribed text
-      // but we'll keep it clean: no auto-fill to avoid confusion.
-
-      console.log('Interview screen loaded. Frontend demo mode.');
-    })();
-  </script>
-<script src="js/script.js"></script>
+  <!-- Main application logic -->
+  <script src="js/script.js"></script>
 </body>
 </html>

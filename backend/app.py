@@ -1,12 +1,15 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 from mysql.connector import Error
 import re
+import os
 
 # ============================================================
 # CREATE FLASK APPLICATION
 # ============================================================
+
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
 
 app = Flask(__name__)
 CORS(app)
@@ -43,7 +46,19 @@ def get_db_connection():
 
 @app.route("/")
 def home():
+    if os.path.exists(os.path.join(FRONTEND_DIR, "index.html")):
+        return send_from_directory(FRONTEND_DIR, "index.html")
     return "AI Interview Coach Backend is Working!"
+
+
+@app.route("/<path:filename>")
+def serve_frontend_file(filename):
+    if filename.startswith("api/"):
+        return jsonify({"status": "error", "message": "API route not found"}), 404
+    target = os.path.join(FRONTEND_DIR, filename)
+    if os.path.exists(target) and os.path.isfile(target):
+        return send_from_directory(FRONTEND_DIR, filename)
+    return jsonify({"status": "error", "message": "File not found"}), 404
 
 
 # ============================================================
