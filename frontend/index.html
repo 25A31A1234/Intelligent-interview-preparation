@@ -166,6 +166,87 @@
       max-width: 240px;
     }
 
+    /* preparation hero widget */
+    .prep-hero-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.8rem 1.6rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 20px 50px -15px rgba(37, 99, 235, 0.15);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .prep-hero-card:hover {
+      box-shadow: 0 25px 55px -12px rgba(37, 99, 235, 0.22);
+    }
+
+    .prep-hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+    }
+
+    .prep-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e0e7ff, #ede9fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #2563eb;
+    }
+
+    .duration-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .duration-pill-btn {
+      flex: 1;
+      min-width: 68px;
+      padding: 0.55rem 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .duration-pill-btn:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .duration-pill-btn.active {
+      border-color: #2563eb;
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .preview-summary-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      padding: 0.85rem 1rem;
+      transition: background 0.2s ease;
+    }
+
     .step-icon {
       width: 70px;
       height: 70px;
@@ -255,6 +336,7 @@
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
           <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="preparation.html"><i class="fas fa-calendar-check text-primary me-1"></i>Preparation</a></li>
           <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
           <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
@@ -282,14 +364,86 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <!-- visual card (AI / interview themed) -->
-        <div class="hero-visual">
-          <i class="fas fa-microphone-alt"></i>
-          <h5>AI-powered interview simulation</h5>
-          <p>Voice-based practice · real-time feedback · performance analytics</p>
-          <div class="mt-2 d-flex gap-3 text-primary">
-            <span><i class="fas fa-circle-check"></i> Smart</span>
-            <span><i class="fas fa-chart-line"></i> Adaptive</span>
+        <!-- ===== PERSONALIZED PREPARATION BLOCK ON HOME ===== -->
+        <div class="prep-hero-card" id="homePreparationBlock">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="prep-icon-box">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">Preparation Planner</h5>
+                <small class="text-secondary">Customized roadmap based on role & timeline</small>
+              </div>
+            </div>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-2 py-1 small">
+              <i class="fas fa-sparkles me-1"></i>AI Powered
+            </span>
+          </div>
+
+          <!-- Role Selector -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary small d-flex justify-content-between mb-1" for="homeRoleSelect">
+              <span><i class="fas fa-user-tag text-primary me-1"></i> Choose Your Target Role</span>
+              <span class="text-muted small">8+ Tracks</span>
+            </label>
+            <select id="homeRoleSelect" class="form-select" style="border-radius: 12px; font-weight: 500; border: 1.5px solid #cbd5e1; padding: 0.65rem 0.9rem;">
+              <option value="Python Developer" selected>🐍 Python Developer</option>
+              <option value="Java Developer">☕ Java Developer</option>
+              <option value="Web Developer">🌐 Web / Frontend Developer</option>
+              <option value="Data Analyst">📊 Data Analyst</option>
+              <option value="AI/ML Engineer">🤖 AI / ML Engineer</option>
+              <option value="Software Developer">💻 Software Developer</option>
+              <option value="Cloud / DevOps Engineer">☁️ Cloud / DevOps Engineer</option>
+              <option value="Full Stack Developer">🚀 Full Stack Developer</option>
+            </select>
+          </div>
+
+          <!-- Duration Selector -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary small d-flex justify-content-between mb-1">
+              <span><i class="fas fa-hourglass-half text-primary me-1"></i> Preparation Duration</span>
+              <span class="text-primary fw-semibold small" id="homeDurationLabel">7 Days Plan</span>
+            </label>
+            <div class="duration-pills" id="homeDurationPills">
+              <button type="button" class="duration-pill-btn" data-days="3">
+                <i class="fas fa-bolt d-block mb-1"></i>3 Days
+              </button>
+              <button type="button" class="duration-pill-btn active" data-days="7">
+                <i class="fas fa-calendar-week d-block mb-1"></i>7 Days
+              </button>
+              <button type="button" class="duration-pill-btn" data-days="14">
+                <i class="fas fa-calendar-alt d-block mb-1"></i>14 Days
+              </button>
+              <button type="button" class="duration-pill-btn" data-days="30">
+                <i class="fas fa-trophy d-block mb-1"></i>30 Days
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Preview Summary Box -->
+          <div class="preview-summary-box mb-3">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <span class="small fw-bold text-dark" id="homePreviewTitle">Python Developer · 7-Day Roadmap</span>
+              <span class="badge bg-success bg-opacity-15 text-success rounded-pill small" id="homePaceBadge">Standard Pace</span>
+            </div>
+            <p class="small text-muted mb-0" id="homePreviewDesc">
+              Core syntax, data structures, OOP, exception handling, and mock interview practice.
+            </p>
+          </div>
+
+          <!-- Action Button -->
+          <div class="d-grid gap-2">
+            <button type="button" id="homeOpenPlanBtn" class="btn btn-gradient py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+              <i class="fas fa-compass-drafting"></i>
+              <span>Generate Preparation Plan</span>
+              <i class="fas fa-arrow-right ms-1"></i>
+            </button>
+          </div>
+          <div class="text-center mt-2">
+            <small class="text-muted" style="font-size: 0.78rem;">
+              <i class="fas fa-check-circle text-success me-1"></i>Includes daily tasks, practice questions & progress tracking
+            </small>
           </div>
         </div>
       </div>
@@ -341,11 +495,12 @@
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="card card-hover p-4 h-100 text-center">
+        <a href="preparation.html" class="card card-hover p-4 h-100 text-center text-decoration-none text-dark d-block">
           <i class="fas fa-calendar-check fa-3x text-primary mb-3"></i>
           <h5 class="fw-bold">Personalized Preparation Plan</h5>
-          <p class="text-secondary">Get a tailored study roadmap to improve weak areas efficiently.</p>
-        </div>
+          <p class="text-secondary">Get a tailored study roadmap based on your role & timeline.</p>
+          <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 mt-2">Open Planner &rarr;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -483,5 +638,149 @@
   <!-- Bootstrap JS bundle (for toggler, etc.) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/script.js"></script>
+
+  <!-- Home Preparation Planner Interaction Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      var roleSelect = document.getElementById('homeRoleSelect');
+      var durationPills = document.querySelectorAll('#homeDurationPills .duration-pill-btn');
+      var durationLabel = document.getElementById('homeDurationLabel');
+      var previewTitle = document.getElementById('homePreviewTitle');
+      var previewDesc = document.getElementById('homePreviewDesc');
+      var paceBadge = document.getElementById('homePaceBadge');
+      var openPlanBtn = document.getElementById('homeOpenPlanBtn');
+
+      if (!roleSelect || !openPlanBtn) return;
+
+      var selectedDays = 7;
+
+      var planSummaries = {
+        'Python Developer': {
+          3: { pace: 'Sprint', desc: 'Core syntax, built-in data structures (lists, tuples, dicts), and high-frequency interview questions.' },
+          7: { pace: 'Standard', desc: 'Basics, control flow, functions, OOP, exception handling, data structures & live practice.' },
+          14: { pace: 'In-Depth', desc: 'Deep dive into Python internals, generators, decorators, DSA, DB integration & mock interview rounds.' },
+          30: { pace: 'Mastery', desc: 'Full career track: advanced Python, Django/FastAPI, concurrency, system design & project defense.' }
+        },
+        'Java Developer': {
+          3: { pace: 'Sprint', desc: 'Core Java syntax, OOP essentials, memory management, and classic interview problem sets.' },
+          7: { pace: 'Standard', desc: 'Java syntax, OOP, Collections framework, inheritance, interfaces, and technical interview questions.' },
+          14: { pace: 'In-Depth', desc: 'Collections, Multithreading, JVM internals, Spring basics, exception handling & mock interviews.' },
+          30: { pace: 'Mastery', desc: 'Enterprise Java: Spring Boot, Microservices, Hibernate/JPA, design patterns & system architecture.' }
+        },
+        'Web Developer': {
+          3: { pace: 'Sprint', desc: 'HTML5 semantic tags, modern CSS flex/grid, and essential JavaScript ES6+ interview questions.' },
+          7: { pace: 'Standard', desc: 'HTML, CSS, JS foundations, DOM manipulation, Fetch API, responsive design & interview drills.' },
+          14: { pace: 'In-Depth', desc: 'Frontend frameworks (React/Vue), Async JS, State Management, REST APIs & web performance.' },
+          30: { pace: 'Mastery', desc: 'Full Frontend/Full-Stack mastery: modern architectures, SSR, testing, bundlers & live mock interviews.' }
+        },
+        'Data Analyst': {
+          3: { pace: 'Sprint', desc: 'Essential SQL queries (SELECT, JOIN, GROUP BY), basic stats, and core data analysis questions.' },
+          7: { pace: 'Standard', desc: 'SQL joins/aggregations, Excel modeling, Python (Pandas/NumPy), data visualization & case studies.' },
+          14: { pace: 'In-Depth', desc: 'Advanced SQL, statistical hypothesis testing, data cleaning pipelines, Tableau/PowerBI & mock interviews.' },
+          30: { pace: 'Mastery', desc: 'End-to-end data analytics mastery: business metrics, A/B testing, Python analytics & portfolio review.' }
+        },
+        'AI/ML Engineer': {
+          3: { pace: 'Sprint', desc: 'Python for AI, linear algebra basics, core supervised algorithms, and key ML interview questions.' },
+          7: { pace: 'Standard', desc: 'NumPy/Pandas, data preprocessing, regression/classification, model metrics & foundational neural nets.' },
+          14: { pace: 'In-Depth', desc: 'Deep learning, PyTorch/TensorFlow, feature engineering, loss functions, CNNs/Transformers & mock tests.' },
+          30: { pace: 'Mastery', desc: 'End-to-end ML & MLOps: model training, fine-tuning, system design for ML, deployment & interview drills.' }
+        },
+        'Software Developer': {
+          3: { pace: 'Sprint', desc: 'Core programming constructs, fundamental data structures, and problem-solving interview questions.' },
+          7: { pace: 'Standard', desc: 'Programming basics, OOP principles, data structures, searching/sorting algorithms & SQL fundamentals.' },
+          14: { pace: 'In-Depth', desc: 'DSA (Trees, Graphs, DP), Clean Code principles, Git/CI-CD, database design & mock interviews.' },
+          30: { pace: 'Mastery', desc: 'Full software engineering lifecycle: DSA mastery, High-Level/Low-Level System Design & behavioral drills.' }
+        },
+        'Cloud / DevOps Engineer': {
+          3: { pace: 'Sprint', desc: 'Linux commands, networking fundamentals, Docker basics, and top DevOps interview questions.' },
+          7: { pace: 'Standard', desc: 'Linux administration, containerization with Docker, CI/CD pipelines, Git & cloud fundamentals.' },
+          14: { pace: 'In-Depth', desc: 'Kubernetes architecture, Infrastructure as Code (Terraform), AWS/GCP services & mock interviews.' },
+          30: { pace: 'Mastery', desc: 'DevOps & SRE mastery: multi-cluster k8s, monitoring (Prometheus), security, scaling & live drills.' }
+        },
+        'Full Stack Developer': {
+          3: { pace: 'Sprint', desc: 'Full-stack architecture overview, RESTful API fundamentals, frontend-backend flow & key questions.' },
+          7: { pace: 'Standard', desc: 'Frontend basics, Node/Express/Backend APIs, database CRUD operations, authentication & mock practice.' },
+          14: { pace: 'In-Depth', desc: 'Frontend frameworks, Backend scalability, SQL/NoSQL DBs, auth (JWT), deployment & mock interviews.' },
+          30: { pace: 'Mastery', desc: 'Full Stack Architect: scalable cloud backends, modern reactive frontends, caching & system design.' }
+        }
+      };
+
+      // Load saved preferences if any
+      var savedRole = localStorage.getItem('aiInterviewPrepRole');
+      var savedDays = localStorage.getItem('aiInterviewPrepDuration');
+      if (savedRole && roleSelect.querySelector('option[value="' + savedRole + '"]')) {
+        roleSelect.value = savedRole;
+      }
+      if (savedDays) {
+        var daysInt = parseInt(savedDays, 10);
+        if ([3, 7, 14, 30].indexOf(daysInt) !== -1) {
+          selectedDays = daysInt;
+        }
+      }
+
+      function updatePreview() {
+        var role = roleSelect.value;
+        var roleData = planSummaries[role] || planSummaries['Python Developer'];
+        var info = roleData[selectedDays] || roleData[7];
+
+        if (previewTitle) {
+          previewTitle.textContent = role + ' · ' + selectedDays + '-Day Roadmap';
+        }
+        if (durationLabel) {
+          durationLabel.textContent = selectedDays + ' Days Plan';
+        }
+        if (paceBadge) {
+          paceBadge.textContent = info.pace + ' Pace';
+          if (info.pace === 'Sprint') {
+            paceBadge.className = 'badge bg-warning bg-opacity-15 text-warning rounded-pill small';
+          } else if (info.pace === 'Mastery') {
+            paceBadge.className = 'badge bg-purple bg-opacity-15 text-primary rounded-pill small';
+          } else {
+            paceBadge.className = 'badge bg-success bg-opacity-15 text-success rounded-pill small';
+          }
+        }
+        if (previewDesc) {
+          previewDesc.textContent = info.desc;
+        }
+
+        durationPills.forEach(function(pill) {
+          var pDays = parseInt(pill.getAttribute('data-days'), 10);
+          if (pDays === selectedDays) {
+            pill.classList.add('active');
+          } else {
+            pill.classList.remove('active');
+          }
+        });
+      }
+
+      durationPills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+          selectedDays = parseInt(this.getAttribute('data-days'), 10) || 7;
+          updatePreview();
+        });
+      });
+
+      roleSelect.addEventListener('change', updatePreview);
+
+      openPlanBtn.addEventListener('click', function() {
+        var role = roleSelect.value;
+        localStorage.setItem('aiInterviewPrepRole', role);
+        localStorage.setItem('aiInterviewPrepDuration', selectedDays.toString());
+
+        // Also sync profile storage if available
+        try {
+          var profile = JSON.parse(localStorage.getItem('aiInterviewProfile')) || {};
+          profile.jobRole = role;
+          localStorage.setItem('aiInterviewProfile', JSON.stringify(profile));
+        } catch(e) {}
+
+        window.location.href = 'preparation.html';
+      });
+
+      updatePreview();
+    })();
+  </script>
 </body>
 </html>

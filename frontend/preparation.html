@@ -2,1482 +2,1742 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Preparation Dashboard · AI Interview Coach</title>
 
-    <title>Preparation | AI Interview Coach</title>
+  <!-- Bootstrap 5 & Font Awesome 6 (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
-    <!-- Bootstrap CSS -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+  <!-- Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ----- global base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            background: #f5f7fb;
-            font-family: Arial, sans-serif;
-            color: #222;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8faff;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .navbar {
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-        }
+    .gradient-text {
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-fill-color: transparent;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-        .navbar-brand {
-            font-weight: 700;
-            color: #2563eb;
-        }
+    .btn-gradient {
+      background: linear-gradient(145deg, #2563eb, #7c3aed);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.65rem 1.6rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px -6px rgba(37, 99, 235, 0.3);
+    }
 
-        .nav-link {
-            color: #374151;
-            font-weight: 500;
-        }
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(37, 99, 235, 0.45);
+      color: #fff;
+      background: linear-gradient(145deg, #1d4ed8, #6d28d9);
+    }
 
-        .nav-link:hover {
-            color: #2563eb;
-        }
+    .btn-outline-gradient {
+      background: transparent;
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      font-weight: 600;
+      padding: 0.65rem 1.6rem;
+      border-radius: 40px;
+      transition: all 0.2s ease;
+    }
 
-        .page-header {
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
-            padding: 45px 20px;
-            border-radius: 0 0 25px 25px;
-        }
+    .btn-outline-gradient:hover {
+      background: #2563eb;
+      color: #fff;
+      transform: translateY(-2px);
+    }
 
-        .page-header h1 {
-            font-weight: 700;
-        }
+    /* Navbar */
+    .navbar-custom {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-        .role-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.20);
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin-top: 12px;
-        }
+    .navbar-custom .navbar-brand {
+      font-weight: 700;
+      color: #2563eb;
+      font-size: 1.3rem;
+    }
 
-        .section-title {
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
+    .navbar-custom .nav-link {
+      font-weight: 500;
+      color: #475569;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: 0.2s;
+    }
 
-        .card-box {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-        }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link.active {
+      color: #2563eb;
+      background: #eff6ff;
+    }
 
-        /* 7 DAY PLAN */
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 40px 0 50px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .day-item {
-            display: flex;
-            gap: 18px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            background: #ffffff;
-        }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #7c3aed, #10b981);
+    }
 
-        .day-number {
-            min-width: 75px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #2563eb;
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-        }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+    }
 
-        .day-content h6 {
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
+    /* Cards */
+    .card-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
 
-        .day-content ul {
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
+    .card-box:hover {
+      box-shadow: 0 16px 36px -12px rgba(37, 99, 235, 0.1);
+    }
 
-        .day-content li {
-            margin-bottom: 5px;
-            color: #555;
-        }
+    .section-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .day-content i {
-            color: #16a34a;
-            margin-right: 7px;
-        }
+    /* Control Selector Bar */
+    .control-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 15px 35px -10px rgba(37, 99, 235, 0.12);
+      margin-top: -30px;
+      position: relative;
+      z-index: 10;
+    }
 
-        /* PROGRESS */
+    .role-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
 
-        .progress {
-            height: 12px;
-            border-radius: 20px;
-        }
+    .role-pill-btn {
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-        .progress-bar {
-            border-radius: 20px;
-        }
+    .role-pill-btn:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
 
-        /* TASKS */
+    .role-pill-btn.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
 
-        .task-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            border-bottom: 1px solid #eeeeee;
-            transition: 0.2s;
-        }
+    .duration-pills-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
 
-        .task-item:last-child {
-            border-bottom: none;
-        }
+    .duration-pill-btn {
+      flex: 1;
+      min-width: 80px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
 
-        .task-item.completed {
-            background: #f0fdf4;
-        }
+    .duration-pill-btn:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
 
-        .task-checkbox {
-            width: 18px;
-            height: 18px;
-        }
+    .duration-pill-btn.active {
+      border-color: #2563eb;
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
 
-        /* FOCUS */
+    /* Day Item in Plan */
+    .day-item-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
 
-        .focus-card {
-            padding: 18px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
+    .day-item-card:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 8px 24px -6px rgba(37, 99, 235, 0.12);
+      transform: translateY(-2px);
+    }
 
-        .focus-card h6 {
-            font-weight: 700;
-        }
+    .day-item-card.completed {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
 
-        /* QUESTIONS */
+    .day-badge-col {
+      min-width: 90px;
+    }
 
-        .question-box {
-            padding: 18px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            background: #ffffff;
-        }
+    .day-badge {
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
 
-        .practice-btn {
-            margin-top: 10px;
-        }
+    .day-item-card.completed .day-badge {
+      background: linear-gradient(145deg, #10b981, #059669);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
 
-        /* PERFORMANCE */
+    .task-checkbox-custom {
+      width: 20px;
+      height: 20px;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
 
-        .score-box {
-            text-align: center;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-        }
+    .task-item-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #f8fafc;
+      margin-bottom: 8px;
+      transition: 0.15s ease;
+      border: 1px solid #f1f5f9;
+    }
 
-        .score-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: #2563eb;
-        }
+    .task-item-line:hover {
+      background: #f1f5f9;
+    }
 
-        /* AI RECOMMENDATION */
+    .task-item-line.done {
+      background: #f0fdf4;
+      text-decoration: line-through;
+      color: #64748b;
+    }
 
-        .recommendation {
-            background: #eff6ff;
-            border-left: 5px solid #2563eb;
-            padding: 18px;
-            border-radius: 10px;
-        }
+    /* Focus Area Bars */
+    .focus-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
 
-        footer {
-            background: #111827;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            margin-top: 40px;
-        }
+    /* Question Cards */
+    .question-card-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: 0.2s;
+    }
 
-        @media (max-width: 576px) {
+    .question-card-item:hover {
+      border-color: #93c5fd;
+      background: #fafcff;
+    }
 
-            .day-item {
-                gap: 10px;
-            }
+    .hint-box {
+      background: #f8fafc;
+      border-left: 3px solid #2563eb;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      margin-top: 10px;
+      display: none;
+    }
 
-            .day-number {
-                min-width: 60px;
-                font-size: 13px;
-            }
+    /* Progress bar */
+    .progress-custom {
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
 
-            .card-box {
-                padding: 18px;
-            }
+    .progress-bar-gradient {
+      background: linear-gradient(90deg, #2563eb, #10b981);
+      border-radius: 20px;
+      transition: width 0.4s ease;
+    }
 
-        }
-    </style>
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 30px 0;
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .control-card {
+        padding: 18px;
+        margin-top: -15px;
+      }
+      .day-item-card {
+        flex-direction: column;
+      }
+      .day-badge-col {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-
-<!-- ========================================================= -->
-<!-- NAVBAR -->
-<!-- ========================================================= -->
-
-<nav class="navbar navbar-expand-lg">
-
+  <!-- ========================================================= -->
+  <!-- NAVBAR                                                    -->
+  <!-- ========================================================= -->
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
     <div class="container">
-
-        <a class="navbar-brand" href="dashboard.html">
-            <i class="fas fa-robot"></i>
-            AI Interview Coach
-        </a>
-
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarMenu">
-
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-
-        <div
-            class="collapse navbar-collapse"
-            id="navbarMenu">
-
-            <ul class="navbar-nav ms-auto">
-
-                <li class="nav-item">
-                    <a
-                        class="nav-link"
-                        href="dashboard.html">
-                        Dashboard
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a
-                        class="nav-link active"
-                        href="preparation.html">
-                        Preparation
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a
-                        class="nav-link"
-                        href="setup.html">
-                        New Interview
-                    </a>
-                </li>
-
-            </ul>
-
-        </div>
-
+      <a class="navbar-brand" href="index.html">
+        <i class="fas fa-robot me-2"></i>AI Interview Coach
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#prepNav"
+              aria-controls="prepNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="prepNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="preparation.html">Preparation</a></li>
+          <li class="nav-item ms-lg-2">
+            <a href="setup.html" class="btn btn-gradient btn-sm px-4">Start Interview</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-</nav>
-
-
-<!-- ========================================================= -->
-<!-- PAGE HEADER -->
-<!-- ========================================================= -->
-
-<section class="page-header">
-
+  <!-- ========================================================= -->
+  <!-- PAGE HEADER                                               -->
+  <!-- ========================================================= -->
+  <section class="page-header">
     <div class="container">
-
-        <h1>
-            <i class="fas fa-graduation-cap"></i>
-            Interview Preparation
-        </h1>
-
-        <p class="mb-0">
-            Follow your personalized preparation plan and improve your interview skills.
-        </p>
-
-        <div class="role-badge">
-
-            Selected Role:
-            <strong id="selectedRole">
-                Python Developer
-            </strong>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ========================================================= -->
-<!-- MAIN CONTENT -->
-<!-- ========================================================= -->
-
-<div class="container py-5">
-
-
-    <!-- ===================================================== -->
-    <!-- 7 DAY PREPARATION PLAN -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-calendar-week"></i>
-            7-Day Preparation Plan
-
-        </h3>
-
-        <p class="text-muted">
-            Your preparation plan changes according to your selected job role.
-        </p>
-
-        <div id="dynamicPreparationPlan"></div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- TODAY'S TASKS -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-tasks"></i>
-            Today's Tasks
-
-        </h3>
-
-
-        <div class="mb-3">
-
-            <div class="d-flex justify-content-between">
-
-                <span id="progressLabel">
-                    Completed: 0 / 5 tasks
-                </span>
-
-                <strong id="progressPercent">
-                    0%
-                </strong>
-
-            </div>
-
-
-            <div class="progress mt-2">
-
-                <div
-                    id="taskProgressBar"
-                    class="progress-bar bg-success"
-                    style="width: 0%;">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="task-item">
-
-            <input
-                type="checkbox"
-                class="task-checkbox">
-
-            <span>
-                Review today's preparation topic
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="header-badge">
+              <i class="fas fa-graduation-cap text-primary"></i> Intelligent Preparation Dashboard
             </span>
+          </div>
+          <h1 class="display-5 fw-bold mb-2">
+            Personalized <span class="gradient-text">Preparation Plan</span>
+          </h1>
+          <p class="text-white-50 lead mb-0" style="font-size: 1.05rem;">
+            Select your target job role and preparation timeline. Your roadmap, tasks, and practice questions dynamically update.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <a href="setup.html" class="btn btn-light px-4 py-2 rounded-pill fw-semibold shadow-sm">
+            <i class="fas fa-play text-primary me-2"></i> Take Mock Interview
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ========================================================= -->
+  <!-- MAIN CONTAINER                                            -->
+  <!-- ========================================================= -->
+  <main class="container py-4 flex-grow-1">
+
+    <!-- ===== CONTROL PANEL: ROLE & DURATION SELECTOR ===== -->
+    <div class="control-card mb-4" id="planCustomizer">
+      <div class="row g-4 align-items-center">
+        
+        <!-- Role Selection -->
+        <div class="col-lg-6">
+          <label class="form-label fw-bold text-dark d-flex justify-content-between mb-1" for="roleSelector">
+            <span><i class="fas fa-user-tag text-primary me-2"></i>Target Role</span>
+            <span class="badge bg-primary bg-opacity-10 text-primary" id="activeRoleBadge">Python Developer</span>
+          </label>
+          <select id="roleSelector" class="form-select form-select-lg" style="border-radius: 14px; font-size: 0.95rem; border: 1.5px solid #cbd5e1;">
+            <option value="Python Developer">🐍 Python Developer</option>
+            <option value="Java Developer">☕ Java Developer</option>
+            <option value="Web Developer">🌐 Web / Frontend Developer</option>
+            <option value="Data Analyst">📊 Data Analyst</option>
+            <option value="AI/ML Engineer">🤖 AI / ML Engineer</option>
+            <option value="Software Developer">💻 Software Developer</option>
+            <option value="Cloud / DevOps Engineer">☁️ Cloud / DevOps Engineer</option>
+            <option value="Full Stack Developer">🚀 Full Stack Developer</option>
+          </select>
+          <div class="role-pills" id="roleQuickPills">
+            <button type="button" class="role-pill-btn active" data-role="Python Developer">Python</button>
+            <button type="button" class="role-pill-btn" data-role="Java Developer">Java</button>
+            <button type="button" class="role-pill-btn" data-role="Web Developer">Web Dev</button>
+            <button type="button" class="role-pill-btn" data-role="Data Analyst">Data Analyst</button>
+            <button type="button" class="role-pill-btn" data-role="AI/ML Engineer">AI/ML</button>
+            <button type="button" class="role-pill-btn" data-role="Software Developer">Software Dev</button>
+          </div>
         </div>
 
+        <!-- Duration Selection -->
+        <div class="col-lg-6">
+          <label class="form-label fw-bold text-dark d-flex justify-content-between mb-1">
+            <span><i class="fas fa-hourglass-half text-primary me-2"></i>Preparation Timeline (Duration)</span>
+            <span class="text-primary fw-semibold" id="activeDurationLabel">7-Day Program</span>
+          </label>
+          <div class="duration-pills-bar" id="durationSelectorPills">
+            <button type="button" class="duration-pill-btn" data-days="3">
+              <i class="fas fa-bolt d-block mb-1"></i>3 Days<br><small class="text-muted" style="font-size:0.7rem;">Sprint</small>
+            </button>
+            <button type="button" class="duration-pill-btn active" data-days="7">
+              <i class="fas fa-calendar-week d-block mb-1"></i>7 Days<br><small class="text-muted" style="font-size:0.7rem;">Standard</small>
+            </button>
+            <button type="button" class="duration-pill-btn" data-days="14">
+              <i class="fas fa-calendar-alt d-block mb-1"></i>14 Days<br><small class="text-muted" style="font-size:0.7rem;">In-Depth</small>
+            </button>
+            <button type="button" class="duration-pill-btn" data-days="30">
+              <i class="fas fa-trophy d-block mb-1"></i>30 Days<br><small class="text-muted" style="font-size:0.7rem;">Bootcamp</small>
+            </button>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mt-2 pt-1">
+            <span class="small text-muted"><i class="fas fa-info-circle me-1"></i>Plan re-calculates automatically upon change</span>
+            <button type="button" class="btn btn-sm btn-link text-decoration-none text-danger p-0" id="resetProgressBtn">
+              <i class="fas fa-rotate-left me-1"></i>Reset Checklist
+            </button>
+          </div>
+        </div>
 
-        <div class="task-item">
+      </div>
+    </div>
 
-            <input
-                type="checkbox"
-                class="task-checkbox">
-
-            <span>
-                Practice 5 interview questions
+    <!-- ===== PROGRESS TRACKER BAR ===== -->
+    <div class="card-box mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-7 mb-3 mb-md-0">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold text-dark" id="progressStatusText">
+              <i class="fas fa-list-check text-primary me-2"></i>Overall Preparation Progress
             </span>
-
+            <span class="fw-bold fs-5 text-primary" id="progressPercent">0%</span>
+          </div>
+          <div class="progress-custom">
+            <div id="taskProgressBar" class="progress-bar-gradient h-100" style="width: 0%;"></div>
+          </div>
+          <div class="d-flex justify-content-between text-muted small mt-2">
+            <span id="tasksCountText">0 of 0 tasks completed</span>
+            <span id="paceMotivationText">Start your first task today!</span>
+          </div>
         </div>
 
+        <div class="col-md-5 text-md-end">
+          <div class="d-inline-flex gap-2">
+            <a href="setup.html" class="btn btn-gradient px-4">
+              <i class="fas fa-play me-2"></i> Practice Mock Interview
+            </a>
+            <button class="btn btn-outline-secondary rounded-pill px-3" onclick="window.print()" title="Print Plan">
+              <i class="fas fa-print"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div class="task-item">
+    <!-- ===== MAIN CONTENT GRID ===== -->
+    <div class="row g-4">
 
-            <input
-                type="checkbox"
-                class="task-checkbox">
+      <!-- LEFT COLUMN: Dynamic Multi-Day Plan -->
+      <div class="col-lg-8">
 
-            <span>
-                Practice one coding problem
+        <!-- THE DYNAMIC PLAN SECTION -->
+        <div class="card-box">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 class="section-title mb-0">
+                <i class="fas fa-calendar-check text-primary"></i>
+                <span id="planHeaderTitle">7-Day Preparation Plan</span>
+              </h3>
+              <p class="text-muted small mb-0 mt-1" id="planHeaderSub">
+                Tailored for <strong id="selectedRoleText" class="text-dark">Python Developer</strong> · Mark items as you study.
+              </p>
+            </div>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill small" id="dayCountBadge">
+              7 Days
             </span>
+          </div>
 
+          <!-- CONTAINER INJECTED BY JAVASCRIPT -->
+          <div id="dynamicPreparationPlan">
+            <!-- Dynamically populated -->
+          </div>
         </div>
 
-
-        <div class="task-item">
-
-            <input
-                type="checkbox"
-                class="task-checkbox">
-
-            <span>
-                Improve communication skills
-            </span>
-
+        <!-- TODAY'S TASKS CHECKLIST -->
+        <div class="card-box">
+          <h3 class="section-title">
+            <i class="fas fa-fire text-danger"></i> Today's Priority Action Items
+          </h3>
+          <p class="text-muted small">Daily recommended drills to maximize retention:</p>
+          <div id="todayTasksList">
+            <!-- Dynamically populated -->
+          </div>
         </div>
 
+      </div>
 
-        <div class="task-item">
+      <!-- RIGHT COLUMN: Focus Areas, Questions & AI Guidance -->
+      <div class="col-lg-4">
 
-            <input
-                type="checkbox"
-                class="task-checkbox">
-
-            <span>
-                Complete one mock interview
-            </span>
-
+        <!-- ROLE FOCUS AREAS -->
+        <div class="card-box">
+          <h3 class="section-title">
+            <i class="fas fa-bullseye text-primary"></i> Core Competencies
+          </h3>
+          <p class="text-muted small mb-3">Target mastery distribution for this role:</p>
+          <div id="focusAreasContainer">
+            <!-- Dynamically populated -->
+          </div>
         </div>
+
+        <!-- RECOMMENDED PRACTICE QUESTIONS -->
+        <div class="card-box">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class="section-title mb-0">
+              <i class="fas fa-question-circle text-primary"></i> Top Questions
+            </h3>
+            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill small" id="qCountBadge">10 Questions</span>
+          </div>
+          <p class="text-muted small">High-frequency questions for this role:</p>
+          
+          <div id="practiceQuestionsList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- AI RECOMMENDATION CARD -->
+        <div class="card-box" style="background: linear-gradient(145deg, #eff6ff, #f8faff); border: 1.5px solid #bfdbfe;">
+          <h6 class="fw-bold text-primary mb-2">
+            <i class="fas fa-robot me-2"></i>AI Study Strategy
+          </h6>
+          <p class="small text-secondary mb-2" id="aiPrepAdvice">
+            Dedicate at least 45 minutes daily to solving live code or explaining concepts aloud. Use the voice mock interview to eliminate filler words and test conciseness.
+          </p>
+          <hr class="my-2 border-primary border-opacity-25">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="small fw-semibold text-dark">Ready to test yourself?</span>
+            <a href="setup.html" class="btn btn-sm btn-primary rounded-pill px-3">Start Mock</a>
+          </div>
+        </div>
+
+      </div>
 
     </div>
 
+  </main>
 
-    <!-- ===================================================== -->
-    <!-- FOCUS AREAS -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-bullseye"></i>
-            Focus Areas
-
-        </h3>
-
-
-        <div class="row">
-
-
-            <div class="col-md-6">
-
-                <div class="focus-card">
-
-                    <h6>
-                        <i class="fas fa-code"></i>
-                        Technical Skills
-                    </h6>
-
-                    <p class="text-muted mb-2">
-                        Improve role-specific technical knowledge.
-                    </p>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-primary"
-                            style="width: 70%;">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6">
-
-                <div class="focus-card">
-
-                    <h6>
-                        <i class="fas fa-comments"></i>
-                        Communication
-                    </h6>
-
-                    <p class="text-muted mb-2">
-                        Practice clear and confident answers.
-                    </p>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-success"
-                            style="width: 60%;">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6">
-
-                <div class="focus-card">
-
-                    <h6>
-                        <i class="fas fa-lightbulb"></i>
-                        Problem Solving
-                    </h6>
-
-                    <p class="text-muted mb-2">
-                        Practice logical and coding problems.
-                    </p>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-warning"
-                            style="width: 65%;">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-6">
-
-                <div class="focus-card">
-
-                    <h6>
-                        <i class="fas fa-user-tie"></i>
-                        Interview Confidence
-                    </h6>
-
-                    <p class="text-muted mb-2">
-                        Practice answering questions confidently.
-                    </p>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-info"
-                            style="width: 55%;">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
+  <!-- ========================================================= -->
+  <!-- FOOTER                                                    -->
+  <!-- ========================================================= -->
+  <footer>
+    <div class="container text-center">
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+        <i class="fas fa-robot text-primary fs-5"></i>
+        <span class="fw-bold text-white">AI Interview Coach</span>
+      </div>
+      <p class="small text-white-50 mb-0">
+        Personalized Preparation Dashboard & Dynamic Interview Planner. &copy; 2026 AI Interview Coach.
+      </p>
     </div>
-
-
-    <!-- ===================================================== -->
-    <!-- PRACTICE QUESTIONS -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-question-circle"></i>
-            Recommended Practice Questions
-
-        </h3>
-
-        <div id="practiceQuestions"></div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- PERFORMANCE SUMMARY -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-chart-line"></i>
-            Performance Summary
-
-        </h3>
-
-
-        <div class="row">
-
-
-            <div class="col-md-3 col-6">
-
-                <div class="score-box">
-
-                    <div class="score-number">
-                        78
-                    </div>
-
-                    <div>
-                        Average Score
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-3 col-6">
-
-                <div class="score-box">
-
-                    <div class="score-number">
-                        91
-                    </div>
-
-                    <div>
-                        Best Score
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-3 col-6 mt-3 mt-md-0">
-
-                <div class="score-box">
-
-                    <div class="score-number">
-                        8
-                    </div>
-
-                    <div>
-                        Interviews
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-md-3 col-6 mt-3 mt-md-0">
-
-                <div class="score-box">
-
-                    <div class="score-number">
-                        +12%
-                    </div>
-
-                    <div>
-                        Improvement
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- AI RECOMMENDATION -->
-    <!-- ===================================================== -->
-
-    <div class="card-box">
-
-        <h3 class="section-title">
-
-            <i class="fas fa-robot"></i>
-            AI Recommendation
-
-        </h3>
-
-
-        <div class="recommendation">
-
-            <strong>
-                Your next focus:
-            </strong>
-
-            <p class="mb-0 mt-2">
-
-                Continue practicing technical questions and
-                improve the clarity and completeness of your answers.
-                Take regular mock interviews to build confidence.
-
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- START INTERVIEW -->
-    <!-- ===================================================== -->
-
-    <div class="text-center mt-4">
-
-        <a
-            href="setup.html"
-            class="btn btn-primary btn-lg">
-
-            <i class="fas fa-play"></i>
-            Start New Interview
-
-        </a>
-
-    </div>
-
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- FOOTER -->
-<!-- ========================================================= -->
-
-<footer>
-
-    <p class="mb-0">
-        AI Interview Coach
-    </p>
-
-    <small>
-        Intelligent Interview Preparation & Performance Analysis System
-    </small>
-
-</footer>
-
-
-<!-- ========================================================= -->
-<!-- BOOTSTRAP JS -->
-<!-- ========================================================= -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
-</script>
-
-
-<!-- ========================================================= -->
-<!-- PREPARATION PAGE JAVASCRIPT -->
-<!-- ========================================================= -->
-
-<script>
-
-(function () {
-
-    'use strict';
-
-
-    /* ========================================================
-       GET SAVED PROFILE
-       ======================================================== */
-
-    let profile = {};
-
-    try {
-
-        profile = JSON.parse(
-            localStorage.getItem('aiInterviewProfile') || '{}'
-        );
-
-    } catch (error) {
-
-        console.error(
-            'Profile reading error:',
-            error
-        );
-
-    }
-
-
-    const role =
-        profile.jobRole ||
-        profile.role ||
-        profile.selectedRole ||
-        'Python Developer';
-
-
-    /* ========================================================
-       SHOW SELECTED ROLE
-       ======================================================== */
-
-    const selectedRoleElement =
-        document.getElementById('selectedRole');
-
-
-    if (selectedRoleElement) {
-
-        selectedRoleElement.textContent = role;
-
-    }
-
-
-    /* ========================================================
-       ROLE-WISE 7-DAY PLANS
-       ======================================================== */
-
-    const plans = {
-
-
-        "Python Developer": [
-
-            [
-                "Python Basics",
-                "Variables, data types and operators",
-                "Practice basic Python programs"
-            ],
-
-            [
-                "Control Flow",
-                "if, elif, else and loops",
-                "Practice conditions and loops"
-            ],
-
-            [
-                "Functions",
-                "Functions, parameters and return values",
-                "Solve 5 function problems"
-            ],
-
-            [
-                "Data Structures",
-                "Lists, tuples, sets and dictionaries",
-                "Practice data structure questions"
-            ],
-
-            [
-                "OOP",
-                "Classes, objects, inheritance and polymorphism",
-                "Practice OOP examples"
-            ],
-
-            [
-                "Exception Handling",
-                "try, except, finally and raise",
-                "Practice exception questions"
-            ],
-
-            [
-                "Final Practice",
-                "Revise important Python concepts",
-                "Take a Python mock interview"
-            ]
-
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- ========================================================= -->
+  <!-- COMPREHENSIVE DYNAMIC PREPARATION DASHBOARD LOGIC         -->
+  <!-- ========================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      // ======================================================
+      // 1. DATA DICTIONARIES: CURRICULUM, QUESTIONS, COMPETENCIES
+      // ======================================================
+      var plansDatabase = {
+        'Python Developer': {
+          3: [
+            { day: 1, title: 'Python Core & Syntax Essentials', topics: ['Data types, mutability, lists vs tuples vs dicts', 'String manipulation, slicing, and memory referencing', 'List comprehensions & dictionary comprehensions'] },
+            { day: 2, title: 'OOP, Exceptions & Built-in Modules', topics: ['Classes, __init__, inheritance, encapsulation', 'Exception handling (try/except/finally, custom errors)', 'Iterators, generators, and the yield keyword'] },
+            { day: 3, title: 'Popular Interview Drills & Mock Practice', topics: ['High-frequency DSA in Python (Two Sum, Anagram, Palindrome)', 'Decorators, *args/**kwargs, and lambda functions', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Python Basics & Memory Model', topics: ['Variables, dynamic typing, mutable vs immutable types', 'Built-in functions, type casting, input/output operations', 'Python execution model & Garbage collection overview'] },
+            { day: 2, title: 'Control Flow & Essential Data Structures', topics: ['if-else statements, for/while loops, break/continue/pass', 'Lists, tuples, sets, dictionaries: operations and time complexity', 'Nested data structures and deepcopy vs shallow copy'] },
+            { day: 3, title: 'Functions, Scope & Functional Features', topics: ['Function definition, default args, *args & **kwargs', 'LEGB variable scope rules and closures', 'Map, filter, reduce, lambda, and generator expressions'] },
+            { day: 4, title: 'Object-Oriented Programming (OOP)', topics: ['Classes, instance vs class variables, self reference', 'Inheritance, multiple inheritance and MRO (Method Resolution Order)', 'Polymorphism, dunder methods (__str__, __repr__, __eq__)'] },
+            { day: 5, title: 'Exceptions, File I/O & Decorators', topics: ['Robust exception handling, try/except/else/finally', 'Working with files and context managers (`with` statement)', 'Function decorators and class decorators with practical examples'] },
+            { day: 6, title: 'Modules, Web APIs & Database Access', topics: ['Standard library modules: os, sys, json, re, datetime', 'REST API consumption with requests module', 'SQL queries with SQLite/PostgreSQL in Python'] },
+            { day: 7, title: 'Live Mock Drills & High-Frequency Questions', topics: ['Solve 10 classic technical interview questions', 'Code cleanliness, PEP 8 standards, and docstrings', 'Complete a full mock interview session on the portal'] }
+          ],
+          14: [
+            { day: 1, title: 'Python Syntax & Primitive Data Types', topics: ['Data types, casting, operators, and formatting', 'String methods, regex basics, and slicing'] },
+            { day: 2, title: 'Data Structures: Lists, Tuples & Sets', topics: ['List operations, indexing, and time complexities', 'Set operations: union, intersection, difference'] },
+            { day: 3, title: 'Dictionaries & Hash Maps in Python', topics: ['Dictionary methods, hash tables, and collision handling', 'defaultdict, Counter, and OrderedDict from collections'] },
+            { day: 4, title: 'Control Flow, Loops & Comprehensions', topics: ['Advanced loop patterns, enumerate, zip', 'List, set, and dictionary comprehensions with conditions'] },
+            { day: 5, title: 'Functions, Variable Arguments & Scopes', topics: ['Positional vs keyword-only arguments', 'Global vs nonlocal keywords, closures, and inner functions'] },
+            { day: 6, title: 'Iterators, Generators & Context Managers', topics: ['Iterator protocol (__iter__, __next__)', 'Generator functions, yield from, memory advantages', 'Custom context managers with contextlib'] },
+            { day: 7, title: 'Object-Oriented Programming: Fundamentals', topics: ['Class design, properties (@property), getter/setter', 'Encapsulation and name mangling'] },
+            { day: 8, title: 'OOP: Inheritance, Polymorphism & Metaclasses', topics: ['Single & multiple inheritance, super() mechanics', 'Abstract Base Classes (abc module)', 'Basic metaclass concepts'] },
+            { day: 9, title: 'Decorators, Logging & Error Handling', topics: ['Decorators with arguments, functools.wraps', 'Structured logging with logging module', 'Custom exception hierarchies'] },
+            { day: 10, title: 'Algorithms & Problem Solving (Part 1)', topics: ['Two-pointer technique, sliding window', 'Stack & Queue implementations in Python'] },
+            { day: 11, title: 'Algorithms & Problem Solving (Part 2)', topics: ['Binary search, recursion, and basic dynamic programming', 'Tree traversal algorithms (DFS, BFS)'] },
+            { day: 12, title: 'File Handling, JSON & REST APIs', topics: ['JSON serialization/deserialization', 'HTTP requests, status codes, REST API endpoints'] },
+            { day: 13, title: 'Databases & Web Frameworks (FastAPI/Django)', topics: ['SQL queries, ORM basics (SQLAlchemy/Django ORM)', 'Basics of routing, request validation, and responses'] },
+            { day: 14, title: 'Comprehensive Mock Interview & Review', topics: ['Full live mock interview on AI coach', 'Review weak performance areas and refine answers'] }
+          ],
+          30: [
+            { day: 1, title: 'Python Fundamentals & Environment Setup', topics: ['Virtual environments, pip, Python runtime architecture'] },
+            { day: 2, title: 'Data Types, Operators & Control Flow', topics: ['Truthy/Falsy values, bitwise operators, conditionals'] },
+            { day: 3, title: 'Sequence Types: Strings & Lists', topics: ['String algorithms, in-place list mutations, slicing tricks'] },
+            { day: 4, title: 'Tuples, Sets & Hashable Types', topics: ['Immutability implications, set mathematics, frozenset'] },
+            { day: 5, title: 'Dictionaries & Collections Module', topics: ['dict internals, Hash Map collisions, collections library'] },
+            { day: 6, title: 'Functional Python: Map, Filter, Lambdas', topics: ['Higher-order functions, functools (partial, reduce)'] },
+            { day: 7, title: 'Week 1 Review & Mini Mock Interview', topics: ['Complete 5 foundational technical interview questions'] },
+            { day: 8, title: 'Functions & Closure Mechanics', topics: ['Variable scope, closures, function attributes'] },
+            { day: 9, title: 'Generators, Iterators & Memory Optimization', topics: ['Generator pipelines, sys.getsizeof, lazy evaluation'] },
+            { day: 10, title: 'Decorators Deep Dive', topics: ['Memoization decorators, timing decorators, chaining'] },
+            { day: 11, title: 'OOP: Classes, Objects & Attributes', topics: ['Class namespaces, __slots__, dunder methods'] },
+            { day: 12, title: 'OOP: Inheritance, super() & MRO', topics: ['C3 Linearization, mixins, multiple inheritance best practices'] },
+            { day: 13, title: 'OOP: Polymorphism & Abstract Classes', topics: ['abc.ABC, @abstractmethod, interfaces in Python'] },
+            { day: 14, title: 'Week 2 Review & Algorithmic Problem Solving', topics: ['Arrays, strings, two pointers interview challenges'] },
+            { day: 15, title: 'Exception Handling & Custom Error Types', topics: ['Exception chaining (`from`), traceback inspection'] },
+            { day: 16, title: 'File I/O, Serialization & Pickle vs JSON', topics: ['Binary files, CSV, JSON, security implications of pickle'] },
+            { day: 17, title: 'Multithreading, Multiprocessing & GIL', topics: ['Global Interpreter Lock (GIL), threading vs multiprocessing'] },
+            { day: 18, title: 'Asyncio & Asynchronous Programming', topics: ['async/await, event loops, tasks, aiohttp basics'] },
+            { day: 19, title: 'Data Structures in Python (Linked Lists, Trees)', topics: ['Custom Node implementations, binary search tree operations'] },
+            { day: 20, title: 'Sorting & Searching Algorithms', topics: ['Timsort, merge sort, binary search patterns'] },
+            { day: 21, title: 'Week 3 Review & Midterm Mock Interview', topics: ['Live interview simulation on the platform'] },
+            { day: 22, title: 'Database Integration (SQL & ORM)', topics: ['Connection pooling, parameterized queries, SQL injection'] },
+            { day: 23, title: 'Web Frameworks: FastAPI / Flask Basics', topics: ['Routing, dependency injection, Pydantic validation'] },
+            { day: 24, title: 'Web Frameworks: Django Architecture', topics: ['MVT pattern, Django ORM, migrations, middleware'] },
+            { day: 25, title: 'Testing in Python (pytest & unittest)', topics: ['Unit tests, fixtures, mocking, test-driven concepts'] },
+            { day: 26, title: 'Clean Code, PEP 8 & Code Review Skills', topics: ['Type hinting (mypy), docstrings, SOLID principles'] },
+            { day: 27, title: 'System Design Basics for Python Engineers', topics: ['Caching (Redis), Celery background tasks, scaling'] },
+            { day: 28, title: 'Behavioral & Situational Questions', topics: ['STAR method, project presentation, conflict handling'] },
+            { day: 29, title: 'High-Stakes Technical Mock Interview', topics: ['Simulate difficult interview questions and edge cases'] },
+            { day: 30, title: 'Final Review & Interview Readiness Test', topics: ['Full portfolio polish, final score check & readiness assessment'] }
+          ]
+        },
+
+        'Java Developer': {
+          3: [
+            { day: 1, title: 'Java Core Syntax & OOP Foundations', topics: ['Primitive vs reference types, JVM architecture (JDK/JRE/JVM)', 'Classes, objects, constructors, method overloading/overriding'] },
+            { day: 2, title: 'Collections & Exception Handling', topics: ['List vs Set vs Map, ArrayList vs LinkedList, HashMap internals', 'Checked vs unchecked exceptions, try-catch-finally'] },
+            { day: 3, title: 'Java 8+ Features & Mock Interview', topics: ['Lambda expressions, Streams API, Optional class', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Java Fundamentals & JVM Internals', topics: ['Data types, operators, heap vs stack memory', 'JDK, JRE, JVM execution cycle and bytecode'] },
+            { day: 2, title: 'OOP Principles in Java', topics: ['Encapsulation, inheritance, polymorphism, abstraction', 'Abstract classes vs interfaces, default methods in Java 8'] },
+            { day: 3, title: 'Java Collections Framework', topics: ['Collection hierarchy: List, Set, Queue, Deque', 'HashMap, ConcurrentHashMap, HashSet internal working'] },
+            { day: 4, title: 'Exception Handling & File I/O', topics: ['try, catch, throw, throws, finally, try-with-resources', 'Custom exceptions and Java NIO / IO streams'] },
+            { day: 5, title: 'Multithreading & Concurrency Basics', topics: ['Creating threads (Thread class vs Runnable)', 'Thread lifecycle, synchronization, volatile, and Deadlocks'] },
+            { day: 6, title: 'Java 8 Features & Spring Basics', topics: ['Streams, functional interfaces, method references', 'Inversion of Control (IoC) and Dependency Injection (DI)'] },
+            { day: 7, title: 'Live Technical Practice & Mock Interview', topics: ['Solve top 10 Java interview questions', 'Full mock interview session on the platform'] }
+          ],
+          14: [
+            { day: 1, title: 'Java Syntax & Memory Architecture', topics: ['JVM memory model, Garbage Collection algorithms'] },
+            { day: 2, title: 'OOP Principles: Deep Dive', topics: ['Composition vs Inheritance, method overriding rules'] },
+            { day: 3, title: 'Interfaces, Abstract Classes & Records', topics: ['Java 8/9/11 interface evolution, sealed classes, records'] },
+            { day: 4, title: 'Strings & Memory Efficiency', topics: ['String pool, immutability, StringBuilder vs StringBuffer'] },
+            { day: 5, title: 'Collections: Lists & Queues', topics: ['ArrayList growth algorithm, LinkedList, PriorityQueue'] },
+            { day: 6, title: 'Collections: Sets & Maps', topics: ['HashMap hashcode() & equals() contracts, tree maps'] },
+            { day: 7, title: 'Generics & Wildcards', topics: ['Type erasure, upper/lower bounded wildcards'] },
+            { day: 8, title: 'Multithreading & Thread Safety', topics: ['Synchronization, ReentrantLock, ExecutorService'] },
+            { day: 9, title: 'Java 8 Streams & Functional Programming', topics: ['Stream pipeline, map, filter, flatMap, collectors'] },
+            { day: 10, title: 'Exception Handling Best Practices', topics: ['Standard exceptions, try-with-resources, error propagation'] },
+            { day: 11, title: 'Spring Framework Core & Annotations', topics: ['@Component, @Service, @Autowired, Spring Bean lifecycles'] },
+            { day: 12, title: 'Spring Boot REST APIs & JPA', topics: ['Building REST endpoints, Spring Data JPA repositories'] },
+            { day: 13, title: 'Design Patterns in Java', topics: ['Singleton, Factory, Builder, Strategy, Observer patterns'] },
+            { day: 14, title: 'Full Java Mock Interview & Assessment', topics: ['Live mock interview test and answer review'] }
+          ],
+          30: [
+            { day: 1, title: 'Java Basics & Type System', topics: ['Primitive wrappers, autoboxing, type casting'] },
+            { day: 2, title: 'Java Memory Architecture', topics: ['Stack, heap, metaspace, garbage collectors (G1, ZGC)'] },
+            { day: 3, title: 'Classes, Objects & Constructors', topics: ['Constructor chaining, static vs instance scope'] },
+            { day: 4, title: 'Inheritance & Polymorphism', topics: ['Covariant return types, dynamic method dispatch'] },
+            { day: 5, title: 'Interfaces & Abstraction', topics: ['Default/static methods, functional interfaces'] },
+            { day: 6, title: 'String Pool & Immutable Objects', topics: ['Designing immutable classes in Java'] },
+            { day: 7, title: 'Week 1 Review & Mini Mock Interview', topics: ['Core Java rapid-fire questions'] },
+            { day: 8, title: 'Collections: List Hierarchy', topics: ['ArrayList, Vector, CopyOnWriteArrayList'] },
+            { day: 9, title: 'Collections: Map Hierarchy', topics: ['HashMap internal bucket structure, rehashing, treeify'] },
+            { day: 10, title: 'Collections: Set & Sorting', topics: ['TreeSet, Comparable vs Comparator interfaces'] },
+            { day: 11, title: 'Exception Handling Architecture', topics: ['Error vs Exception, best practices'] },
+            { day: 12, title: 'Multithreading: Lifecycle & States', topics: ['Thread states, join, sleep, yield methods'] },
+            { day: 13, title: 'Concurrency: Locks & Synchronization', topics: ['Intrinsic locks, ReadWriteLock, StampedLock'] },
+            { day: 14, title: 'Week 2 Review & DSA in Java', topics: ['Arrays, strings, and linked list coding problems'] },
+            { day: 15, title: 'Java Concurrency Utilities', topics: ['CountDownLatch, CyclicBarrier, BlockingQueue'] },
+            { day: 16, title: 'Java 8 Streams API', topics: ['Intermediate vs terminal operations, parallel streams'] },
+            { day: 17, title: 'Optional & Modern Java Features', topics: ['Avoiding NullPointerExceptions, Pattern Matching'] },
+            { day: 18, title: 'File I/O & Java NIO', topics: ['Channels, Buffers, Files class operations'] },
+            { day: 19, title: 'Java Generics & Reflection API', topics: ['Reflection use cases, annotations creation'] },
+            { day: 20, title: 'JDBC & Transaction Management', topics: ['Connection pooling (HikariCP), ACID properties'] },
+            { day: 21, title: 'Week 3 Review & Midterm Mock', topics: ['Full live mock test on platform'] },
+            { day: 22, title: 'Spring Core: IoC & DI', topics: ['ApplicationContext, Bean scopes, lifecycle hooks'] },
+            { day: 23, title: 'Spring Boot Architecture', topics: ['Auto-configuration, application.properties, starters'] },
+            { day: 24, title: 'Spring Data JPA & Hibernate', topics: ['Entity mappings (@OneToMany, @ManyToMany), N+1 problem'] },
+            { day: 25, title: 'Spring Boot REST API Security', topics: ['JWT authentication, Spring Security filters'] },
+            { day: 26, title: 'Microservices Fundamentals', topics: ['API Gateway, Service Discovery, Circuit Breakers'] },
+            { day: 27, title: 'Design Patterns in Enterprise Java', topics: ['GoF patterns applied in Spring framework'] },
+            { day: 28, title: 'Unit Testing with JUnit 5 & Mockito', topics: ['Mocking repositories, testing service layer'] },
+            { day: 29, title: 'Behavioral & Architecture Questions', topics: ['STAR method, high-level design walkthrough'] },
+            { day: 30, title: 'Final Java Developer Mock Interview', topics: ['Full simulation and readiness certificate'] }
+          ]
+        },
+
+        'Web Developer': {
+          3: [
+            { day: 1, title: 'HTML5 & Modern CSS Layouts', topics: ['Semantic tags, accessibility, Flexbox, CSS Grid', 'Box model, responsive design, media queries'] },
+            { day: 2, title: 'JavaScript ES6+ & DOM Operations', topics: ['let/const, arrow functions, destructuring, spread/rest', 'DOM event delegation, event bubbling, fetch API'] },
+            { day: 3, title: 'Async JS & Frontend Mock Interview', topics: ['Promises, async/await, event loop, closures', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'HTML5 Semantic Structure & SEO', topics: ['Semantic elements, forms & validation, accessibility (ARIA)', 'Meta tags, viewport configurations, SEO best practices'] },
+            { day: 2, title: 'Modern CSS, Flexbox & Grid Systems', topics: ['Box model, specificity, Flexbox alignment, CSS Grid tracks', 'Responsive typography, CSS variables, transitions'] },
+            { day: 3, title: 'JavaScript Fundamentals & Data Types', topics: ['Primitive vs Reference types, scope, hoisting, closures', 'Array methods (map, filter, reduce, slice, splice)'] },
+            { day: 4, title: 'DOM Manipulation & Browser Events', topics: ['Selecting/modifying DOM nodes, event listeners', 'Event bubbling, capturing, event delegation, forms'] },
+            { day: 5, title: 'Asynchronous JavaScript & Web APIs', topics: ['Promises, async/await, Fetch API, error handling', 'Browser storage: localStorage, sessionStorage, cookies'] },
+            { day: 6, title: 'Frontend Frameworks & Build Tools Basics', topics: ['Component architecture (React/Vue concepts), state vs props', 'Vite, npm scripts, bundlers, and package management'] },
+            { day: 7, title: 'Web Performance & Mock Interview', topics: ['Lighthouse metrics, debouncing, throttling, lazy loading', 'Full mock interview session on the platform'] }
+          ],
+          14: [
+            { day: 1, title: 'HTML5 & Accessibility Standards', topics: ['Semantic markup, keyboard navigation, screen readers'] },
+            { day: 2, title: 'CSS Mastery: Flexbox & Grid Systems', topics: ['Complex responsive layouts without frameworks'] },
+            { day: 3, title: 'CSS Animations, Variables & Preprocessors', topics: ['Keyframes, CSS custom properties, responsive units (rem/em/vw)'] },
+            { day: 4, title: 'JS Fundamentals: Execution Context & Scope', topics: ['Call stack, memory heap, variable hoisting, lexical scope'] },
+            { day: 5, title: 'JS Objects, Prototypes & Prototypal Inheritance', topics: ['Object methods, prototype chain, ES6 classes'] },
+            { day: 6, title: 'Functions, Closures & Currying', topics: ['First-class functions, IIFEs, closure use cases'] },
+            { day: 7, title: 'The DOM & Event Mechanics', topics: ['Event loop, microtasks vs macrotasks, event delegation'] },
+            { day: 8, title: 'Asynchronous JS: Promises & Async/Await', topics: ['Promise.all, Promise.race, error handling patterns'] },
+            { day: 9, title: 'Working with APIs: REST & GraphQL Basics', topics: ['HTTP methods, headers, CORS, fetch and axios'] },
+            { day: 10, title: 'Frontend Framework Core Concepts (React)', topics: ['Virtual DOM, JSX, props, state, component lifecycle'] },
+            { day: 11, title: 'State Management & React Hooks', topics: ['useState, useEffect, useContext, useMemo, useCallback'] },
+            { day: 12, title: 'Web Performance & Optimization', topics: ['Code splitting, image optimization, tree-shaking'] },
+            { day: 13, title: 'Web Security (XSS, CSRF, CORS)', topics: ['Content Security Policy, token authentication, secure cookies'] },
+            { day: 14, title: 'Comprehensive Web Developer Mock Interview', topics: ['Full live mock interview test and scorecard review'] }
+          ],
+          30: [
+            { day: 1, title: 'Web Architecture & How Browsers Work', topics: ['DNS lookup, TCP handshake, Critical Rendering Path'] },
+            { day: 2, title: 'Semantic HTML5 & Accessibility', topics: ['ARIA roles, semantic layouts, form controls'] },
+            { day: 3, title: 'CSS Fundamentals & Box Model', topics: ['Margin collapse, box-sizing, display properties'] },
+            { day: 4, title: 'Advanced Flexbox Layouts', topics: ['flex-grow, flex-shrink, flex-basis, alignments'] },
+            { day: 5, title: 'CSS Grid In-Depth', topics: ['grid-template-areas, auto-fit/auto-fill, minmax'] },
+            { day: 6, title: 'Responsive Design & Modern Media Queries', topics: ['Container queries, mobile-first design, fluid typography'] },
+            { day: 7, title: 'Week 1 Review & CSS Challenge', topics: ['Build a fully responsive component from scratch'] },
+            { day: 8, title: 'JavaScript: Data Types & Type Coercion', topics: ['== vs ===, Object.is, primitive wrappers'] },
+            { day: 9, title: 'Execution Context & Scopes', topics: ['Hoisting mechanics, TDZ (Temporal Dead Zone)'] },
+            { day: 10, title: 'Closures & Scope Chain', topics: ['Data privacy with closures, memoization functions'] },
+            { day: 11, title: 'Prototypes & Prototypal Inheritance', topics: ['__proto__, prototype, class syntax translation'] },
+            { day: 12, title: 'this Keyword in JavaScript', topics: ['call, apply, bind, arrow function lexical binding'] },
+            { day: 13, title: 'The Event Loop & Asynchronous JS', topics: ['Call stack, Web APIs, Microtask vs Task queue'] },
+            { day: 14, title: 'Week 2 Review & JS Coding Challenges', topics: ['Polyfills implementation (map, filter, bind)'] },
+            { day: 15, title: 'Promises & Async/Await In-Depth', topics: ['Promise chaining, Promise.allSettled, error boundaries'] },
+            { day: 16, title: 'DOM Manipulation & Custom Events', topics: ['DocumentFragment, custom event dispatching, MutationObserver'] },
+            { day: 17, title: 'Storage & Browser APIs', topics: ['IndexedDB, Service Workers, IntersectionObserver'] },
+            { day: 18, title: 'Network Protocols & REST API Architecture', topics: ['HTTP/2 vs HTTP/3, headers, status codes, REST constraints'] },
+            { day: 19, title: 'Web Security Best Practices', topics: ['XSS prevention, CSRF tokens, HTTPS, SameSite cookies'] },
+            { day: 20, title: 'Frontend Framework Foundations (React)', topics: ['JSX compilation, reconciliation algorithm (Diffing)'] },
+            { day: 21, title: 'Week 3 Review & Midterm Mock Interview', topics: ['Live technical mock interview on platform'] },
+            { day: 22, title: 'React Hooks: State & Side Effects', topics: ['Hook rules, useEffect cleanup, stale closures'] },
+            { day: 23, title: 'React Performance: Optimization Techniques', topics: ['React.memo, useMemo, useCallback, virtualization'] },
+            { day: 24, title: 'Global State Management', topics: ['Redux Toolkit, Zustand, Context API comparison'] },
+            { day: 25, title: 'Routing & Server-Side Rendering (Next.js)', topics: ['Client vs Server components, SSR vs SSG vs ISR'] },
+            { day: 26, title: 'Frontend Testing (Jest & React Testing Library)', topics: ['Unit testing, integration testing, mocking API calls'] },
+            { day: 27, title: 'Build Tools & Bundlers (Vite/Webpack)', topics: ['Module systems (ESM vs CJS), tree-shaking, code splitting'] },
+            { day: 28, title: 'Web Vitals & Performance Optimization', topics: ['LCP, FID/INP, CLS optimization, CDN caching'] },
+            { day: 29, title: 'Behavioral & System Design for Frontend', topics: ['Design a scalable frontend architecture component'] },
+            { day: 30, title: 'Final Full-Stack/Web Developer Mock Interview', topics: ['Comprehensive simulation & readiness evaluation'] }
+          ]
+        },
+
+        'Data Analyst': {
+          3: [
+            { day: 1, title: 'SQL Essentials for Data Analysis', topics: ['SELECT, WHERE, GROUP BY, HAVING, ORDER BY', 'INNER JOIN, LEFT JOIN, FULL JOIN, aggregation functions'] },
+            { day: 2, title: 'Excel & Python Pandas Basics', topics: ['Excel VLOOKUP/XLOOKUP, Pivot Tables', 'Pandas DataFrame loading, filtering, and cleaning'] },
+            { day: 3, title: 'Statistics, Visualization & Mock Interview', topics: ['Mean, median, mode, standard deviation, outliers', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'SQL Fundamentals & Query Writing', topics: ['Basic SQL queries, WHERE filtering, pattern matching (LIKE)', 'Aggregate functions (COUNT, SUM, AVG, MIN, MAX)'] },
+            { day: 2, title: 'SQL Joins, Subqueries & Unions', topics: ['INNER, LEFT, RIGHT, FULL OUTER joins, self joins', 'Subqueries vs CTEs (Common Table Expressions)'] },
+            { day: 3, title: 'Advanced SQL: Window Functions', topics: ['ROW_NUMBER, RANK, DENSE_RANK', 'LEAD, LAG, NTILE, running totals with OVER (PARTITION BY)'] },
+            { day: 4, title: 'Excel Mastery for Analysts', topics: ['XLOOKUP, INDEX/MATCH, nested IFs', 'Pivot Tables, Pivot Charts, conditional formatting'] },
+            { day: 5, title: 'Python for Data Analysis (Pandas & NumPy)', topics: ['DataFrames, series, reading CSV/Excel', 'Handling null values, data cleaning, groupby operations'] },
+            { day: 6, title: 'Data Visualization & BI Tools', topics: ['Bar charts, line graphs, scatter plots in Matplotlib/Seaborn', 'Power BI / Tableau dashboard design principles'] },
+            { day: 7, title: 'Business Case Studies & Mock Interview', topics: ['Answering data analytics business scenario questions', 'Full mock interview session on the platform'] }
+          ],
+          14: [
+            { day: 1, title: 'SQL Basics & Filtering', topics: ['SELECT, DISTINCT, WHERE clauses, NULL handling'] },
+            { day: 2, title: 'SQL Aggregations & Grouping', topics: ['GROUP BY, HAVING, multi-level aggregations'] },
+            { day: 3, title: 'SQL Joins Masterclass', topics: ['Joining multiple tables, handling duplicated join rows'] },
+            { day: 4, title: 'SQL Subqueries & CTEs', topics: ['Correlated subqueries, WITH clause, readability'] },
+            { day: 5, title: 'SQL Window Functions', topics: ['Ranking, moving averages, partitioned computations'] },
+            { day: 6, title: 'SQL String & Date Manipulation', topics: ['DATEPART, DATEDIFF, COALESCE, string functions'] },
+            { day: 7, title: 'Excel Advanced Modeling', topics: ['Data modeling, Power Query, dynamic arrays'] },
+            { day: 8, title: 'Python: NumPy & Arrays', topics: ['Array broadcasting, vectorization, mathematical operations'] },
+            { day: 9, title: 'Python: Pandas Data Cleaning', topics: ['dropna, fillna, apply, string methods, datetime parsing'] },
+            { day: 10, title: 'Python: Exploratory Data Analysis (EDA)', topics: ['Summary statistics, correlation analysis, distributions'] },
+            { day: 11, title: 'Data Visualization (Seaborn & Power BI)', topics: ['Visual storytelling, choosing the right chart type'] },
+            { day: 12, title: 'Applied Business Statistics', topics: ['Hypothesis testing, p-values, confidence intervals'] },
+            { day: 13, title: 'Metrics & KPI Definition', topics: ['Customer churn, LTV, conversion rates, cohort analysis'] },
+            { day: 14, title: 'Data Analyst Mock Interview & Drill', topics: ['Live business case analysis & mock interview'] }
+          ],
+          30: [
+            { day: 1, title: 'Role of a Data Analyst & Project Lifecycle', topics: ['Data pipeline overview, business stakeholder communication'] },
+            { day: 2, title: 'SQL: Basic Queries & Filtering', topics: ['SELECT, WHERE, IN, BETWEEN, LIKE, IS NULL'] },
+            { day: 3, title: 'SQL: Aggregations & Summary Stats', topics: ['COUNT, SUM, AVG, MIN, MAX, GROUP BY, HAVING'] },
+            { day: 4, title: 'SQL: Joins In-Depth', topics: ['INNER, LEFT, RIGHT, FULL, CROSS joins, Cartesian products'] },
+            { day: 5, title: 'SQL: Subqueries & Derived Tables', topics: ['Scalar vs table subqueries, EXISTS vs IN'] },
+            { day: 6, title: 'SQL: Common Table Expressions (CTEs)', topics: ['Recursive CTEs, multiple CTE chaining'] },
+            { day: 7, title: 'Week 1 Review & SQL Challenge', topics: ['Solve 10 medium-difficulty LeetCode/HackerRank SQL problems'] },
+            { day: 8, title: 'SQL: Window Functions (Ranking)', topics: ['ROW_NUMBER, RANK, DENSE_RANK, NTILE'] },
+            { day: 9, title: 'SQL: Window Functions (Value & Analytics)', topics: ['LEAD, LAG, FIRST_VALUE, LAST_VALUE, running sums'] },
+            { day: 10, title: 'SQL: Date & Time Processing', topics: ['Date truncation, intervals, business days calculations'] },
+            { day: 11, title: 'SQL: String Functions & CASE Statements', topics: ['SUBSTRING, CONCAT, CASE WHEN logic, data pivoting'] },
+            { day: 12, title: 'Database Normalization & Schemas', topics: ['1NF to 3NF, star schema vs snowflake schema'] },
+            { day: 13, title: 'Excel: Advanced Formulas', topics: ['XLOOKUP, SUMIFS, COUNTIFS, OFFSET, INDIRECT'] },
+            { day: 14, title: 'Week 2 Review & Excel Case Study', topics: ['Build an executive summary dashboard in Excel'] },
+            { day: 15, title: 'Python: Fundamentals for Analytics', topics: ['Lists, dicts, list comprehensions, lambda functions'] },
+            { day: 16, title: 'Python: NumPy Array Computing', topics: ['Array indexing, vectorized arithmetic, random sampling'] },
+            { day: 17, title: 'Python: Pandas DataFrames & Series', topics: ['Indexing (loc, iloc), read_csv, read_sql'] },
+            { day: 18, title: 'Python: Data Cleaning with Pandas', topics: ['Handling missing values, duplicate detection, type conversions'] },
+            { day: 19, title: 'Python: Data Transformation & Aggregation', topics: ['groupby, agg, pivot_table, melt, merge, concat'] },
+            { day: 20, title: 'Python: Time Series Data in Pandas', topics: ['resample, rolling windows, date offsets'] },
+            { day: 21, title: 'Week 3 Review & Midterm Mock Interview', topics: ['Technical SQL & Python live interview test'] },
+            { day: 22, title: 'Data Visualization with Matplotlib & Seaborn', topics: ['Histograms, box plots, heatmaps, aesthetic customization'] },
+            { day: 23, title: 'Business Intelligence: Tableau / Power BI', topics: ['DAX formulas, calculated fields, dashboard interactions'] },
+            { day: 24, title: 'Descriptive vs Inferential Statistics', topics: ['Central tendency, dispersion, skewness, kurtosis'] },
+            { day: 25, title: 'Probability & Distributions', topics: ['Normal distribution, z-scores, Central Limit Theorem'] },
+            { day: 26, title: 'A/B Testing & Hypothesis Testing', topics: ['Null vs alternative hypothesis, p-values, t-tests, chi-square'] },
+            { day: 27, title: 'Business Problem Frameworks', topics: ['Root cause analysis, funnels, cohort retention'] },
+            { day: 28, title: 'Portfolio Project Walkthrough & Presentation', topics: ['Structuring data insights for non-technical stakeholders'] },
+            { day: 29, title: 'Behavioral & Analytical Case Interview Prep', topics: ['STAR method for data projects, metric drop troubleshooting'] },
+            { day: 30, title: 'Final Data Analyst Mock Interview', topics: ['Complete simulation & interview readiness evaluation'] }
+          ]
+        },
+
+        'AI/ML Engineer': {
+          3: [
+            { day: 1, title: 'Python for ML & Math Foundations', topics: ['NumPy vector operations, linear algebra basics, matrices', 'Pandas data wrangling and missing value handling'] },
+            { day: 2, title: 'Supervised Learning & Model Evaluation', topics: ['Regression vs Classification, Decision Trees, Random Forests', 'Evaluation metrics: Accuracy, Precision, Recall, F1, ROC-AUC'] },
+            { day: 3, title: 'Neural Networks & Mock Interview', topics: ['Perceptrons, backpropagation, gradient descent, loss functions', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Linear Algebra & Calculus for ML', topics: ['Vectors, matrices, dot products, eigenvalues', 'Partial derivatives, gradients, chain rule'] },
+            { day: 2, title: 'Data Preprocessing & Feature Engineering', topics: ['Handling missing values, outliers, standard scaling vs normalization', 'One-hot encoding, feature selection, train/test/val splits'] },
+            { day: 3, title: 'Supervised Learning Algorithms', topics: ['Linear/Logistic Regression, Decision Trees, Random Forests', 'Bias-Variance tradeoff, overfitting vs underfitting'] },
+            { day: 4, title: 'Unsupervised Learning & Clustering', topics: ['K-Means clustering, Hierarchical clustering, PCA', 'Dimensionality reduction and anomaly detection'] },
+            { day: 5, title: 'Model Evaluation & Hyperparameter Tuning', topics: ['Cross-validation (K-Fold), confusion matrices, precision-recall curve', 'GridSearchCV vs RandomizedSearchCV'] },
+            { day: 6, title: 'Deep Learning Basics (PyTorch/TensorFlow)', topics: ['Artificial Neural Networks (ANN), activation functions (ReLU, Sigmoid)', 'Loss functions, optimizers (SGD, Adam), epochs & batch size'] },
+            { day: 7, title: 'ML System Design & Mock Interview', topics: ['ML deployment pipeline, data drift, model latency', 'Full mock interview session on the platform'] }
+          ],
+          14: [
+            { day: 1, title: 'Mathematics for Machine Learning', topics: ['Matrix calculus, probability distributions, Bayes theorem'] },
+            { day: 2, title: 'NumPy, Scipy & Vectorized Computation', topics: ['Broadcasting rules, matrix inversions, tensor manipulations'] },
+            { day: 3, title: 'Exploratory Data Analysis & Cleaning', topics: ['Data visualization, skewness correction, scaling methods'] },
+            { day: 4, title: 'Linear Models: Regression & Classification', topics: ['Cost function derivations, gradient descent variants, regularization (L1/L2)'] },
+            { day: 5, title: 'Tree-Based Methods & Ensembles', topics: ['XGBoost, LightGBM, Bagging vs Boosting mechanisms'] },
+            { day: 6, title: 'Support Vector Machines & Kernel Tricks', topics: ['Max margin classification, RBF kernels, slack variables'] },
+            { day: 7, title: 'Unsupervised Learning: Clustering & PCA', topics: ['SVD, t-SNE, elbow method, silhouette scores'] },
+            { day: 8, title: 'Evaluation Metrics Deep Dive', topics: ['Class imbalance strategies (SMOTE), PR curves, log loss'] },
+            { day: 9, title: 'Neural Networks Fundamentals', topics: ['Forward pass, backpropagation calculus, vanishing gradients'] },
+            { day: 10, title: 'Deep Learning Architectures: CNNs & RNNs', topics: ['Convolutions, pooling, LSTM, GRU mechanics'] },
+            { day: 11, title: 'Modern NLP & Transformers', topics: ['Self-attention mechanism, BERT, GPT architecture overview'] },
+            { day: 12, title: 'PyTorch/TensorFlow Model Building', topics: ['Custom datasets, DataLoader, training loops, checkpoints'] },
+            { day: 13, title: 'MLOps, Model Serving & Deployment', topics: ['FastAPI model endpoints, Docker containers, monitoring'] },
+            { day: 14, title: 'Comprehensive AI/ML Mock Interview', topics: ['Live technical ML interview and feedback review'] }
+          ],
+          30: [
+            { day: 1, title: 'Python & NumPy for ML', topics: ['Tensor creation, matrix multiplications, vectorization'] },
+            { day: 2, title: 'Linear Algebra: Spaces, Rank & Inverses', topics: ['Vector spaces, orthogonality, matrix decomposition'] },
+            { day: 3, title: 'Calculus: Gradients & Optimization', topics: ['Jacobian, Hessian matrices, convex optimization'] },
+            { day: 4, title: 'Probability & Statistical Inference', topics: ['Conditional probability, MLE (Maximum Likelihood Estimation)'] },
+            { day: 5, title: 'Data Cleaning & Preprocessing Pipelines', topics: ['scikit-learn Pipeline and ColumnTransformer'] },
+            { day: 6, title: 'Feature Engineering & Selection', topics: ['Mutual information, correlation filters, PCA'] },
+            { day: 7, title: 'Week 1 Review & Math Problem Set', topics: ['Solve ML math derivation interview questions'] },
+            { day: 8, title: 'Linear Regression & Regularization', topics: ['OLS derivation, Ridge (L2), Lasso (L1), ElasticNet'] },
+            { day: 9, title: 'Logistic Regression & Classification', topics: ['Sigmoid derivation, binary cross-entropy, decision boundaries'] },
+            { day: 10, title: 'Decision Trees & Pruning', topics: ['Gini impurity, entropy, information gain, pre/post-pruning'] },
+            { day: 11, title: 'Ensemble Learning: Bagging & Random Forest', topics: ['Out-of-bag error, feature importance calculation'] },
+            { day: 12, title: 'Ensemble Learning: Gradient Boosting & XGBoost', topics: ['Residual fitting, learning rate, tree regularization'] },
+            { day: 13, title: 'Support Vector Machines & Kernels', topics: ['Dual formulation, soft margin, polynomial/RBF kernels'] },
+            { day: 14, title: 'Week 2 Review & Scikit-Learn Coding Challenges', topics: ['Build end-to-end classification pipeline'] },
+            { day: 15, title: 'Unsupervised Learning: K-Means & Hierarchical', topics: ['K-Means++ initialization, distance metrics'] },
+            { day: 16, title: 'Dimensionality Reduction: PCA & SVD', topics: ['Eigen decomposition, explained variance ratio'] },
+            { day: 17, title: 'Handling Imbalanced Datasets', topics: ['Undersampling, oversampling (SMOTE), focal loss'] },
+            { day: 18, title: 'Neural Networks: Forward & Backward Passes', topics: ['Matrix representation of backpropagation, chain rule'] },
+            { day: 19, title: 'Activation Functions & Weight Initialization', topics: ['He vs Xavier initialization, LeakyReLU, GELU'] },
+            { day: 20, title: 'Optimizers & Learning Rate Schedulers', topics: ['Momentum, RMSprop, Adam, cosine annealing'] },
+            { day: 21, title: 'Week 3 Review & Midterm ML Mock Interview', topics: ['Live interview simulation on platform'] },
+            { day: 22, title: 'PyTorch Deep Dive: Tensors & Autograd', topics: ['torch.autograd, computational graphs, custom Modules'] },
+            { day: 23, title: 'Computer Vision & CNN Architectures', topics: ['ResNet skip connections, transfer learning'] },
+            { day: 24, title: 'Natural Language Processing & Embeddings', topics: ['Word2Vec, tokenization, BPE, WordPiece'] },
+            { day: 25, title: 'Transformer Architecture & Attention', topics: ['Scaled dot-product attention, multi-head attention'] },
+            { day: 26, title: 'Fine-Tuning LLMs & Hugging Face', topics: ['LoRA, PEFT, prompt engineering, quantization'] },
+            { day: 27, title: 'ML System Design: Recommendation / Search', topics: ['Candidate generation, ranking, feature stores, caching'] },
+            { day: 28, title: 'MLOps: Deployment, CI/CD & Monitoring', topics: ['Docker, ONNX runtime, drift detection (evidently AI)'] },
+            { day: 29, title: 'Behavioral & Project Defense Drills', topics: ['Explaining complex ML projects under technical scrutiny'] },
+            { day: 30, title: 'Final AI/ML Engineer Mock Interview', topics: ['Comprehensive simulation & performance scorecard'] }
+          ]
+        },
+
+        'Software Developer': {
+          3: [
+            { day: 1, title: 'Core Programming, OOP & Data Structures', topics: ['Variables, pointers/references, control flow, functions', 'Arrays, Strings, Hash Tables, basic recursion'] },
+            { day: 2, title: 'Algorithms & Database Queries', topics: ['Binary search, two pointers, sorting algorithms', 'SQL queries (joins, aggregations), database indexing basics'] },
+            { day: 3, title: 'Software Engineering Best Practices & Mock', topics: ['Clean code, SOLID principles, testing & debugging', 'Full 5-question voice mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Programming Fundamentals & Memory Management', topics: ['Variables, scopes, stack vs heap, value vs reference passing', 'Time & Space complexity (Big-O notation)'] },
+            { day: 2, title: 'Object-Oriented Design & SOLID Principles', topics: ['Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion', 'Design patterns: Singleton, Factory, Strategy'] },
+            { day: 3, title: 'Linear Data Structures & Coding Problems', topics: ['Arrays, Strings, Linked Lists, Stacks, Queues', 'Two-pointer technique and sliding window algorithms'] },
+            { day: 4, title: 'Non-Linear Data Structures & Trees', topics: ['Binary Trees, Binary Search Trees (BST), Tree traversals (DFS/BFS)', 'Graphs representation (adjacency list/matrix)'] },
+            { day: 5, title: 'Searching, Sorting & Dynamic Programming Basics', topics: ['Binary search variants, quicksort, mergesort', 'Memoization vs Tabulation concepts'] },
+            { day: 6, title: 'Database Design, SQL & System Architecture', topics: ['Relational schema design, primary/foreign keys, indexes', 'REST APIs, HTTP status codes, client-server architecture'] },
+            { day: 7, title: 'Mock Technical Interview & Behavioral Prep', topics: ['Practice classic coding interview questions', 'Full mock interview session on the platform'] }
+          ],
+          14: [
+            { day: 1, title: 'Time & Space Complexity (Big-O)', topics: ['Worst, average, best cases, amortized complexity'] },
+            { day: 2, title: 'Arrays & Two Pointers Algorithms', topics: ['In-place array manipulations, Dutch National Flag, trapping water'] },
+            { day: 3, title: 'Strings & Hash Maps', topics: ['Anagrams, string matching, hash table collisions'] },
+            { day: 4, title: 'Linked Lists Algorithms', topics: ['Reverse linked list, cycle detection (Floyd\'s algorithm)'] },
+            { day: 5, title: 'Stacks & Queues Applications', topics: ['Monotonic stacks, valid parentheses, min-stack'] },
+            { day: 6, title: 'Binary Trees & Traversals', topics: ['Inorder, preorder, postorder, level-order traversals'] },
+            { day: 7, title: 'Binary Search Trees & Heaps', topics: ['BST validation, Heap operations, Priority Queue problems'] },
+            { day: 8, title: 'Graphs: BFS & DFS', topics: ['Connected components, cycle detection, topological sort'] },
+            { day: 9, title: 'Dynamic Programming Foundations', topics: ['Knapsack problem, longest common subsequence, coin change'] },
+            { day: 10, title: 'Object-Oriented Design & SOLID', topics: ['Low-level system design (Parking Lot, Tic-Tac-Toe)'] },
+            { day: 11, title: 'Database Indexing, Transactions & ACID', topics: ['B-Trees, indexing best practices, isolation levels'] },
+            { day: 12, title: 'System Design Basics (High-Level Design)', topics: ['Load balancing, caching, vertical vs horizontal scaling'] },
+            { day: 13, title: 'Git, Testing & CI/CD Pipelines', topics: ['Git branching strategies, unit testing, automated deployments'] },
+            { day: 14, title: 'Software Developer Mock Interview', topics: ['Comprehensive simulation & performance scorecard'] }
+          ],
+          30: [
+            { day: 1, title: 'Data Types, Pointers & Memory Models', topics: ['Memory layout of programs, stack vs heap allocation'] },
+            { day: 2, title: 'Big-O Analysis & Recurrence Relations', topics: ['Master theorem, analyzing nested loops & recursive branches'] },
+            { day: 3, title: 'Arrays & Kadane\'s Algorithm', topics: ['Subarray problems, prefix sums, sliding window'] },
+            { day: 4, title: 'String Algorithms & Palindromes', topics: ['Longest substring without repeating characters'] },
+            { day: 5, title: 'Linked Lists: Singly & Doubly Linked', topics: ['Fast & slow pointer techniques, merge two sorted lists'] },
+            { day: 6, title: 'Stacks, Queues & Deques', topics: ['Next greater element, queue using stacks'] },
+            { day: 7, title: 'Week 1 Review & Data Structures Drill', topics: ['Solve 5 medium-difficulty coding challenges'] },
+            { day: 8, title: 'Recursion & Backtracking', topics: ['N-Queens, permutations, combinations, subset generation'] },
+            { day: 9, title: 'Binary Search & Monotonic Functions', topics: ['Search in rotated sorted array, square root algorithm'] },
+            { day: 10, title: 'Binary Trees: Maximum Depth & Diameter', topics: ['Lowest common ancestor, serialize/deserialize trees'] },
+            { day: 11, title: 'Binary Search Trees & Balancing', topics: ['AVL trees, Red-Black tree principles, k-th smallest element'] },
+            { day: 12, title: 'Heaps & Priority Queues', topics: ['Top K frequent elements, merge K sorted lists'] },
+            { day: 13, title: 'Graphs: Representations & BFS/DFS', topics: ['Number of islands, word ladder, clone graph'] },
+            { day: 14, title: 'Week 2 Review & Algorithmic Problem Solving', topics: ['Graph traversal and shortest path (Dijkstra\'s) problems'] },
+            { day: 15, title: 'Dynamic Programming: 1D Problems', topics: ['Climbing stairs, house robber, Fibonacci optimization'] },
+            { day: 16, title: 'Dynamic Programming: 2D & Grid Problems', topics: ['Unique paths, minimum path sum, edit distance'] },
+            { day: 17, title: 'Greedy Algorithms vs DP', topics: ['Interval scheduling, activity selection, fractional knapsack'] },
+            { day: 18, title: 'Bit Manipulation & Bitwise Tricks', topics: ['Single number, counting bits, power of two'] },
+            { day: 19, title: 'OOP & SOLID Principles In-Depth', topics: ['Refactoring code smells, applying design patterns'] },
+            { day: 20, title: 'Design Patterns: Creational & Structural', topics: ['Singleton, Factory, Builder, Adapter, Decorator'] },
+            { day: 21, title: 'Week 3 Review & Midterm Technical Mock', topics: ['Live technical mock interview test'] },
+            { day: 22, title: 'Design Patterns: Behavioral', topics: ['Strategy, Observer, Command, Iterator patterns'] },
+            { day: 23, title: 'Low-Level Design (LLD) Case Study', topics: ['Design a Parking Lot / Elevator System'] },
+            { day: 24, title: 'Relational Database Schema & Indexing', topics: ['B-Tree indexing, execution plans, query optimization'] },
+            { day: 25, title: 'NoSQL Databases (MongoDB/Redis)', topics: ['Key-value, document stores, caching patterns (cache-aside)'] },
+            { day: 26, title: 'High-Level System Design: Scalability', topics: ['Load balancers, CDN, horizontal scaling, database sharding'] },
+            { day: 27, title: 'Microservices & Message Queues', topics: ['Event-driven architecture, Kafka/RabbitMQ basics'] },
+            { day: 28, title: 'CI/CD, Docker & DevOps Basics for Developers', topics: ['Containerization, environment configuration, pipeline triggers'] },
+            { day: 29, title: 'Behavioral Questions & STAR Framework', topics: ['Conflict resolution, failure stories, engineering leadership'] },
+            { day: 30, title: 'Final Software Developer Mock Interview', topics: ['Full live simulation & readiness report'] }
+          ]
+        },
+
+        'Cloud / DevOps Engineer': {
+          3: [
+            { day: 1, title: 'Linux System Administration & Networking', topics: ['Core Linux commands, permissions, systemctl, SSH, TCP/IP, DNS, ports'] },
+            { day: 2, title: 'Docker Containers & CI/CD Pipelines', topics: ['Dockerfiles, multi-stage builds, docker-compose, GitHub Actions basics'] },
+            { day: 3, title: 'Kubernetes, Cloud & Mock Interview', topics: ['Pod, Service, Deployment, AWS/GCP essentials, full mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Linux & Bash Scripting', topics: ['Linux shell, file permissions, cron jobs, process management, awk/sed'] },
+            { day: 2, title: 'Computer Networking & Security Basics', topics: ['OSI model, HTTP/HTTPS, SSL/TLS, firewalls, iptables, reverse proxies'] },
+            { day: 3, title: 'Docker & Containerization', topics: ['Container architecture, Dockerfile optimization, storage volumes, networking'] },
+            { day: 4, title: 'CI/CD Pipelines & Version Control', topics: ['Git workflows, automated testing, GitHub Actions / Jenkins pipelines'] },
+            { day: 5, title: 'Kubernetes (K8s) Core Concepts', topics: ['Cluster architecture, Nodes, Pods, Deployments, Services, ConfigMaps'] },
+            { day: 6, title: 'Infrastructure as Code (Terraform) & Cloud', topics: ['Terraform state, HCL syntax, AWS EC2/S3/VPC/IAM configuration'] },
+            { day: 7, title: 'Monitoring, Observability & Mock Interview', topics: ['Prometheus, Grafana, ELK stack, full mock interview test'] }
+          ],
+          14: [
+            { day: 1, title: 'Linux Administration Foundations', topics: ['Kernel, systemd, disk partitioning, LVM, performance monitoring'] },
+            { day: 2, title: 'Advanced Bash & Automation', topics: ['Automation scripts, error handling, exit codes, environment configs'] },
+            { day: 3, title: 'Networking Fundamentals for Cloud', topics: ['Subnetting, CIDR, VPC peering, NAT gateways, DNS resolution'] },
+            { day: 4, title: 'Docker Internals & Best Practices', topics: ['Namespaces, cgroups, rootless containers, security scanning'] },
+            { day: 5, title: 'Container Orchestration with Kubernetes', topics: ['Control plane components, kubelet, etcd, scheduler, worker nodes'] },
+            { day: 6, title: 'Kubernetes Networking & Storage', topics: ['Ingress controllers, CNI plugins, Persistent Volumes, PVCs'] },
+            { day: 7, title: 'Helm Package Manager & GitOps', topics: ['Helm charts, values.yaml, ArgoCD / Flux deployment paradigms'] },
+            { day: 8, title: 'CI/CD Engineering Deep Dive', topics: ['Canary vs Blue-Green deployments, artifact repositories (Nexus)'] },
+            { day: 9, title: 'Infrastructure as Code with Terraform', topics: ['Terraform modules, remote backends, drift detection'] },
+            { day: 10, title: 'Cloud Architecture: Compute & Storage (AWS)', topics: ['EC2, Auto Scaling Groups, S3 lifecycle policies, EBS volumes'] },
+            { day: 11, title: 'Cloud Security & IAM Best Practices', topics: ['Least privilege, IAM roles, KMS encryption, security groups'] },
+            { day: 12, title: 'Observability & Telemetry (Prometheus)', topics: ['Metrics scraping, PromQL, Alertmanager, Grafana dashboards'] },
+            { day: 13, title: 'Site Reliability Engineering (SRE) Principles', topics: ['SLI, SLO, SLA, error budgets, incident postmortems'] },
+            { day: 14, title: 'Comprehensive DevOps Mock Interview', topics: ['Full live mock interview simulation & report'] }
+          ],
+          30: [
+            { day: 1, title: 'Linux Architecture & Boot Process', topics: ['GRUB, initramfs, systemd targets, kernel modules'] },
+            { day: 2, title: 'Linux Filesystem & Storage Administration', topics: ['ext4, XFS, mount options, inode exhaustion, LVM snapshots'] },
+            { day: 3, title: 'Linux Troubleshooting & Performance Tools', topics: ['strace, lsof, top, htop, vmstat, iostat, netstat'] },
+            { day: 4, title: 'Shell Scripting & Python Automation', topics: ['Automating server maintenance and log parsing'] },
+            { day: 5, title: 'Networking: TCP/IP Stack & Handshake', topics: ['Three-way handshake, TCP windowing, packet capture (tcpdump)'] },
+            { day: 6, title: 'Web Servers & Reverse Proxies (Nginx)', topics: ['Virtual hosts, upstream blocks, SSL termination, rate limiting'] },
+            { day: 7, title: 'Week 1 Review & Linux/Networking Lab', topics: ['Debug simulated server outages and broken routing'] },
+            { day: 8, title: 'Container Runtimes & Docker Architecture', topics: ['containerd, runc, Docker daemon architecture'] },
+            { day: 9, title: 'Optimizing Container Images', topics: ['Distroless images, multi-stage builds, minimizing attack surface'] },
+            { day: 10, title: 'Docker Networking & Swarm Overview', topics: ['Bridge, host, overlay networks, container DNS'] },
+            { day: 11, title: 'Kubernetes Architecture: Control Plane', topics: ['API Server, etcd quorum, controller manager, kube-scheduler'] },
+            { day: 12, title: 'Kubernetes Workloads: Pods & Deployments', topics: ['Rolling updates, rollback strategies, replica sets'] },
+            { day: 13, title: 'Kubernetes Services & Ingress', topics: ['ClusterIP, NodePort, LoadBalancer, Ingress-Nginx routing'] },
+            { day: 14, title: 'Week 2 Review & K8s Cluster Scenarios', topics: ['Deploy a resilient multi-tier microservice on Kubernetes'] },
+            { day: 15, title: 'Kubernetes Configuration & Secrets', topics: ['ConfigMaps, Secrets, HashiCorp Vault integration'] },
+            { day: 16, title: 'Kubernetes Storage: PV, PVC & StorageClasses', topics: ['Dynamic provisioning, CSI drivers, stateful sets'] },
+            { day: 17, title: 'Kubernetes Scaling & Self-Healing', topics: ['HPA (Horizontal Pod Autoscaler), VPA, Cluster Autoscaler'] },
+            { day: 18, title: 'Helm & Package Management', topics: ['Creating custom charts, template functions, dependencies'] },
+            { day: 19, title: 'GitOps & ArgoCD Continuous Delivery', topics: ['Declarative infrastructure, sync policies, automated rollbacks'] },
+            { day: 20, title: 'CI/CD Pipelines: Advanced Workflows', topics: ['Pipeline security, secret masking, parallel jobs, caching'] },
+            { day: 21, title: 'Week 3 Review & Midterm DevOps Mock', topics: ['Live troubleshooting interview test'] },
+            { day: 22, title: 'Infrastructure as Code: Terraform Core', topics: ['Providers, resources, variables, outputs, terraform plan/apply'] },
+            { day: 23, title: 'Terraform Modules & State Locking', topics: ['S3/DynamoDB remote state, workspace management'] },
+            { day: 24, title: 'Cloud Architecture: AWS VPC & Networking', topics: ['Public/Private subnets, Route tables, NAT, Internet Gateways'] },
+            { day: 25, title: 'Cloud Architecture: Compute & Serverless', topics: ['EC2, ECS/Fargate, AWS Lambda, API Gateway'] },
+            { day: 26, title: 'Monitoring & Alerting: Prometheus & Grafana', topics: ['PromQL syntax, alert rules, custom exporter creation'] },
+            { day: 27, title: 'Centralized Logging: ELK & Loki', topics: ['Log shipping, Fluentd/Fluentbit, Elasticsearch indexing'] },
+            { day: 28, title: 'DevSecOps & Compliance', topics: ['Static code analysis (SonarQube), Trivy container scanning'] },
+            { day: 29, title: 'Site Reliability Engineering Scenarios', topics: ['Incident management, postmortems, root cause analysis'] },
+            { day: 30, title: 'Final DevOps / Cloud Engineer Mock Interview', topics: ['Comprehensive simulation & readiness certificate'] }
+          ]
+        },
+
+        'Full Stack Developer': {
+          3: [
+            { day: 1, title: 'Frontend Architecture & Modern JS', topics: ['Semantic UI, Flexbox/Grid, ES6+, component design patterns'] },
+            { day: 2, title: 'Backend REST APIs & Databases', topics: ['Node.js/Python backend, CRUD endpoints, SQL vs NoSQL, authentication'] },
+            { day: 3, title: 'Full Stack Integration & Mock Interview', topics: ['Client-server data flow, CORS, error handling, mock interview'] }
+          ],
+          7: [
+            { day: 1, title: 'Frontend Foundations: HTML5, CSS3 & Responsive UI', topics: ['Semantic HTML, CSS Flexbox/Grid, modern mobile-first styling'] },
+            { day: 2, title: 'JavaScript & Modern Frontend Frameworks', topics: ['ES6+ features, async/await, component state & props lifecycle'] },
+            { day: 3, title: 'Backend API Development (REST & Node/Python)', topics: ['Routing, controllers, middleware, request validation, status codes'] },
+            { day: 4, title: 'Databases: SQL & NoSQL Design', topics: ['Relational schema design vs MongoDB documents, indexing, transactions'] },
+            { day: 5, title: 'Authentication, Security & State Management', topics: ['JWT authentication, sessions, cookies, password hashing (bcrypt), XSS/CSRF'] },
+            { day: 6, title: 'Deployment, Docker & Cloud Hosting', topics: ['Dockerizing apps, CI/CD, cloud deployments (Render, Vercel, AWS)'] },
+            { day: 7, title: 'Full Stack Architecture & Mock Interview', topics: ['System integration, client-server performance, full mock interview'] }
+          ],
+          14: [
+            { day: 1, title: 'Modern Frontend Layouts & Styling', topics: ['Responsive frameworks, CSS variables, utility-first patterns'] },
+            { day: 2, title: 'JavaScript Mastery & Async Mechanics', topics: ['Promises, event loop, closures, DOM event delegation'] },
+            { day: 3, title: 'Frontend Framework Components & Hooks', topics: ['State management, effects, custom hooks, prop drilling solutions'] },
+            { day: 4, title: 'API Consumption & Client State', topics: ['React Query/Axios, caching, optimistic UI updates'] },
+            { day: 5, title: 'Backend Framework Setup & Routing', topics: ['Express/FastAPI app architecture, clean folder structures'] },
+            { day: 6, title: 'Middleware, Validation & Error Handling', topics: ['Custom middleware, schema validation (Zod/Pydantic), error interceptors'] },
+            { day: 7, title: 'Database Modeling & ORM Integration', topics: ['Prisma/SQLAlchemy/Mongoose, migrations, relations'] },
+            { day: 8, title: 'Authentication & Authorization (RBAC)', topics: ['Access tokens, refresh tokens, role-based route guards'] },
+            { day: 9, title: 'File Uploads & Cloud Storage', topics: ['Multer, AWS S3 presigned URLs, image optimization'] },
+            { day: 10, title: 'Real-Time Communication (WebSockets)', topics: ['Socket.IO, event-based bi-directional communication'] },
+            { day: 11, title: 'Web Security Best Practices', topics: ['CORS policies, Helmet headers, rate limiting, SQL injection defense'] },
+            { day: 12, title: 'Testing Full Stack Applications', topics: ['Unit tests for backend endpoints, component testing for frontend'] },
+            { day: 13, title: 'Dockerization & CI/CD Pipelines', topics: ['Multi-container docker-compose, automated deployment pipelines'] },
+            { day: 14, title: 'Comprehensive Full Stack Mock Interview', topics: ['Live architecture defense and mock interview session'] }
+          ],
+          30: [
+            { day: 1, title: 'Web Foundations & Developer Tooling', topics: ['Browser developer tools, Git workflows, package managers'] },
+            { day: 2, title: 'Responsive UI Design & Modern CSS', topics: ['Flexbox, Grid, container queries, CSS architecture'] },
+            { day: 3, title: 'Core JavaScript: Scope & Execution Context', topics: ['Hoisting, closures, primitive vs reference types'] },
+            { day: 4, title: 'JavaScript: Asynchronous Patterns', topics: ['Promises, async/await, microtasks vs macrotasks'] },
+            { day: 5, title: 'DOM & Browser Storage', topics: ['Event delegation, localStorage, sessionStorage, cookies'] },
+            { day: 6, title: 'Frontend Component Architecture', topics: ['Atomic design, reusable component libraries'] },
+            { day: 7, title: 'Week 1 Review & Frontend Project Drill', topics: ['Build an interactive responsive dashboard interface'] },
+            { day: 8, title: 'Frontend Framework Deep Dive (React)', topics: ['Virtual DOM, reconciliation, hook rules'] },
+            { day: 9, title: 'Complex State Management', topics: ['Context API, Redux Toolkit or Zustand comparison'] },
+            { day: 10, title: 'Routing & Single Page App Architecture', topics: ['Client-side routing, protected routes, code splitting'] },
+            { day: 11, title: 'Backend Architecture: Node/Express or Python', topics: ['HTTP module, server creation, MVC pattern'] },
+            { day: 12, title: 'RESTful API Standards & Best Practices', topics: ['Resource naming, idempotency, HTTP status codes, pagination'] },
+            { day: 13, title: 'Request Validation & Sanitization', topics: ['Input validation, preventing malicious payloads'] },
+            { day: 14, title: 'Week 2 Review & Backend API Testing', topics: ['Build and test complete CRUD API with Postman/Swagger'] },
+            { day: 15, title: 'Relational Databases (PostgreSQL / MySQL)', topics: ['Schema design, foreign keys, normalization, index types'] },
+            { day: 16, title: 'Object-Relational Mapping (ORM)', topics: ['Queries, eager vs lazy loading, transactions'] },
+            { day: 17, title: 'NoSQL Databases (MongoDB)', topics: ['Document design, embedding vs referencing, aggregation pipelines'] },
+            { day: 18, title: 'Authentication Systems', topics: ['Password hashing with bcrypt, JWT creation and verification'] },
+            { day: 19, title: 'Session Management & Security', topics: ['HttpOnly cookies, refresh token rotation strategies'] },
+            { day: 20, title: 'Caching & Performance with Redis', topics: ['Cache-aside pattern, TTL, session storage in Redis'] },
+            { day: 21, title: 'Week 3 Review & Midterm Mock Interview', topics: ['Full stack architecture technical interview test'] },
+            { day: 22, title: 'Real-Time Applications with WebSockets', topics: ['Socket.io server & client, room broadcasting'] },
+            { day: 23, title: 'Background Jobs & Task Queues', topics: ['BullMQ / Celery, asynchronous email and report processing'] },
+            { day: 24, title: 'Web Application Security (OWASP Top 10)', topics: ['XSS, CSRF, SSRF, SQL Injection, Security headers'] },
+            { day: 25, title: 'Docker & Multi-Container Environments', topics: ['Dockerfile optimization, docker-compose for app + DB + redis'] },
+            { day: 26, title: 'CI/CD & Cloud Deployment Pipelines', topics: ['GitHub Actions, deploying to AWS / cloud container services'] },
+            { day: 27, title: 'System Design for Full Stack Engineers', topics: ['Design URL shortener, design e-commerce checkout flow'] },
+            { day: 28, title: 'Performance Monitoring & Logging', topics: ['Morgan, Winston, Sentry error tracking, Lighthouse scores'] },
+            { day: 29, title: 'Behavioral & Project Walkthrough Drills', topics: ['Presenting full stack portfolio and architectural trade-offs'] },
+            { day: 30, title: 'Final Full Stack Developer Mock Interview', topics: ['Complete simulation & career readiness scorecard'] }
+          ]
+        }
+      };
+
+      // Role-specific competencies
+      var focusAreasDB = {
+        'Python Developer': [
+          { name: 'Python Core & Syntax', percent: 85, color: 'bg-primary' },
+          { name: 'Data Structures & Algorithms', percent: 70, color: 'bg-info' },
+          { name: 'OOP & Design Patterns', percent: 80, color: 'bg-success' },
+          { name: 'Frameworks & Databases', percent: 75, color: 'bg-warning' }
         ],
-
-
-        "Java Developer": [
-
-            [
-                "Java Basics",
-                "Variables, data types and operators",
-                "Practice basic Java programs"
-            ],
-
-            [
-                "Control Flow",
-                "if, switch, for and while",
-                "Practice control statements"
-            ],
-
-            [
-                "OOP",
-                "Classes, objects and constructors",
-                "Practice OOP programs"
-            ],
-
-            [
-                "Inheritance",
-                "Inheritance and method overriding",
-                "Solve inheritance questions"
-            ],
-
-            [
-                "Interfaces",
-                "Interfaces and abstraction",
-                "Practice interface examples"
-            ],
-
-            [
-                "Collections",
-                "ArrayList, HashMap and HashSet",
-                "Practice collection questions"
-            ],
-
-            [
-                "Final Practice",
-                "Revise Java concepts",
-                "Take a Java mock interview"
-            ]
-
+        'Java Developer': [
+          { name: 'Core Java & Collections', percent: 85, color: 'bg-primary' },
+          { name: 'Multithreading & Concurrency', percent: 70, color: 'bg-danger' },
+          { name: 'Spring Boot & Microservices', percent: 75, color: 'bg-success' },
+          { name: 'Database & SQL Design', percent: 80, color: 'bg-info' }
         ],
-
-
-        "Web Developer": [
-
-            [
-                "HTML",
-                "HTML elements, forms and semantic tags",
-                "Build a simple webpage"
-            ],
-
-            [
-                "CSS",
-                "Selectors, box model and layouts",
-                "Style a webpage"
-            ],
-
-            [
-                "JavaScript Basics",
-                "Variables, functions and events",
-                "Practice JavaScript programs"
-            ],
-
-            [
-                "DOM",
-                "DOM elements and event handling",
-                "Build an interactive page"
-            ],
-
-            [
-                "Web APIs",
-                "Fetch API and JSON",
-                "Practice API calls"
-            ],
-
-            [
-                "Responsive Design",
-                "Flexbox, Grid and responsive layouts",
-                "Make a responsive webpage"
-            ],
-
-            [
-                "Final Practice",
-                "Revise web development concepts",
-                "Take a Web Developer mock interview"
-            ]
-
+        'Web Developer': [
+          { name: 'HTML5 & Modern CSS Layouts', percent: 90, color: 'bg-success' },
+          { name: 'JavaScript & ES6+ Mechanics', percent: 85, color: 'bg-primary' },
+          { name: 'Frontend Frameworks (React)', percent: 75, color: 'bg-info' },
+          { name: 'Web Performance & Security', percent: 70, color: 'bg-warning' }
         ],
-
-
-        "Data Analyst": [
-
-            [
-                "Data Analysis Basics",
-                "Data types and data cleaning",
-                "Practice data analysis questions"
-            ],
-
-            [
-                "Excel",
-                "Formulas, functions and charts",
-                "Practice Excel problems"
-            ],
-
-            [
-                "SQL",
-                "SELECT, WHERE, GROUP BY and JOIN",
-                "Solve SQL queries"
-            ],
-
-            [
-                "Python",
-                "NumPy and Pandas basics",
-                "Practice data analysis programs"
-            ],
-
-            [
-                "Visualization",
-                "Matplotlib and charts",
-                "Create simple visualizations"
-            ],
-
-            [
-                "Statistics",
-                "Mean, median, mode and probability",
-                "Solve statistics questions"
-            ],
-
-            [
-                "Final Practice",
-                "Revise data analysis concepts",
-                "Take a Data Analyst mock interview"
-            ]
-
+        'Data Analyst': [
+          { name: 'Advanced SQL & Aggregations', percent: 90, color: 'bg-primary' },
+          { name: 'Python (Pandas & NumPy)', percent: 80, color: 'bg-info' },
+          { name: 'Business Statistics & A/B Tests', percent: 75, color: 'bg-warning' },
+          { name: 'Data Storytelling & BI Tools', percent: 85, color: 'bg-success' }
         ],
-
-
-        "AI/ML Engineer": [
-
-            [
-                "Python for AI",
-                "Python, NumPy and Pandas",
-                "Practice Python programs"
-            ],
-
-            [
-                "ML Basics",
-                "Supervised and unsupervised learning",
-                "Practice ML concepts"
-            ],
-
-            [
-                "Data Preprocessing",
-                "Cleaning, scaling and encoding",
-                "Practice preprocessing techniques"
-            ],
-
-            [
-                "ML Algorithms",
-                "Regression, classification and clustering",
-                "Practice algorithm questions"
-            ],
-
-            [
-                "Model Evaluation",
-                "Accuracy, precision, recall and F1",
-                "Solve evaluation problems"
-            ],
-
-            [
-                "Neural Networks",
-                "Neurons, layers and activation functions",
-                "Study basic neural networks"
-            ],
-
-            [
-                "Final Practice",
-                "Revise AI/ML concepts",
-                "Take an AI/ML mock interview"
-            ]
-
+        'AI/ML Engineer': [
+          { name: 'Mathematics & Linear Algebra', percent: 75, color: 'bg-warning' },
+          { name: 'Machine Learning Algorithms', percent: 85, color: 'bg-primary' },
+          { name: 'Deep Learning & Neural Networks', percent: 70, color: 'bg-danger' },
+          { name: 'MLOps & Model Deployment', percent: 65, color: 'bg-info' }
         ],
-
-
-        "Software Developer": [
-
-            [
-                "Programming Basics",
-                "Variables, conditions and loops",
-                "Practice programming problems"
-            ],
-
-            [
-                "OOP",
-                "Classes, objects and inheritance",
-                "Practice OOP programs"
-            ],
-
-            [
-                "Data Structures",
-                "Arrays, stacks, queues and linked lists",
-                "Solve data structure problems"
-            ],
-
-            [
-                "Algorithms",
-                "Searching and sorting algorithms",
-                "Practice algorithm problems"
-            ],
-
-            [
-                "Database",
-                "SQL and database basics",
-                "Practice SQL queries"
-            ],
-
-            [
-                "Software Development",
-                "SDLC, testing and debugging",
-                "Study software development concepts"
-            ],
-
-            [
-                "Final Practice",
-                "Revise important concepts",
-                "Take a coding mock interview"
-            ]
-
+        'Software Developer': [
+          { name: 'Problem Solving & DSA', percent: 85, color: 'bg-primary' },
+          { name: 'Software Architecture & SOLID', percent: 80, color: 'bg-success' },
+          { name: 'Databases & System Design', percent: 75, color: 'bg-info' },
+          { name: 'Debugging & Clean Code', percent: 85, color: 'bg-warning' }
+        ],
+        'Cloud / DevOps Engineer': [
+          { name: 'Linux Administration & Scripting', percent: 90, color: 'bg-primary' },
+          { name: 'Docker & Containerization', percent: 85, color: 'bg-info' },
+          { name: 'Kubernetes & Orchestration', percent: 75, color: 'bg-success' },
+          { name: 'CI/CD & Cloud Infrastructure', percent: 80, color: 'bg-warning' }
+        ],
+        'Full Stack Developer': [
+          { name: 'Frontend UI & Modern JavaScript', percent: 85, color: 'bg-primary' },
+          { name: 'Backend APIs & Architecture', percent: 80, color: 'bg-success' },
+          { name: 'Databases & Schema Design', percent: 75, color: 'bg-info' },
+          { name: 'Authentication & DevOps Basics', percent: 70, color: 'bg-warning' }
         ]
+      };
 
-    };
-
-
-    /* ========================================================
-       LOAD SELECTED PLAN
-       ======================================================== */
-
-    const selectedPlan =
-        plans[role] ||
-        plans["Python Developer"];
-
-
-    const preparationContainer =
-        document.getElementById(
-            'dynamicPreparationPlan'
-        );
-
-
-    if (preparationContainer) {
-
-        preparationContainer.innerHTML =
-            selectedPlan.map(
-                function (day, index) {
-
-                    return `
-
-                        <div class="day-item">
-
-                            <div class="day-number">
-                                Day ${index + 1}
-                            </div>
-
-                            <div class="day-content">
-
-                                <h6>
-                                    ${day[0]}
-                                </h6>
-
-                                <ul>
-
-                                    <li>
-                                        <i class="fas fa-check-circle"></i>
-                                        ${day[1]}
-                                    </li>
-
-                                    <li>
-                                        <i class="fas fa-check-circle"></i>
-                                        ${day[2]}
-                                    </li>
-
-                                </ul>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            ).join('');
-
-    }
-
-
-    /* ========================================================
-       ROLE-WISE PRACTICE QUESTIONS
-       ======================================================== */
-
-    const questions = {
-
-
-        "Python Developer": [
-
-            "What are Python data types?",
-
-            "What is the difference between list and tuple?",
-
-            "What is exception handling in Python?"
-
+      // Role-specific practice questions
+      var questionsDB = {
+        'Python Developer': [
+          { q: 'Explain the difference between a list and a tuple in Python.', topic: 'Data Types', diff: 'Easy', hint: 'Lists are mutable and use square brackets []. Tuples are immutable, use parentheses (), and are faster.' },
+          { q: 'How does memory management and garbage collection work in Python?', topic: 'Internals', diff: 'Medium', hint: 'Python uses reference counting as primary mechanism along with a generational cyclic garbage collector.' },
+          { q: 'What are decorators and how do you write a custom decorator with arguments?', topic: 'Advanced', diff: 'Medium', hint: 'Decorators are functions that take another function as argument and extend its behavior without modifying it.' },
+          { q: 'Explain the difference between deepcopy and shallow copy in Python.', topic: 'Core', diff: 'Easy', hint: 'Shallow copy copies references to objects; deepcopy recursively copies all objects and values.' },
+          { q: 'What is the Global Interpreter Lock (GIL) and why does it exist?', topic: 'Concurrency', diff: 'Hard', hint: 'The GIL is a mutex that prevents multiple native threads from executing Python bytecodes simultaneously.' }
         ],
-
-
-        "Java Developer": [
-
-            "What is the difference between class and object?",
-
-            "What is inheritance in Java?",
-
-            "What is the difference between constructor and method?"
-
+        'Java Developer': [
+          { q: 'What is the difference between an abstract class and an interface in Java 8+?', topic: 'OOP', diff: 'Easy', hint: 'Abstract classes can have state and constructors; interfaces define contracts and can have default/static methods.' },
+          { q: 'How does HashMap work internally in Java?', topic: 'Collections', diff: 'Medium', hint: 'Uses an array of Node buckets, hashCode() to find bucket index, and converts linked list to red-black tree when chain length exceeds 8.' },
+          { q: 'What is the difference between checked and unchecked exceptions?', topic: 'Core', diff: 'Easy', hint: 'Checked exceptions extend Exception (handled at compile time); unchecked exceptions extend RuntimeException.' },
+          { q: 'Explain the difference between synchronized block and ReentrantLock.', topic: 'Concurrency', diff: 'Hard', hint: 'ReentrantLock provides features like tryLock(), fairness policies, and multiple Condition variables.' },
+          { q: 'What are Java 8 Streams and how do intermediate operations differ from terminal?', topic: 'Java 8', diff: 'Medium', hint: 'Streams are sequences of elements supporting aggregate operations. Intermediate operations are lazy; terminal operations trigger execution.' }
         ],
-
-
-        "Web Developer": [
-
-            "What is semantic HTML?",
-
-            "What is the CSS box model?",
-
-            "What is DOM in JavaScript?"
-
+        'Web Developer': [
+          { q: 'Explain the CSS Box Model and the difference between content-box and border-box.', topic: 'CSS', diff: 'Easy', hint: 'Box model consists of margins, borders, padding, and content. border-box includes padding and border in width/height.' },
+          { q: 'How does event bubbling and event delegation work in JavaScript?', topic: 'DOM', diff: 'Medium', hint: 'Events bubble from innermost target up to document. Delegation attaches one listener to a parent to handle multiple children.' },
+          { q: 'What is the JavaScript Event Loop and how do microtasks differ from macrotasks?', topic: 'Async JS', diff: 'Hard', hint: 'Microtasks (Promises) execute right after current script before next macrotask (setTimeout, I/O) is processed.' },
+          { q: 'Explain the Virtual DOM and reconciliation in React.', topic: 'React', diff: 'Medium', hint: 'Virtual DOM is an in-memory representation of UI. Diffing algorithm compares virtual DOMs and batches real DOM updates.' },
+          { q: 'What is the difference between localStorage, sessionStorage, and cookies?', topic: 'Browser', diff: 'Easy', hint: 'localStorage persists until cleared; sessionStorage lasts for tab session; cookies are sent with HTTP headers.' }
         ],
-
-
-        "Data Analyst": [
-
-            "What is data cleaning?",
-
-            "What is the difference between WHERE and HAVING?",
-
-            "What is the difference between mean and median?"
-
+        'Data Analyst': [
+          { q: 'What is the difference between WHERE and HAVING in SQL?', topic: 'SQL', diff: 'Easy', hint: 'WHERE filters rows before aggregation; HAVING filters aggregated groups created by GROUP BY.' },
+          { q: 'Explain the difference between ROW_NUMBER(), RANK(), and DENSE_RANK().', topic: 'SQL', diff: 'Medium', hint: 'ROW_NUMBER assigns unique sequential integers. RANK leaves gaps on ties; DENSE_RANK does not leave gaps.' },
+          { q: 'How do you handle missing or null data in a dataset using Pandas?', topic: 'Pandas', diff: 'Easy', hint: 'Use isna(), dropna() to remove, or fillna() with mean, median, forward-fill, or domain-specific imputations.' },
+          { q: 'What is the difference between Correlation and Causation?', topic: 'Statistics', diff: 'Medium', hint: 'Correlation indicates a statistical association between variables; causation proves that one variable directly causes change in another.' },
+          { q: 'How would you explain a sudden 15% drop in conversion rate to business leaders?', topic: 'Case Study', diff: 'Hard', hint: 'Break down by segments (device, geography, marketing channel), check for technical bugs, season factors, or tracking failures.' }
         ],
-
-
-        "AI/ML Engineer": [
-
-            "What is supervised learning?",
-
-            "What is data preprocessing?",
-
-            "What is the difference between classification and regression?"
-
+        'AI/ML Engineer': [
+          { q: 'Explain the Bias-Variance tradeoff and how to mitigate both.', topic: 'ML Core', diff: 'Medium', hint: 'High bias causes underfitting (use more complex model); high variance causes overfitting (use regularization, more data).' },
+          { q: 'What is the difference between L1 (Lasso) and L2 (Ridge) regularization?', topic: 'Algorithms', diff: 'Medium', hint: 'L1 adds absolute value penalty leading to sparse coefficients; L2 adds squared penalty shrinking coefficients toward zero.' },
+          { q: 'Why do we need activation functions in neural networks?', topic: 'Deep Learning', diff: 'Easy', hint: 'Without non-linear activations (ReLU, Sigmoid), stacked neural network layers collapse mathematically into a single linear regression.' },
+          { q: 'What is the vanishing gradient problem and how does ReLU or ResNet solve it?', topic: 'Deep Learning', diff: 'Hard', hint: 'Gradients shrink exponentially during backprop in deep nets. ReLU has constant gradient of 1 for x>0; ResNet uses identity skip connections.' },
+          { q: 'When would you use Precision vs Recall vs F1-score?', topic: 'Evaluation', diff: 'Medium', hint: 'Use Precision when False Positives are costly (spam filter); Recall when False Negatives are critical (cancer detection); F1 when balanced.' }
         ],
-
-
-        "Software Developer": [
-
-            "What is object-oriented programming?",
-
-            "What is a stack?",
-
-            "What is the difference between searching and sorting?"
-
+        'Software Developer': [
+          { q: 'Explain the SOLID principles with quick practical examples.', topic: 'Architecture', diff: 'Medium', hint: 'Single responsibility, Open-closed, Liskov substitution, Interface segregation, Dependency inversion.' },
+          { q: 'What is the difference between an Array and a Linked List in memory?', topic: 'DSA', diff: 'Easy', hint: 'Arrays occupy contiguous memory allowing O(1) random access; Linked Lists use pointers with dynamic allocation.' },
+          { q: 'Explain how indexing improves database query performance and its downsides.', topic: 'Databases', diff: 'Medium', hint: 'Indexes use B-Trees for O(log N) lookups instead of full table scans, but increase disk space and slow down writes (INSERT/UPDATE).' },
+          { q: 'How do you prevent SQL Injection and Cross-Site Scripting (XSS)?', topic: 'Security', diff: 'Medium', hint: 'Prevent SQL injection using parameterized queries/ORMs; prevent XSS by escaping user input and using Content Security Policy.' },
+          { q: 'What is the difference between horizontal and vertical scaling?', topic: 'System Design', diff: 'Easy', hint: 'Vertical scaling adds more CPU/RAM to a single machine; horizontal scaling adds more machines behind a load balancer.' }
+        ],
+        'Cloud / DevOps Engineer': [
+          { q: 'Explain the difference between a Container and a Virtual Machine.', topic: 'Containers', diff: 'Easy', hint: 'VMs virtualize the hardware and include a full guest OS; containers share the host OS kernel and are lightweight.' },
+          { q: 'What happens inside a Kubernetes cluster when a Pod crashes?', topic: 'Kubernetes', diff: 'Medium', hint: 'The kubelet notices failure, checks restartPolicy, restarts container, and controller-manager ensures desired replica count.' },
+          { q: 'Explain Blue-Green deployment vs Canary deployment.', topic: 'CI/CD', diff: 'Medium', hint: 'Blue-Green swaps traffic entirely between two identical environments; Canary routes a small percentage of users to the new version first.' },
+          { q: 'What is Infrastructure as Code (IaC) and what are the benefits of Terraform state?', topic: 'Terraform', diff: 'Medium', hint: 'IaC manages infrastructure through declarative code. Terraform state maps real-world resources to configuration.' },
+          { q: 'How do you troubleshoot a high CPU utilization issue on a Linux production server?', topic: 'Troubleshooting', diff: 'Hard', hint: 'Use top/htop to identify process PID, pidstat for threads, perf/strace to inspect syscalls, and check recent application log activity.' }
+        ],
+        'Full Stack Developer': [
+          { q: 'Explain the end-to-end flow of an HTTP request from browser to database and back.', topic: 'Architecture', diff: 'Medium', hint: 'Browser DNS lookup -> TCP/TLS handshake -> Reverse proxy -> App server routing -> Middleware & auth -> ORM/DB query -> JSON response.' },
+          { q: 'How does JWT (JSON Web Token) authentication work and where should tokens be stored?', topic: 'Security', diff: 'Medium', hint: 'Header.Payload.Signature. Store access tokens in memory/short-lived and refresh tokens in HttpOnly, Secure, SameSite cookies.' },
+          { q: 'What is Cross-Origin Resource Sharing (CORS) and how is it resolved?', topic: 'Web API', diff: 'Easy', hint: 'Browser security mechanism that blocks cross-origin requests unless the server responds with Access-Control-Allow-Origin headers.' },
+          { q: 'What is the difference between relational (SQL) and non-relational (NoSQL) databases?', topic: 'Databases', diff: 'Easy', hint: 'SQL uses structured schemas with ACID guarantees and joins; NoSQL offers flexible document/key-value models for horizontal scale.' },
+          { q: 'Explain how you would optimize a slow-loading web application.', topic: 'Performance', diff: 'Hard', hint: 'Analyze network waterfall, enable compression (Gzip/Brotli), code-split JS bundles, lazy-load images, and cache API queries in Redis.' }
         ]
+      };
 
-    };
+      // ======================================================
+      // 2. STATE INITIALIZATION
+      // ======================================================
+      var roleSelector = document.getElementById('roleSelector');
+      var rolePills = document.querySelectorAll('#roleQuickPills .role-pill-btn');
+      var durationPills = document.querySelectorAll('#durationSelectorPills .duration-pill-btn');
+      var planContainer = document.getElementById('dynamicPreparationPlan');
+      var focusContainer = document.getElementById('focusAreasContainer');
+      var questionsContainer = document.getElementById('practiceQuestionsList');
+      var todayTasksList = document.getElementById('todayTasksList');
+      var progressBar = document.getElementById('taskProgressBar');
+      var progressPercent = document.getElementById('progressPercent');
+      var tasksCountText = document.getElementById('tasksCountText');
+      var paceMotivationText = document.getElementById('paceMotivationText');
+      var planHeaderTitle = document.getElementById('planHeaderTitle');
+      var planHeaderSub = document.getElementById('planHeaderSub');
+      var selectedRoleText = document.getElementById('selectedRoleText');
+      var dayCountBadge = document.getElementById('dayCountBadge');
+      var activeRoleBadge = document.getElementById('activeRoleBadge');
+      var activeDurationLabel = document.getElementById('activeDurationLabel');
+      var aiPrepAdvice = document.getElementById('aiPrepAdvice');
+      var resetProgressBtn = document.getElementById('resetProgressBtn');
 
+      // Read initial role and duration from localStorage (synced with Home page)
+      var currentRole = localStorage.getItem('aiInterviewPrepRole') || 'Python Developer';
+      var currentDuration = parseInt(localStorage.getItem('aiInterviewPrepDuration'), 10) || 7;
 
-    const questionContainer =
-        document.getElementById(
-            'practiceQuestions'
-        );
+      if ([3, 7, 14, 30].indexOf(currentDuration) === -1) {
+        currentDuration = 7;
+      }
 
+      // Check if role exists in selector
+      if (roleSelector) {
+        if (!roleSelector.querySelector('option[value="' + currentRole + '"]')) {
+          currentRole = 'Python Developer';
+        }
+        roleSelector.value = currentRole;
+      }
 
-    const selectedQuestions =
-        questions[role] ||
-        questions["Python Developer"];
+      // ======================================================
+      // 3. STORAGE HELPERS FOR TASK PROGRESS
+      // ======================================================
+      function getProgressStorageKey() {
+        return 'aiInterviewPrepDone_' + currentRole.replace(/[^a-zA-Z0-9]/g, '_') + '_' + currentDuration;
+      }
 
+      function loadCompletedTasks() {
+        try {
+          var data = localStorage.getItem(getProgressStorageKey());
+          return data ? JSON.parse(data) : {};
+        } catch (e) {
+          return {};
+        }
+      }
 
-    if (questionContainer) {
+      function saveCompletedTasks(completedMap) {
+        try {
+          localStorage.setItem(getProgressStorageKey(), JSON.stringify(completedMap));
+        } catch (e) {}
+      }
 
-        questionContainer.innerHTML =
-            selectedQuestions.map(
-                function (question, index) {
+      // ======================================================
+      // 4. PLAN GENERATION (Supports standard + dynamic days)
+      // ======================================================
+      function getPlanDays(role, days) {
+        var roleData = plansDatabase[role] || plansDatabase['Python Developer'];
+        if (roleData[days]) {
+          return roleData[days];
+        }
 
+        // Algorithmic interpolator for non-standard durations
+        var baseList = roleData[7] || plansDatabase['Python Developer'][7];
+        var generated = [];
+        for (var i = 1; i <= days; i++) {
+          var templateIndex = (i - 1) % baseList.length;
+          var baseDay = baseList[templateIndex];
+          generated.push({
+            day: i,
+            title: 'Day ' + i + ': ' + baseDay.title,
+            topics: baseDay.topics
+          });
+        }
+        return generated;
+      }
+
+      // ======================================================
+      // 5. RENDER FUNCTIONS
+      // ======================================================
+      function renderPlan() {
+        if (!planContainer) return;
+
+        var days = getPlanDays(currentRole, currentDuration);
+        var completedMap = loadCompletedTasks();
+
+        // Update headers
+        if (planHeaderTitle) planHeaderTitle.textContent = currentDuration + '-Day Preparation Plan';
+        if (selectedRoleText) selectedRoleText.textContent = currentRole;
+        if (dayCountBadge) dayCountBadge.textContent = currentDuration + ' Days';
+        if (activeRoleBadge) activeRoleBadge.textContent = currentRole;
+        if (activeDurationLabel) activeDurationLabel.textContent = currentDuration + '-Day Program';
+
+        var html = '';
+        days.forEach(function (dayItem) {
+          var dayKey = 'day_' + dayItem.day;
+          var isDayDone = !!completedMap[dayKey];
+
+          html += `
+            <div class="day-item-card d-flex gap-3 align-items-start ${isDayDone ? 'completed' : ''}" id="card_${dayKey}">
+              <div class="day-badge-col">
+                <div class="day-badge">
+                  <span class="d-block" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.85;">Phase</span>
+                  Day ${dayItem.day}
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold mb-0 text-dark" style="font-size: 1.05rem;">
+                    ${escapeHtml(dayItem.title)}
+                  </h6>
+                  <label class="d-inline-flex align-items-center gap-2 small fw-semibold text-secondary user-select-none mt-1 mt-sm-0" style="cursor:pointer;">
+                    <input type="checkbox" class="task-checkbox-custom day-status-checkbox" data-daykey="${dayKey}" ${isDayDone ? 'checked' : ''}>
+                    <span>${isDayDone ? 'Completed 🎉' : 'Mark Day Completed'}</span>
+                  </label>
+                </div>
+                <div class="subtopics-list mt-2">
+                  ${dayItem.topics.map(function (topic, tIdx) {
+                    var subKey = dayKey + '_sub_' + tIdx;
+                    var isSubDone = isDayDone || !!completedMap[subKey];
                     return `
-
-                        <div class="question-box">
-
-                            <strong>
-                                ${index + 1}. ${question}
-                            </strong>
-
-                            <br>
-
-                            <button
-                                type="button"
-                                class="btn btn-outline-primary btn-sm practice-btn">
-
-                                <i class="fas fa-play"></i>
-                                Practice
-
-                            </button>
-
-                        </div>
-
+                      <div class="task-item-line ${isSubDone ? 'done' : ''}">
+                        <input type="checkbox" class="task-checkbox-custom sub-task-checkbox" data-subkey="${subKey}" data-parentday="${dayKey}" ${isSubDone ? 'checked' : ''}>
+                        <span class="small">${escapeHtml(topic)}</span>
+                      </div>
                     `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        });
 
-                }
-            ).join('');
+        planContainer.innerHTML = html;
+        bindTaskEvents();
+        updateProgress();
+        renderTodayTasks(days);
+      }
 
-    }
+      function renderTodayTasks(days) {
+        if (!todayTasksList) return;
+        var completedMap = loadCompletedTasks();
+        var currentDay = 1;
 
-
-    /* ========================================================
-       TASK PROGRESS
-       ======================================================== */
-
-    const checkboxes =
-        document.querySelectorAll(
-            '.task-checkbox'
-        );
-
-
-    const progressPercent =
-        document.getElementById(
-            'progressPercent'
-        );
-
-
-    const progressLabel =
-        document.getElementById(
-            'progressLabel'
-        );
-
-
-    const taskProgressBar =
-        document.getElementById(
-            'taskProgressBar'
-        );
-
-
-    function updateProgress() {
-
-        const total =
-            checkboxes.length;
-
-
-        const completed =
-            document.querySelectorAll(
-                '.task-checkbox:checked'
-            ).length;
-
-
-        const percentage =
-            total > 0
-                ? Math.round(
-                    (completed / total) * 100
-                )
-                : 0;
-
-
-        if (progressPercent) {
-
-            progressPercent.textContent =
-                percentage + '%';
-
+        // Find earliest uncompleted day
+        for (var i = 1; i <= currentDuration; i++) {
+          if (!completedMap['day_' + i]) {
+            currentDay = i;
+            break;
+          }
         }
 
+        var targetDayData = days[currentDay - 1] || days[0];
+        var tasksHtml = `
+          <div class="p-3 rounded-4 mb-3" style="background:#eff6ff; border:1px solid #bfdbfe;">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge bg-primary rounded-pill px-3 py-1">Day ${currentDay} of ${currentDuration}</span>
+              <span class="small fw-bold text-primary">${escapeHtml(targetDayData.title)}</span>
+            </div>
+          </div>
+        `;
 
-        if (progressLabel) {
+        targetDayData.topics.forEach(function (topic, idx) {
+          var taskKey = 'today_focus_' + currentDay + '_' + idx;
+          var isDone = !!completedMap[taskKey];
+          tasksHtml += `
+            <div class="task-item-line ${isDone ? 'done' : ''}">
+              <input type="checkbox" class="task-checkbox-custom today-priority-checkbox" data-taskkey="${taskKey}" ${isDone ? 'checked' : ''}>
+              <span class="small fw-semibold">${escapeHtml(topic)}</span>
+            </div>
+          `;
+        });
 
-            progressLabel.textContent =
-                'Completed: ' +
-                completed +
-                ' / ' +
-                total +
-                ' tasks';
+        tasksHtml += `
+          <div class="mt-3 text-end">
+            <a href="setup.html" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+              <i class="fas fa-play me-1"></i> Practice Day ${currentDay} in Mock Interview
+            </a>
+          </div>
+        `;
 
-        }
+        todayTasksList.innerHTML = tasksHtml;
 
+        // Bind today tasks
+        todayTasksList.querySelectorAll('.today-priority-checkbox').forEach(function (cb) {
+          cb.addEventListener('change', function () {
+            var key = this.getAttribute('data-taskkey');
+            var map = loadCompletedTasks();
+            map[key] = this.checked;
+            saveCompletedTasks(map);
+            this.closest('.task-item-line').classList.toggle('done', this.checked);
+          });
+        });
+      }
 
-        if (taskProgressBar) {
+      function renderFocusAreas() {
+        if (!focusContainer) return;
+        var areas = focusAreasDB[currentRole] || focusAreasDB['Python Developer'];
+        var html = '';
 
-            taskProgressBar.style.width =
-                percentage + '%';
+        areas.forEach(function (area) {
+          html += `
+            <div class="focus-card">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small fw-bold text-dark">${escapeHtml(area.name)}</span>
+                <span class="small fw-semibold text-secondary">${area.percent}%</span>
+              </div>
+              <div class="progress" style="height: 8px; border-radius: 20px;">
+                <div class="progress-bar ${area.color}" style="width: ${area.percent}%;"></div>
+              </div>
+            </div>
+          `;
+        });
 
-        }
+        focusContainer.innerHTML = html;
+      }
 
+      function renderQuestions() {
+        if (!questionsContainer) return;
+        var qList = questionsDB[currentRole] || questionsDB['Python Developer'];
+        var html = '';
 
-        checkboxes.forEach(
-            function (checkbox) {
+        qList.forEach(function (q, idx) {
+          var diffClass = q.diff === 'Easy' ? 'bg-success' : q.diff === 'Medium' ? 'bg-primary' : 'bg-danger';
+          html += `
+            <div class="question-card-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge ${diffClass} bg-opacity-15 text-dark" style="font-size:0.72rem;">${q.diff}</span>
+                <span class="small text-muted">${escapeHtml(q.topic)}</span>
+              </div>
+              <p class="small fw-semibold text-dark mb-1">
+                ${idx + 1}. ${escapeHtml(q.q)}
+              </p>
+              <button type="button" class="btn btn-sm btn-link text-primary p-0 text-decoration-none small toggle-hint-btn" style="font-size:0.78rem;">
+                <i class="fas fa-lightbulb me-1"></i> Reveal Answer Pointers
+              </button>
+              <div class="hint-box">
+                <span class="fw-semibold text-dark d-block mb-1">Key concepts to mention:</span>
+                ${escapeHtml(q.hint)}
+              </div>
+            </div>
+          `;
+        });
 
-                const task =
-                    checkbox.closest(
-                        '.task-item'
-                    );
+        questionsContainer.innerHTML = html;
 
-
-                if (task) {
-
-                    task.classList.toggle(
-                        'completed',
-                        checkbox.checked
-                    );
-
-                }
-
+        // Toggle hint accordion
+        questionsContainer.querySelectorAll('.toggle-hint-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var box = this.nextElementSibling;
+            if (box) {
+              var isOpen = box.style.display === 'block';
+              box.style.display = isOpen ? 'none' : 'block';
+              this.innerHTML = isOpen
+                ? '<i class="fas fa-lightbulb me-1"></i> Reveal Answer Pointers'
+                : '<i class="fas fa-eye-slash me-1"></i> Hide Answer Pointers';
             }
-        );
+          });
+        });
+      }
 
-    }
+      function updateAIAdvice() {
+        if (!aiPrepAdvice) return;
+        var adviceMap = {
+          3: 'Intensive 3-Day Sprint: Focus strictly on high-frequency questions and core language features. Avoid reading new libraries; run 2 full voice mock interviews today and tomorrow.',
+          7: 'Standard 7-Day Plan: Spend mornings reviewing the conceptual topics and evenings practicing live verbal answers on the portal. Aim for 80%+ completeness on every question.',
+          14: 'In-Depth 14-Day Accelerator: Dedicate the first 6 days to deep fundamentals, days 7-10 to algorithms and data structures, and the final 4 days to system design and end-to-end mock drills.',
+          30: 'Comprehensive 30-Day Mastery: Build deep conceptual mastery with hands-on projects, system architecture diagrams, and weekly simulated interviews to peak your confidence.'
+        };
+        aiPrepAdvice.textContent = adviceMap[currentDuration] || adviceMap[7];
+      }
 
+      // ======================================================
+      // 6. PROGRESS CALCULATION & EVENT BINDING
+      // ======================================================
+      function bindTaskEvents() {
+        var dayCheckboxes = document.querySelectorAll('.day-status-checkbox');
+        var subCheckboxes = document.querySelectorAll('.sub-task-checkbox');
 
-    checkboxes.forEach(
-        function (checkbox) {
+        dayCheckboxes.forEach(function (cb) {
+          cb.addEventListener('change', function () {
+            var dayKey = this.getAttribute('data-daykey');
+            var isChecked = this.checked;
+            var map = loadCompletedTasks();
+            map[dayKey] = isChecked;
 
-            checkbox.addEventListener(
-                'change',
-                updateProgress
-            );
-
-        }
-    );
-
-
-    updateProgress();
-
-
-    /* ========================================================
-       PRACTICE BUTTONS
-       ======================================================== */
-
-    document
-        .querySelectorAll('.practice-btn')
-        .forEach(
-            function (button) {
-
-                button.addEventListener(
-                    'click',
-                    function () {
-
-                        alert(
-                            'Practice mode will start soon.'
-                        );
-
-                    }
-                );
-
+            // Also check/uncheck all subtasks in this card
+            var parentCard = document.getElementById('card_' + dayKey);
+            if (parentCard) {
+              parentCard.classList.toggle('completed', isChecked);
+              var subs = parentCard.querySelectorAll('.sub-task-checkbox');
+              subs.forEach(function (sub) {
+                sub.checked = isChecked;
+                var subKey = sub.getAttribute('data-subkey');
+                map[subKey] = isChecked;
+                sub.closest('.task-item-line').classList.toggle('done', isChecked);
+              });
             }
-        );
 
+            saveCompletedTasks(map);
+            updateProgress();
+          });
+        });
 
-    /* ========================================================
-       CONSOLE
-       ======================================================== */
+        subCheckboxes.forEach(function (cb) {
+          cb.addEventListener('change', function () {
+            var subKey = this.getAttribute('data-subkey');
+            var parentDayKey = this.getAttribute('data-parentday');
+            var map = loadCompletedTasks();
+            map[subKey] = this.checked;
+            this.closest('.task-item-line').classList.toggle('done', this.checked);
 
-    console.log(
-        'Preparation page loaded successfully.'
-    );
+            // Check if all subtasks in parent day are now checked
+            var parentCard = document.getElementById('card_' + parentDayKey);
+            if (parentCard) {
+              var allSubs = parentCard.querySelectorAll('.sub-task-checkbox');
+              var allChecked = Array.from(allSubs).every(function (s) { return s.checked; });
+              var dayCb = parentCard.querySelector('.day-status-checkbox');
+              if (dayCb) {
+                dayCb.checked = allChecked;
+                map[parentDayKey] = allChecked;
+                parentCard.classList.toggle('completed', allChecked);
+              }
+            }
 
-    console.log(
-        'Selected role:',
-        role
-    );
+            saveCompletedTasks(map);
+            updateProgress();
+          });
+        });
+      }
 
-})();
+      function updateProgress() {
+        var dayCheckboxes = document.querySelectorAll('.day-status-checkbox');
+        var totalDays = dayCheckboxes.length;
+        var completedDays = 0;
 
-</script>
+        dayCheckboxes.forEach(function (cb) {
+          if (cb.checked) completedDays++;
+        });
 
+        var percent = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
 
-<!-- ========================================================= -->
-<!-- MAIN PROJECT JAVASCRIPT -->
-<!-- ========================================================= -->
+        if (progressBar) progressBar.style.width = percent + '%';
+        if (progressPercent) progressPercent.textContent = percent + '%';
+        if (tasksCountText) tasksCountText.textContent = completedDays + ' of ' + totalDays + ' days completed';
 
-<script src="js/script.js"></script>
+        if (paceMotivationText) {
+          if (percent === 100) {
+            paceMotivationText.textContent = '🎉 All days completed! You are ready to crack your interview!';
+          } else if (percent >= 50) {
+            paceMotivationText.textContent = '🔥 Over halfway through! Keep your momentum going!';
+          } else if (percent > 0) {
+            paceMotivationText.textContent = '💪 Great start! Consistency is the key to interview success.';
+          } else {
+            paceMotivationText.textContent = 'Ready to begin? Mark your first completed day!';
+          }
+        }
+      }
 
+      // ======================================================
+      // 7. USER CONTROLS HANDLERS (ROLE & DURATION)
+      // ======================================================
+      function changeRole(newRole) {
+        if (!newRole || newRole === currentRole) return;
+        currentRole = newRole;
+        localStorage.setItem('aiInterviewPrepRole', currentRole);
+
+        // Sync with user profile storage if exists
+        try {
+          var profile = JSON.parse(localStorage.getItem('aiInterviewProfile')) || {};
+          profile.jobRole = currentRole;
+          localStorage.setItem('aiInterviewProfile', JSON.stringify(profile));
+        } catch (e) {}
+
+        if (roleSelector) roleSelector.value = currentRole;
+        rolePills.forEach(function (pill) {
+          pill.classList.toggle('active', pill.getAttribute('data-role') === currentRole);
+        });
+
+        renderPlan();
+        renderFocusAreas();
+        renderQuestions();
+      }
+
+      function changeDuration(newDays) {
+        newDays = parseInt(newDays, 10);
+        if (!newDays || newDays === currentDuration) return;
+        currentDuration = newDays;
+        localStorage.setItem('aiInterviewPrepDuration', currentDuration.toString());
+
+        durationPills.forEach(function (pill) {
+          var d = parseInt(pill.getAttribute('data-days'), 10);
+          pill.classList.toggle('active', d === currentDuration);
+        });
+
+        renderPlan();
+        updateAIAdvice();
+      }
+
+      // Listeners
+      if (roleSelector) {
+        roleSelector.addEventListener('change', function () {
+          changeRole(this.value);
+        });
+      }
+
+      rolePills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          changeRole(this.getAttribute('data-role'));
+        });
+      });
+
+      durationPills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          changeDuration(this.getAttribute('data-days'));
+        });
+      });
+
+      if (resetProgressBtn) {
+        resetProgressBtn.addEventListener('click', function () {
+          if (confirm('Are you sure you want to reset your checklist progress for ' + currentRole + ' (' + currentDuration + ' days)?')) {
+            localStorage.removeItem(getProgressStorageKey());
+            renderPlan();
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // Initial page render
+      renderPlan();
+      renderFocusAreas();
+      renderQuestions();
+      updateAIAdvice();
+
+    })();
+  </script>
 
 </body>
 </html>

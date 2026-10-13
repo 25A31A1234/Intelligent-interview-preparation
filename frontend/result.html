@@ -420,7 +420,6 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="preparation.html">Preparation</a></li>
         </ul>
       </div>
     </div>
@@ -552,9 +551,6 @@
     <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
       <a href="dashboard.html" class="btn btn-gradient px-4">
         <i class="fas fa-chart-pie me-2"></i> View Dashboard
-      </a>
-      <a href="preparation.html" class="btn btn-outline-gradient px-4">
-        <i class="fas fa-book-open me-2"></i> Personalized Preparation
       </a>
       <a href="setup.html" class="btn btn-gradient px-4" style="background: linear-gradient(145deg, #059669, #047857);">
         <i class="fas fa-rotate-right me-2"></i> Practice Again
@@ -1017,7 +1013,7 @@
         if (score >= 80) return 'You are well-prepared for interviews! Keep practicing to maintain your edge.';
         if (score >= 60) return 'You are on the right track. Focus on your weak areas to boost your confidence.';
         if (score >= 40) return 'More practice is needed. Revisit topics where you scored below 50 and try mock interviews.';
-        return 'Start with focused preparation. Use the Preparation page to build your knowledge systematically.';
+        return 'Start with focused practice from the Home preparation planner to build your knowledge systematically.';
       }
 
       function generateAIFeedback(result, analyses) {

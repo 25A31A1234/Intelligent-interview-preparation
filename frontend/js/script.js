@@ -3536,6 +3536,11 @@ function initDashboardPage() {
 
 function initPreparationPage() {
 
+    // Yield if page uses the dynamic role & duration customizer
+    if (document.getElementById('planCustomizer')) {
+        return;
+    }
+
     var profile = getStorage(STORAGE_KEYS.PROFILE) || {};
     var settings = getStorage(STORAGE_KEYS.SETTINGS) || {};
 
